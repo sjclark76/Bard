@@ -2,7 +2,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Fluent.Testing.Library
+namespace Fluent.Testing.Library.Infrastructure
 {
     public class ResolvePrivateSetters : DefaultContractResolver
     {

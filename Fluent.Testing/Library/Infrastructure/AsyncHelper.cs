@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Fluent.Testing
+namespace Fluent.Testing.Library.Infrastructure
 {
     internal static class AsyncHelper
     {

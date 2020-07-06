@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using Fluent.Testing.Library.Infrastructure;
 
 namespace Fluent.Testing.Library.Configuration
 {
@@ -7,7 +8,6 @@ namespace Fluent.Testing.Library.Configuration
     {
         private readonly HttpClient _httpClient;
         private Action<string>? _logMessage;
-        private Action<Response>? _setTheResponse;
 
         public RegistryData(HttpClient httpClient)
         {
@@ -20,11 +20,20 @@ namespace Fluent.Testing.Library.Configuration
             return this;
         }
 
-        public IStepThree Then(IThen then)
+        public IFluentTester Build()
         {
-            then.SetTheResponse()
+            if (_logMessage == null)
+                throw new Exception($"{nameof(Log)} method must be called first.");
 
-            return this;
+            if (_logMessage == null)
+                throw new Exception($"{nameof(Then.Then)} method must be called first.");
+
+            var then = new Then.Then(new LogWriter(_logMessage));
+
+            var fluentApi = new When.When(_httpClient, new LogWriter(_logMessage),
+                response => then.SetTheResponse(response));
+
+            return new FluentTester(fluentApi, then);
         }
     }
 }

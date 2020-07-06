@@ -1,3 +1,6 @@
+using Fluent.Testing.Library.Then;
+using Fluent.Testing.Library.When;
+
 namespace Fluent.Testing.Library
 {
     public class FluentTester : IFluentTester

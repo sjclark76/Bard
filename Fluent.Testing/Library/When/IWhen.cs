@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Fluent.Testing.Library.Then;
 
-namespace Fluent.Testing.Library
+namespace Fluent.Testing.Library.When
 {
     public interface IWhen
     {

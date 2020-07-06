@@ -1,9 +1,9 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Fluent.Testing
+namespace Fluent.Testing.Library.Infrastructure
 {
-    public static class PropertyExpressionHelper
+    internal static class PropertyExpressionHelper
     {
         public static string GetPropertyName<T>(Expression<Func<T, object?>> expression)
         {

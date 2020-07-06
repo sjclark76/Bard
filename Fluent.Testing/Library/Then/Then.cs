@@ -1,4 +1,6 @@
-namespace Fluent.Testing.Library
+using Fluent.Testing.Library.Infrastructure;
+
+namespace Fluent.Testing.Library.Then
 {
     public class Then : IThen
     {

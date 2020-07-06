@@ -1,4 +1,4 @@
-namespace Fluent.Testing
+namespace Fluent.Testing.Library.Then
 {
     public interface ITheResponse
     {

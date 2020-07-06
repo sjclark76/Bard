@@ -1,15 +1,15 @@
 using Fluent.Testing.Library.Infrastructure;
+using Fluent.Testing.Library.Then.v1;
 
-namespace Fluent.Testing.Library.Then.v1
+namespace Fluent.Testing.Library.Then
 {
-    public class Then<TShouldBe> : IThen<TShouldBe> where TShouldBe : IShouldBeBase
+    public class Then<TShouldBe> : IThen<TShouldBe> where TShouldBe : ShouldBeBase, new()
     {
         private readonly LogWriter _logWriter;
 
         public Then(LogWriter logWriter)
         {
             _logWriter = logWriter;
-            Response = new TheResponse<TShouldBe>();
         }
        
         public void SetTheResponse(IResponse<TShouldBe> response)
@@ -17,6 +17,6 @@ namespace Fluent.Testing.Library.Then.v1
             Response = response;
         }
         
-        public IResponse<TShouldBe> Response { get; set; }
+         public IResponse<TShouldBe>? Response { get; set; }
     }
 }

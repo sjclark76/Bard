@@ -1,4 +1,5 @@
 using Fluent.Testing.Library.Configuration;
+using Fluent.Testing.Library.Then.Basic;
 using Fluent.Testing.Sample.Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -28,7 +29,7 @@ namespace Fluent.Testing.Library.Tests
                 .Build();
         }
 
-        public IInternalFluentApiTester<Then.v1.IShouldBe> Api { get; set; }
+        public IInternalFluentApiTester<IShouldBe> Api { get; set; }
 
         [Fact]
         public void List_should_return_ok()

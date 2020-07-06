@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Fluent.Testing.Library.Then;
-using Fluent.Testing.Library.Then.v1;
 
 namespace Fluent.Testing.Library.When
 {

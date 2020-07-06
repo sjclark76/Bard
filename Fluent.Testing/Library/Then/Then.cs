@@ -1,23 +1,32 @@
-using Fluent.Testing.Library.Infrastructure;
-using Fluent.Testing.Library.Then.v1;
+using System;
+using Fluent.Testing.Library.When;
 
 namespace Fluent.Testing.Library.Then
 {
-    public class Then<TShouldBe> : IThen<TShouldBe> where TShouldBe : ShouldBeBase, new()
+    public class Then<TShouldBe> : IThen<TShouldBe> where TShouldBe : ShouldBeBase
     {
-        private readonly LogWriter _logWriter;
+        private readonly Func<ApiResult, IResponse<TShouldBe>> _responseFactory;
+        private IResponse<TShouldBe>? _response;
 
-        public Then(LogWriter logWriter)
+        public Then(Func<ApiResult, IResponse<TShouldBe>> responseFactory)
         {
-            _logWriter = logWriter;
-            Response = new EmptyResponse<TShouldBe>();
+            _responseFactory = responseFactory;
         }
-       
-        public void SetTheResponse(IResponse<TShouldBe> response)
+
+        public IResponse<TShouldBe> Response
         {
-            Response = response;
+            get
+            {
+                if (_response == null)
+                    throw new Exception("The Response has not been set.");
+
+                return _response;
+            }
         }
-        
-         public IResponse<TShouldBe> Response { get; set; }
+
+        public void SetTheResponse(ApiResult result)
+        {
+            _response = _responseFactory(result);
+        }
     }
 }

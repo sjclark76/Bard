@@ -1,16 +1,12 @@
 using System.Net;
-using System.Net.Http;
-using Fluent.Testing.Library.Then.v1;
 
 namespace Fluent.Testing.Library.Then
 {
-    public class Response<TShouldBe> : IResponse<TShouldBe> where TShouldBe : ShouldBeBase, new()
+    public class Response<TShouldBe> : IResponse<TShouldBe> where TShouldBe : ShouldBeBase
     {
-
-        public Response(HttpResponseMessage httpResponse, string httpContent)
+        public Response(TShouldBe shouldBe)
         {
-            ShouldBe = new TShouldBe();
-            ShouldBe.SetResponse(httpResponse, httpContent);
+            ShouldBe = shouldBe;
         }
 
         // public IBadRequestResponse EndsWithMessage(string message)

@@ -1,39 +1,53 @@
-using System;
-using System.Linq.Expressions;
 using Fluent.Testing.Library.Then;
+using Shouldly;
 
 namespace Fluent.Testing.Library.Tests
 {
-    public class MyBadResponseProvider : IBadRequestResponse
+    public class MyBadResponseProvider : BadRequestResponse<MyCustomErrorMessage>
     {
-        public IBadRequestResponse ForProperty<TCommand>(Expression<Func<TCommand, object?>> expression)
+        public override IBadRequestResponse ForProperty(string propertyName)
         {
-            throw new NotImplementedException();
+            var content = ContentAsString();
+            
+            content.ShouldContain(propertyName);
+
+            return this;
         }
 
-        public IBadRequestResponse ForProperty(string propertyName)
+        public override IBadRequestResponse WithMessage(string message)
         {
-            throw new NotImplementedException();
+            var content = ContentAsString();
+            
+            content.ShouldContain(message);
+
+            return this;
         }
 
-        public IBadRequestResponse WithMessage(string message)
+        public override IBadRequestResponse WithErrorCode(string errorCode)
         {
-            throw new NotImplementedException();
+            var content = ContentAsString();
+            
+            content.ShouldContain(errorCode);
+
+            return this;
         }
 
-        public IBadRequestResponse WithErrorCode(string errorCode)
+        public override IBadRequestResponse StartsWithMessage(string message)
         {
-            throw new NotImplementedException();
+            var content = ContentAsString();
+            
+            content.ShouldContain(message);
+
+            return this;
         }
 
-        public IBadRequestResponse StartsWithMessage(string message)
+        public override IBadRequestResponse EndsWithMessage(string message)
         {
-            throw new NotImplementedException();
-        }
+            var content = ContentAsString();
+            
+            content.ShouldContain(message);
 
-        public IBadRequestResponse EndsWithMessage(string message)
-        {
-            throw new NotImplementedException();
+            return this;
         }
     }
 }

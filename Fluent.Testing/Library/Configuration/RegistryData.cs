@@ -2,8 +2,9 @@ using System;
 using System.Net.Http;
 using Fluent.Testing.Library.Infrastructure;
 using Fluent.Testing.Library.Then;
-using Fluent.Testing.Library.Then.v1;
-using IShouldBe = Fluent.Testing.Library.Then.v1.IShouldBe;
+using Fluent.Testing.Library.Then.Advanced;
+using Fluent.Testing.Library.Then.Basic;
+using IShouldBe = Fluent.Testing.Library.Then.Advanced.IShouldBe;
 
 namespace Fluent.Testing.Library.Configuration
 {
@@ -24,20 +25,31 @@ namespace Fluent.Testing.Library.Configuration
             return this;
         }
 
-        IInternalFluentApiTester<Then.v1.IShouldBe> IStepTwo.Build()
+        public IInternalFluentApiTester<IShouldBe> Build()
         {
             if (_logMessage == null)
                 throw new Exception($"{nameof(Log)} method must be called first.");
-        
+
             if (_logMessage == null)
-                throw new Exception($"Then method must be called first.");
-        
-            var then = new Then<ShouldBe>(new LogWriter(_logMessage));
-        
-            var fluentApi = new When.When<ShouldBe>(_httpClient, new LogWriter(_logMessage),
-                response => then.SetTheResponse(response));
-        
-            return new FluentApiTester<ShouldBe>(fluentApi, then);
+                throw new Exception("Then method must be called first.");
+
+            if (_badRequestHandler == null)
+                throw new Exception("Use method must be called first.");
+            
+            return new FluentApiTester<AdvancedShouldBe>(_httpClient, new LogWriter(_logMessage),
+                result => new Response<AdvancedShouldBe>(new AdvancedShouldBe(result, _badRequestHandler)));
+        }
+
+        IInternalFluentApiTester<Then.Basic.IShouldBe> IStepTwo.Build()
+        {
+            if (_logMessage == null)
+                throw new Exception($"{nameof(Log)} method must be called first.");
+
+            if (_logMessage == null)
+                throw new Exception("Then method must be called first.");
+
+            return new FluentApiTester<BasicShouldBe>(_httpClient, new LogWriter(_logMessage),
+                result => new Response<BasicShouldBe>(new BasicShouldBe(result)));
         }
 
         public IStepThree Use<T>() where T : IBadRequestResponse, new()
@@ -45,22 +57,6 @@ namespace Fluent.Testing.Library.Configuration
             _badRequestHandler = new T();
 
             return this;
-        }
-
-        IInternalFluentApiTester<Then.v2.IShouldBe> IStepThree.Build()
-        {
-            if (_logMessage == null)
-                throw new Exception($"{nameof(Log)} method must be called first.");
-        
-            if (_logMessage == null)
-                throw new Exception($"Then method must be called first.");
-        
-            var then = new Then<Then.v2.ShouldBe>(new LogWriter(_logMessage));
-        
-            var fluentApi = new When.When<Then.v2.ShouldBe>(_httpClient, new LogWriter(_logMessage),
-                response => then.SetTheResponse(response));
-        
-            return new FluentApiTester<Then.v2.ShouldBe>(fluentApi, then);
         }
     }
 }

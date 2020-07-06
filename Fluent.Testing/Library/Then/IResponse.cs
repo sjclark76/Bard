@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Fluent.Testing.Library.Then.v1
+namespace Fluent.Testing.Library.Then
 {
     public interface IResponse<out TShouldBe> where TShouldBe : IShouldBeBase
     {

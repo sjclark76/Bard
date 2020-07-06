@@ -5,24 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Fluent.Testing.Library.Infrastructure;
 using Fluent.Testing.Library.Then;
-using Fluent.Testing.Library.Then.v1;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Fluent.Testing.Library.When
 {
-    public class When<TShouldBe> : IWhen<TShouldBe> where TShouldBe : ShouldBeBase, new()
+    public class When<TShouldBe> : IWhen<TShouldBe> where TShouldBe : ShouldBeBase
     {
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;
-        private readonly Action<IResponse<TShouldBe>> _setTheResponse;
+        private readonly Func<ApiResult, IResponse<TShouldBe>> _responseFactory;
 
-        internal When(HttpClient httpClient, LogWriter logWriter, Action<IResponse<TShouldBe>> setTheResponse)
+        internal When(FluentApiTester<TShouldBe> parent, HttpClient httpClient, LogWriter logWriter, Func<ApiResult, IResponse<TShouldBe>> responseFactory)
         {
+            Parent = parent;
             _httpClient = httpClient;
             _logWriter = logWriter;
-            _setTheResponse = setTheResponse;
+            _responseFactory = responseFactory;
         }
 
         public IResponse<TShouldBe> Put<TModel>(string route, TModel model)
@@ -55,18 +55,23 @@ namespace Fluent.Testing.Library.When
 
             var message = AsyncHelper.RunSync(() => _httpClient.GetAsync(route));
             var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
-            var response = new Response<TShouldBe>(message, content);
+            //var response = new Response<TShouldBe>(message, content);
 
             _logWriter.WriteHttpResponseToConsole(message);
 
-            _setTheResponse.Invoke(response);
+            var apiResult = new ApiResult(message, content);
 
-            return response;
+            Publish(apiResult);
+            
+            return _responseFactory(apiResult);
+
         }
 
-        private static StringContent CreateMessageContent(object message)
+        private static StringContent CreateMessageContent(object? message)
         {
-            var json = JsonConvert.SerializeObject(message, new JsonSerializerSettings
+            var json = message == null
+                ? string.Empty
+                : JsonConvert.SerializeObject(message, new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
@@ -78,19 +83,27 @@ namespace Fluent.Testing.Library.When
             Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
         {
             var messageContent = CreateMessageContent(model);
-            var message = AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
+            var responseMessage = AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
 
-            _logWriter.WriteStringToConsole($"REQUEST: {message.RequestMessage.Method.Method} {route}");
+            _logWriter.WriteStringToConsole($"REQUEST: {responseMessage.RequestMessage.Method.Method} {route}");
             _logWriter.WriteObjectToConsole(model);
 
-            var response = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
+            var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
 
-            _logWriter.WriteHttpResponseToConsole(message);
+            _logWriter.WriteHttpResponseToConsole(responseMessage);
 
-            var validator = new Response<TShouldBe>(message, response);
-            _setTheResponse.Invoke(validator);
-
-            return validator;
+            var apiResult = new ApiResult(responseMessage, responseString);
+            
+            Publish(apiResult);
+            
+            return _responseFactory(apiResult);
         }
+
+        private void Publish(ApiResult apiResult)
+        {
+            Parent.Publish(apiResult);
+        }
+
+        internal FluentApiTester<TShouldBe> Parent { get; set; }
     }
 }

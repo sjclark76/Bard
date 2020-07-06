@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Fluent.Testing.Sample.Api.Controllers
 {
@@ -15,12 +14,10 @@ namespace Fluent.Testing.Sample.Api.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
         private readonly List<WeatherForecast> _forecasts;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController()
         {
-            _logger = logger;
             var rng = new Random();
             _forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
                 {
@@ -45,7 +42,7 @@ namespace Fluent.Testing.Sample.Api.Controllers
 
             if (forecast == null)
                 return NotFound();
-            
+
             return Ok(forecast);
         }
 

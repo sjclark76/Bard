@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using Fluent.Testing.Library.Infrastructure;
+using Fluent.Testing.Library.When;
 using Newtonsoft.Json;
 using Shouldly;
 
@@ -9,24 +10,15 @@ namespace Fluent.Testing.Library.Then
 {
     public abstract class ShouldBeBase : IShouldBeBase
     {
-        private HttpResponseMessage? _httpResponse;
-        private string _httpResponseString = string.Empty;
+        private readonly string _httpResponseString;
+        private HttpResponseMessage _httpResponse;
 
-        public void StatusCodeShouldBe(HttpStatusCode statusCode)
+        protected ShouldBeBase(ApiResult apiResult)
         {
-            if(_httpResponse == null)
-                throw new Exception($"{nameof(_httpResponse)} property has not been set.");
-            
-            _httpResponse?.StatusCode.ShouldBe(statusCode,
-                $"Status code mismatch, response was {_httpResponse.StatusCode}");
+            _httpResponse = apiResult.ResponseMessage;
+            _httpResponseString = apiResult.ResponseString;
         }
 
-        public void SetResponse(HttpResponseMessage httpResponse, string httpContent)
-        {
-            _httpResponse = httpResponse;
-            _httpResponseString = httpContent;
-        }
-        
         public void Ok()
         {
             StatusCodeShouldBe(HttpStatusCode.OK);
@@ -43,7 +35,8 @@ namespace Fluent.Testing.Library.Then
 
             var content = Content<T>();
 
-            content.ShouldNotBeNull($"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
+            content.ShouldNotBeNull(
+                $"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
 
             return content;
         }
@@ -59,7 +52,8 @@ namespace Fluent.Testing.Library.Then
 
             var content = Content<T>();
 
-            content.ShouldNotBeNull($"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
+            content.ShouldNotBeNull(
+                $"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
 
             return content;
         }
@@ -73,7 +67,16 @@ namespace Fluent.Testing.Library.Then
         {
             StatusCodeShouldBe(HttpStatusCode.NotFound);
         }
-        
+
+        public void StatusCodeShouldBe(HttpStatusCode statusCode)
+        {
+            if (_httpResponse == null)
+                throw new Exception($"{nameof(_httpResponse)} property has not been set.");
+
+            _httpResponse?.StatusCode.ShouldBe(statusCode,
+                $"Status code mismatch, response was {_httpResponse.StatusCode}");
+        }
+
         public T Content<T>()
         {
             T content = default!;

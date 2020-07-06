@@ -1,4 +1,5 @@
 using Fluent.Testing.Library.Configuration;
+using Fluent.Testing.Library.Then.Advanced;
 using Fluent.Testing.Sample.Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -29,21 +30,7 @@ namespace Fluent.Testing.Library.Tests
                 .Build();
         }
 
-        public IInternalFluentApiTester<Then.v2.IShouldBe> Api { get; set; }
-
-        [Fact]
-        public void List_should_return_ok()
-        {
-            Api
-                .When
-                .Get("WeatherForecast");
-
-            Api
-                .Then
-                .Response
-                .ShouldBe
-                .Ok();
-        }
+        public IInternalFluentApiTester<IShouldBe> Api { get; set; }
 
         [Fact]
         public void Get_should_return_ok()
@@ -74,21 +61,21 @@ namespace Fluent.Testing.Library.Tests
         }
 
         [Fact]
-        public void Post_should_return_201()
+        public void List_should_return_ok()
         {
             Api
                 .When
-                .Post("WeatherForecast", new WeatherForecast{TemperatureC = 21});
+                .Get("WeatherForecast");
 
             Api
                 .Then
                 .Response
                 .ShouldBe
-                .Created<WeatherForecast>();
+                .Ok();
         }
-        
+
         [Fact]
-        public void Post_should_return_400_if_required_field_is_not_provided()
+        public void Post_should_return_201()
         {
             Api
                 .When
@@ -98,7 +85,22 @@ namespace Fluent.Testing.Library.Tests
                 .Then
                 .Response
                 .ShouldBe
-                .BadRequest.ForProperty("afd");
+                .Created<WeatherForecast>();
+        }
+
+        [Fact]
+        public void Post_should_return_400_if_required_field_is_not_provided()
+        {
+            Api
+                .When
+                .Post("WeatherForecast", new WeatherForecast());
+
+            Api
+                .Then
+                .Response
+                .ShouldBe
+                .BadRequest
+                .ForProperty<WeatherForecast>(forecast => forecast.TemperatureC);
         }
     }
 }

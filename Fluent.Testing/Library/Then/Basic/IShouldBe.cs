@@ -1,4 +1,4 @@
-namespace Fluent.Testing.Library.Then.v1
+namespace Fluent.Testing.Library.Then.Basic
 {
     public interface IShouldBe : IShouldBeBase
     {

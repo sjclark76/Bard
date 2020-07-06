@@ -7,22 +7,51 @@ using Shouldly;
 
 namespace Fluent.Testing.Library.Then
 {
-    public class Response : ITheResponse, IShouldBe, IBadRequestResponse
+    public class TheResponse : IResponse, IShouldBe, IBadRequestResponse
     {
         private readonly string? _httpContent;
         private readonly HttpResponseMessage? _httpResponse;
 
-        public Response()
+        public TheResponse()
         {
         }
 
-        public Response(HttpResponseMessage httpResponse, string httpContent)
+        public TheResponse(HttpResponseMessage httpResponse, string httpContent)
         {
             _httpResponse = httpResponse;
             _httpContent = httpContent;
         }
 
-        public ITheResponse TheResponse => this;
+        public IResponse Response => this;
+
+        // public IBadRequestResponse EndsWithMessage(string message)
+        // {
+        //     var content = Content<ErrorResponse>();
+        //     content.Errors.ShouldContain(error => error.Message != null && error.Message.EndsWith(message));
+        //     return this;
+        // }
+
+        public IShouldBe ShouldBe => this;
+
+        public T Content<T>()
+        {
+            T content = default!;
+
+            try
+            {
+                if (_httpContent != null)
+                    content = JsonConvert.DeserializeObject<T>(_httpContent, new JsonSerializerSettings
+                    {
+                        ContractResolver = new ResolvePrivateSetters()
+                    });
+            }
+            catch (Exception)
+            {
+                // ok..
+            }
+
+            return content ?? throw new Exception($"Unable to serialize to {typeof(T).FullName}");
+        }
 
         // public IBadRequestResponse ForProperty<TCommand>(Expression<Func<TCommand, object?>> expression)
         // {
@@ -119,41 +148,12 @@ namespace Fluent.Testing.Library.Then
             StatusCodeShouldBe(HttpStatusCode.NotFound);
         }
 
-        // public IBadRequestResponse EndsWithMessage(string message)
-        // {
-        //     var content = Content<ErrorResponse>();
-        //     content.Errors.ShouldContain(error => error.Message != null && error.Message.EndsWith(message));
-        //     return this;
-        // }
-
-        public IShouldBe ShouldBe => this;
-
-        public T Content<T>()
-        {
-            T content = default!;
-
-            try
-            {
-                if (_httpContent != null)
-                    content = JsonConvert.DeserializeObject<T>(_httpContent, new JsonSerializerSettings
-                    {
-                        ContractResolver = new ResolvePrivateSetters()
-                    });
-            }
-            catch (Exception)
-            {
-                // ok..
-            }
-
-            return content ?? throw new Exception($"Unable to serialize to {typeof(T).FullName}");
-        }
-
         public void Created()
         {
             StatusCodeShouldBe(HttpStatusCode.Created);
         }
 
-        private void StatusCodeShouldBe(HttpStatusCode statusCode)
+        public void StatusCodeShouldBe(HttpStatusCode statusCode)
         {
             _httpResponse?.StatusCode.ShouldBe(statusCode,
                 $"Status code mismatch, response was {_httpResponse.StatusCode}");

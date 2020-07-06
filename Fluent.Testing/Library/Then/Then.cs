@@ -9,19 +9,19 @@ namespace Fluent.Testing.Library.Then
         public Then(LogWriter logWriter)
         {
             _logWriter = logWriter;
-            TheResponse = new Response();
+            Response = new TheResponse();
         }
 
-        public ITheResponse TheResponse { get; private set; }
+        public IResponse Response { get; private set; }
 
-        public void SetTheResponse(ITheResponse theResponse)
+        public void SetTheResponse(IResponse response)
         {
-            TheResponse = theResponse;
+            Response = response;
         }
     }
 
     public interface IThen
     {
-        ITheResponse TheResponse { get; }
+        IResponse Response { get; }
     }
 }

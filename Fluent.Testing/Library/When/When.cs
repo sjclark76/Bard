@@ -15,46 +15,46 @@ namespace Fluent.Testing.Library.When
     {
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;
-        private readonly Action<Response> _setTheResponse;
+        private readonly Action<TheResponse> _setTheResponse;
 
-        internal When(HttpClient httpClient, LogWriter logWriter, Action<Response> setTheResponse)
+        internal When(HttpClient httpClient, LogWriter logWriter, Action<TheResponse> setTheResponse)
         {
             _httpClient = httpClient;
             _logWriter = logWriter;
             _setTheResponse = setTheResponse;
         }
 
-        public ITheResponse Put<TModel>(string route, TModel model)
+        public IResponse Put<TModel>(string route, TModel model)
         {
             return PostOrPut(route, model, (client, messageContent) => client.PutAsync(route, messageContent));
         }
 
-        public ITheResponse Post<TModel>(string route, TModel model)
+        public IResponse Post<TModel>(string route, TModel model)
         {
             return PostOrPut(route, model, (client, messageContent) => client.PostAsync(route, messageContent));
         }
 
-        public ITheResponse Get(string uri, string name, string value)
+        public IResponse Get(string uri, string name, string value)
         {
             var url = QueryHelpers.AddQueryString(uri, name, value);
 
             return Get(url);
         }
 
-        public ITheResponse Get(string uri, IDictionary<string, string> queryParameters)
+        public IResponse Get(string uri, IDictionary<string, string> queryParameters)
         {
             var url = QueryHelpers.AddQueryString(uri, queryParameters);
 
             return Get(url);
         }
 
-        public ITheResponse Get(string route)
+        public IResponse Get(string route)
         {
             _logWriter.WriteStringToConsole($"GET {route}");
 
             var message = AsyncHelper.RunSync(() => _httpClient.GetAsync(route));
             var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
-            var response = new Response(message, content);
+            var response = new TheResponse(message, content);
 
             _logWriter.WriteHttpResponseToConsole(message);
 
@@ -73,7 +73,7 @@ namespace Fluent.Testing.Library.When
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
-        private Response PostOrPut<TModel>(string route, TModel model,
+        private TheResponse PostOrPut<TModel>(string route, TModel model,
             Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
         {
             var messageContent = CreateMessageContent(model!);
@@ -86,7 +86,7 @@ namespace Fluent.Testing.Library.When
 
             _logWriter.WriteHttpResponseToConsole(message);
 
-            var validator = new Response(message, response);
+            var validator = new TheResponse(message, response);
             _setTheResponse.Invoke(validator);
 
             return validator;

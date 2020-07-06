@@ -3,9 +3,9 @@ using Fluent.Testing.Library.When;
 
 namespace Fluent.Testing.Library
 {
-    public class FluentTester : IFluentTester
+    public class FluentApiTester : IFluentApiTester
     {
-        public FluentTester(IWhen when, IThen then)
+        public FluentApiTester(IWhen when, IThen then)
         {
             When = when;
             Then = then;

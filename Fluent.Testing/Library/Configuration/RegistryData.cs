@@ -20,7 +20,7 @@ namespace Fluent.Testing.Library.Configuration
             return this;
         }
 
-        public IFluentTester Build()
+        public IFluentApiTester Build()
         {
             if (_logMessage == null)
                 throw new Exception($"{nameof(Log)} method must be called first.");
@@ -33,7 +33,7 @@ namespace Fluent.Testing.Library.Configuration
             var fluentApi = new When.When(_httpClient, new LogWriter(_logMessage),
                 response => then.SetTheResponse(response));
 
-            return new FluentTester(fluentApi, then);
+            return new FluentApiTester(fluentApi, then);
         }
     }
 }

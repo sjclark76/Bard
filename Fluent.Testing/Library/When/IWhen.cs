@@ -5,10 +5,10 @@ namespace Fluent.Testing.Library.When
 {
     public interface IWhen
     {
-        ITheResponse Put<TModel>(string route, TModel model);
-        ITheResponse Post<TModel>(string route, TModel model);
-        ITheResponse Get(string uri, string name, string value);
-        ITheResponse Get(string uri, IDictionary<string, string> queryParameters);
-        ITheResponse Get(string route);
+        IResponse Put<TModel>(string route, TModel model);
+        IResponse Post<TModel>(string route, TModel model);
+        IResponse Get(string uri, string name, string value);
+        IResponse Get(string uri, IDictionary<string, string> queryParameters);
+        IResponse Get(string route);
     }
 }

@@ -28,10 +28,10 @@ namespace Fluent.Testing.Library.Tests
                 .Build();
         }
 
-        public IFluentTester Api { get; set; }
+        public IFluentApiTester Api { get; set; }
 
         [Fact]
-        public void Test1()
+        public void List_should_return_ok()
         {
             Api
                 .When
@@ -39,9 +39,51 @@ namespace Fluent.Testing.Library.Tests
 
             Api
                 .Then
-                .TheResponse
+                .Response
                 .ShouldBe
                 .Ok();
+        }
+
+        [Fact]
+        public void Get_should_return_ok()
+        {
+            Api
+                .When
+                .Get("WeatherForecast/5");
+
+            Api
+                .Then
+                .Response
+                .ShouldBe
+                .Ok();
+        }
+
+        [Fact]
+        public void If_the_weather_forecast_does_not_exist_then_a_404_should_be_returned()
+        {
+            Api
+                .When
+                .Get("WeatherForecast/99"); // This id does not exist
+
+            Api
+                .Then
+                .Response
+                .ShouldBe
+                .NotFound();
+        }
+
+        [Fact]
+        public void Post_should_return_201()
+        {
+            Api
+                .When
+                .Post("WeatherForecast", new WeatherForecast());
+
+            Api
+                .Then
+                .Response
+                .ShouldBe
+                .Created<WeatherForecast>();
         }
     }
 }

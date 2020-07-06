@@ -1,18 +1,19 @@
 using Fluent.Testing.Library.Then;
+using Fluent.Testing.Library.Then.v1;
 using Fluent.Testing.Library.When;
 
 namespace Fluent.Testing.Library
 {
-    public class FluentApiTester : IFluentApiTester
+    internal class FluentApiTester<TShouldBe> : IInternalFluentApiTester<TShouldBe> where TShouldBe : IShouldBeBase, new()
     {
-        public FluentApiTester(IWhen when, IThen then)
+        public FluentApiTester(IWhen<TShouldBe> when, IThen<TShouldBe> then)
         {
             When = when;
             Then = then;
         }
         
-        public IWhen When { get; }
+        public IWhen<TShouldBe> When { get; }
         
-        public IThen Then { get; }
+        public IThen<TShouldBe> Then { get; }
     }
 }

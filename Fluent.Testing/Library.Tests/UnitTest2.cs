@@ -1,5 +1,4 @@
 using Fluent.Testing.Library.Configuration;
-using Fluent.Testing.Library.Then.v1;
 using Fluent.Testing.Sample.Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -9,9 +8,9 @@ using Xunit.Abstractions;
 
 namespace Fluent.Testing.Library.Tests
 {
-    public class UnitTest1
+    public class UnitTest2
     {
-        public UnitTest1(ITestOutputHelper output)
+        public UnitTest2(ITestOutputHelper output)
         {
             var hostBuilder = new HostBuilder()
                 .ConfigureWebHost(builder =>
@@ -26,10 +25,11 @@ namespace Fluent.Testing.Library.Tests
 
             Api = FluentApiRegistry.For(httpClient)
                 .Log(output.WriteLine)
+                .Use<MyBadResponseProvider>()
                 .Build();
         }
 
-        public IInternalFluentApiTester<Then.v1.IShouldBe> Api { get; set; }
+        public IInternalFluentApiTester<Then.v2.IShouldBe> Api { get; set; }
 
         [Fact]
         public void List_should_return_ok()
@@ -98,7 +98,7 @@ namespace Fluent.Testing.Library.Tests
                 .Then
                 .Response
                 .ShouldBe
-                .BadRequest();
+                .BadRequest.ForProperty("afd");
         }
     }
 }

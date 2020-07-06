@@ -1,7 +1,11 @@
+using Fluent.Testing.Library.Then;
+
 namespace Fluent.Testing.Library.Configuration
 {
     public interface IStepTwo
     {
-        IFluentApiTester Build();
+        IInternalFluentApiTester<Then.v1.IShouldBe> Build();
+        
+        IStepThree Use<T>() where T : IBadRequestResponse, new(); 
     }
 }

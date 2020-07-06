@@ -3,9 +3,10 @@ using Fluent.Testing.Library.When;
 
 namespace Fluent.Testing.Library
 {
-    public interface IFluentApiTester
+    public interface IInternalFluentApiTester<out TShouldBe> where TShouldBe : IShouldBeBase
     {
-        IWhen When { get; }
-        IThen Then { get; }
+        IWhen<TShouldBe> When { get; }
+        
+        IThen<TShouldBe> Then { get; }
     }
 }

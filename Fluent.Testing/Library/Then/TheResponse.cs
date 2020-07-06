@@ -2,27 +2,29 @@ using System;
 using System.Net;
 using System.Net.Http;
 using Fluent.Testing.Library.Infrastructure;
+using Fluent.Testing.Library.Then.v1;
 using Newtonsoft.Json;
 using Shouldly;
 
 namespace Fluent.Testing.Library.Then
 {
-    public class TheResponse : IResponse, IShouldBe, IBadRequestResponse
+    public class TheResponse<TShouldBe> : IResponse<TShouldBe> where TShouldBe : ShouldBeBase, new()
     {
         private readonly string? _httpContent;
         private readonly HttpResponseMessage? _httpResponse;
-
-        public TheResponse()
-        {
-        }
+        //
+        // public TheResponse()
+        // {
+        // }
 
         public TheResponse(HttpResponseMessage httpResponse, string httpContent)
         {
             _httpResponse = httpResponse;
             _httpContent = httpContent;
+            ShouldBe = new TShouldBe();
         }
 
-        public IResponse Response => this;
+        //public IResponse Response => this;
 
         // public IBadRequestResponse EndsWithMessage(string message)
         // {
@@ -31,7 +33,7 @@ namespace Fluent.Testing.Library.Then
         //     return this;
         // }
 
-        public IShouldBe ShouldBe => this;
+        //public IShouldBe ShouldBe => this;
 
         public T Content<T>()
         {
@@ -51,6 +53,61 @@ namespace Fluent.Testing.Library.Then
             }
 
             return content ?? throw new Exception($"Unable to serialize to {typeof(T).FullName}");
+        }
+
+        public TShouldBe ShouldBe { get; }
+
+        public void StatusCodeShouldBe(HttpStatusCode statusCode)
+        {
+            _httpResponse?.StatusCode.ShouldBe(statusCode,
+                $"Status code mismatch, response was {_httpResponse.StatusCode}");
+        }
+
+        public void Ok()
+        {
+            StatusCodeShouldBe(HttpStatusCode.OK);
+        }
+
+        public void NoContent()
+        {
+            StatusCodeShouldBe(HttpStatusCode.NoContent);
+        }
+
+        public T Ok<T>()
+        {
+            Ok();
+
+            var content = Content<T>();
+
+            content.ShouldNotBeNull($"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpContent}.");
+
+            return content;
+        }
+
+        public T Created<T>()
+        {
+            Created();
+
+            var content = Content<T>();
+
+            content.ShouldNotBeNull($"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpContent}.");
+
+            return content;
+        }
+
+        // void IShouldBe.BadRequest()
+        // {
+        //     StatusCodeShouldBe(HttpStatusCode.BadRequest);
+        // }
+
+        public void Forbidden()
+        {
+            StatusCodeShouldBe(HttpStatusCode.Forbidden);
+        }
+
+        public void NotFound()
+        {
+            StatusCodeShouldBe(HttpStatusCode.NotFound);
         }
 
         // public IBadRequestResponse ForProperty<TCommand>(Expression<Func<TCommand, object?>> expression)
@@ -96,67 +153,14 @@ namespace Fluent.Testing.Library.Then
         //     return this;
         // }
 
-        public IBadRequestResponse BadRequest
+        public void BadRequest()
         {
-            get
-            {
-                _httpResponse?.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-
-                return this;
-            }
-        }
-
-        public void Ok()
-        {
-            StatusCodeShouldBe(HttpStatusCode.OK);
-        }
-
-        public void NoContent()
-        {
-            StatusCodeShouldBe(HttpStatusCode.NoContent);
-        }
-
-        public T Ok<T>()
-        {
-            Ok();
-
-            var content = Content<T>();
-
-            content.ShouldNotBeNull($"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpContent}.");
-
-            return content;
-        }
-
-        public T Created<T>()
-        {
-            Created();
-
-            var content = Content<T>();
-
-            content.ShouldNotBeNull($"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpContent}.");
-
-            return content;
-        }
-
-        public void Forbidden()
-        {
-            StatusCodeShouldBe(HttpStatusCode.Forbidden);
-        }
-
-        public void NotFound()
-        {
-            StatusCodeShouldBe(HttpStatusCode.NotFound);
+            StatusCodeShouldBe(HttpStatusCode.BadRequest);
         }
 
         public void Created()
         {
             StatusCodeShouldBe(HttpStatusCode.Created);
-        }
-
-        public void StatusCodeShouldBe(HttpStatusCode statusCode)
-        {
-            _httpResponse?.StatusCode.ShouldBe(statusCode,
-                $"Status code mismatch, response was {_httpResponse.StatusCode}");
         }
     }
 }

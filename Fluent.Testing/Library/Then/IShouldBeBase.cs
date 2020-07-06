@@ -1,6 +1,6 @@
 namespace Fluent.Testing.Library.Then
 {
-    public interface IShouldBe
+    public interface IShouldBeBase
     {
         void Ok();
 
@@ -9,8 +9,6 @@ namespace Fluent.Testing.Library.Then
         T Ok<T>();
 
         T Created<T>();
-
-        IBadRequestResponse BadRequest { get; }
 
         void Forbidden();
 

@@ -1,10 +1,10 @@
 using System.Net;
 
-namespace Fluent.Testing.Library.Then
+namespace Fluent.Testing.Library.Then.v1
 {
-    public interface IResponse
+    public interface IResponse<out TShouldBe> where TShouldBe : IShouldBeBase
     {
-        IShouldBe ShouldBe { get; }
+        TShouldBe ShouldBe { get; }
 
         void StatusCodeShouldBe(HttpStatusCode statusCode);
 

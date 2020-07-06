@@ -1,5 +1,4 @@
 using Fluent.Testing.Library.Configuration;
-using Fluent.Testing.Library.Then.v1;
 using Fluent.Testing.Sample.Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -92,7 +91,7 @@ namespace Fluent.Testing.Library.Tests
         {
             Api
                 .When
-                .Post("WeatherForecast", new WeatherForecast {TemperatureC = 21});
+                .Post("WeatherForecast", new WeatherForecast());
 
             Api
                 .Then

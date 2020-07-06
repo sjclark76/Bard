@@ -10,6 +10,7 @@ namespace Fluent.Testing.Library.Then
         public Then(LogWriter logWriter)
         {
             _logWriter = logWriter;
+            Response = new EmptyResponse<TShouldBe>();
         }
        
         public void SetTheResponse(IResponse<TShouldBe> response)
@@ -17,6 +18,6 @@ namespace Fluent.Testing.Library.Then
             Response = response;
         }
         
-         public IResponse<TShouldBe>? Response { get; set; }
+         public IResponse<TShouldBe> Response { get; set; }
     }
 }

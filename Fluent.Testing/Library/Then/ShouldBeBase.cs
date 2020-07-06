@@ -1,13 +1,30 @@
+using System;
 using System.Net;
+using System.Net.Http;
+using Fluent.Testing.Library.Infrastructure;
+using Newtonsoft.Json;
+using Shouldly;
 
 namespace Fluent.Testing.Library.Then
 {
     public abstract class ShouldBeBase : IShouldBeBase
     {
+        private HttpResponseMessage? _httpResponse;
+        private string _httpResponseString = string.Empty;
+
         public void StatusCodeShouldBe(HttpStatusCode statusCode)
         {
-            // _httpResponse?.StatusCode.ShouldBe(statusCode,
-            //     $"Status code mismatch, response was {_httpResponse.StatusCode}");
+            if(_httpResponse == null)
+                throw new Exception($"{nameof(_httpResponse)} property has not been set.");
+            
+            _httpResponse?.StatusCode.ShouldBe(statusCode,
+                $"Status code mismatch, response was {_httpResponse.StatusCode}");
+        }
+
+        public void SetResponse(HttpResponseMessage httpResponse, string httpContent)
+        {
+            _httpResponse = httpResponse;
+            _httpResponseString = httpContent;
         }
         
         public void Ok()
@@ -17,27 +34,64 @@ namespace Fluent.Testing.Library.Then
 
         public void NoContent()
         {
-            throw new System.NotImplementedException();
+            StatusCodeShouldBe(HttpStatusCode.NoContent);
         }
 
         public T Ok<T>()
         {
-            throw new System.NotImplementedException();
+            Ok();
+
+            var content = Content<T>();
+
+            content.ShouldNotBeNull($"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
+
+            return content;
+        }
+
+        public void Created()
+        {
+            StatusCodeShouldBe(HttpStatusCode.Created);
         }
 
         public T Created<T>()
         {
-            throw new System.NotImplementedException();
+            Created();
+
+            var content = Content<T>();
+
+            content.ShouldNotBeNull($"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
+
+            return content;
         }
 
         public void Forbidden()
         {
-            throw new System.NotImplementedException();
+            StatusCodeShouldBe(HttpStatusCode.Forbidden);
         }
 
         public void NotFound()
         {
-            throw new System.NotImplementedException();
+            StatusCodeShouldBe(HttpStatusCode.NotFound);
+        }
+        
+        public T Content<T>()
+        {
+            T content = default!;
+
+            try
+            {
+                if (_httpResponseString != null)
+                    content = JsonConvert.DeserializeObject<T>(_httpResponseString, new JsonSerializerSettings
+                    {
+                        ContractResolver = new ResolvePrivateSetters()
+                    });
+            }
+            catch (Exception)
+            {
+                // ok..
+            }
+
+            return content ?? throw new Exception($"Unable to serialize to {typeof(T).FullName}");
         }
     }
 }

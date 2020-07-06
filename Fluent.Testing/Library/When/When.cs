@@ -55,7 +55,7 @@ namespace Fluent.Testing.Library.When
 
             var message = AsyncHelper.RunSync(() => _httpClient.GetAsync(route));
             var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
-            var response = new TheResponse<TShouldBe>(message, content);
+            var response = new Response<TShouldBe>(message, content);
 
             _logWriter.WriteHttpResponseToConsole(message);
 
@@ -77,7 +77,7 @@ namespace Fluent.Testing.Library.When
         private IResponse<TShouldBe> PostOrPut<TModel>(string route, TModel model,
             Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
         {
-            var messageContent = CreateMessageContent(model!);
+            var messageContent = CreateMessageContent(model);
             var message = AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
 
             _logWriter.WriteStringToConsole($"REQUEST: {message.RequestMessage.Method.Method} {route}");
@@ -87,7 +87,7 @@ namespace Fluent.Testing.Library.When
 
             _logWriter.WriteHttpResponseToConsole(message);
 
-            var validator = new TheResponse<TShouldBe>(message, response);
+            var validator = new Response<TShouldBe>(message, response);
             _setTheResponse.Invoke(validator);
 
             return validator;

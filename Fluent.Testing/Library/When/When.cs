@@ -11,15 +11,15 @@ using Newtonsoft.Json.Serialization;
 
 namespace Fluent.Testing.Library.When
 {
-    public class When<TShouldBe> : IWhen<TShouldBe> where TShouldBe : ShouldBeBase
+    public class When : IWhen
     {
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;
-        private readonly FluentApiTester<TShouldBe> _parent;
-        private readonly Func<ApiResult, IResponse<TShouldBe>> _responseFactory;
+        private readonly ScenarioHost _parent;
+        private readonly Func<ApiResult, IResponse> _responseFactory;
 
-        internal When(FluentApiTester<TShouldBe> parent, HttpClient httpClient, LogWriter logWriter,
-            Func<ApiResult, IResponse<TShouldBe>> responseFactory)
+        internal When(ScenarioHost parent, HttpClient httpClient, LogWriter logWriter,
+            Func<ApiResult, IResponse> responseFactory)
         {
             _parent = parent;
             _httpClient = httpClient;
@@ -27,31 +27,31 @@ namespace Fluent.Testing.Library.When
             _responseFactory = responseFactory;
         }
 
-        public IResponse<TShouldBe> Put<TModel>(string route, TModel model)
+        public IResponse Put<TModel>(string route, TModel model)
         {
             return PostOrPut(route, model, (client, messageContent) => client.PutAsync(route, messageContent));
         }
 
-        public IResponse<TShouldBe> Post<TModel>(string route, TModel model)
+        public IResponse Post<TModel>(string route, TModel model)
         {
             return PostOrPut(route, model, (client, messageContent) => client.PostAsync(route, messageContent));
         }
 
-        public IResponse<TShouldBe> Get(string uri, string name, string value)
+        public IResponse Get(string uri, string name, string value)
         {
             var url = QueryHelpers.AddQueryString(uri, name, value);
 
             return Get(url);
         }
 
-        public IResponse<TShouldBe> Get(string uri, IDictionary<string, string> queryParameters)
+        public IResponse Get(string uri, IDictionary<string, string> queryParameters)
         {
             var url = QueryHelpers.AddQueryString(uri, queryParameters);
 
             return Get(url);
         }
 
-        public IResponse<TShouldBe> Get(string route)
+        public IResponse Get(string route)
         {
             _logWriter.WriteStringToConsole($"GET {route}");
 
@@ -80,7 +80,7 @@ namespace Fluent.Testing.Library.When
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
-        private IResponse<TShouldBe> PostOrPut<TModel>(string route, TModel model,
+        private IResponse PostOrPut<TModel>(string route, TModel model,
             Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
         {
             var messageContent = CreateMessageContent(model);

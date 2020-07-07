@@ -3,17 +3,17 @@ using Fluent.Testing.Library.When;
 
 namespace Fluent.Testing.Library.Then
 {
-    public class Then<TShouldBe> : IThen<TShouldBe> where TShouldBe : ShouldBeBase
+    public class Then : IThen
     {
-        private readonly Func<ApiResult, IResponse<TShouldBe>> _responseFactory;
-        private IResponse<TShouldBe>? _response;
+        private readonly Func<ApiResult, IResponse> _responseFactory;
+        private IResponse? _response;
 
-        public Then(Func<ApiResult, IResponse<TShouldBe>> responseFactory)
+        public Then(Func<ApiResult, IResponse> responseFactory)
         {
             _responseFactory = responseFactory;
         }
 
-        public IResponse<TShouldBe> Response
+        public IResponse Response
         {
             get
             {

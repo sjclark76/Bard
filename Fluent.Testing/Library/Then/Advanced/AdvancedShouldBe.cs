@@ -4,11 +4,12 @@ namespace Fluent.Testing.Library.Then.Advanced
 {
     public class AdvancedShouldBe : ShouldBeBase, IShouldBe
     {
-        public AdvancedShouldBe(ApiResult apiResult, IBadRequestResponse badRequest) : base(apiResult)
+        public AdvancedShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider) : base(apiResult)
         {
-            BadRequest = new BadRequestResponseDecorator(this, badRequest);
+            badRequestProvider.StringContent = apiResult.ResponseString;
+            BadRequest = new BadRequestProviderDecorator(this, badRequestProvider);
         }
 
-        public IBadRequestResponse BadRequest { get; }
+        public IBadRequestProvider BadRequest { get; }
     }
-}
+}  

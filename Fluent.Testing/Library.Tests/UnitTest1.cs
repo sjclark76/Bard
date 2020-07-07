@@ -1,5 +1,5 @@
+using System.Net;
 using Fluent.Testing.Library.Configuration;
-using Fluent.Testing.Library.Then.Basic;
 using Fluent.Testing.Sample.Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -24,12 +24,13 @@ namespace Fluent.Testing.Library.Tests
 
             var httpClient = host.GetTestClient();
 
-            Api = FluentApiRegistry.TheApiUses(httpClient)
+            Api = ScenarioHostConfiguration
+                .TheApiUses(httpClient)
                 .Log(output.WriteLine)
                 .Build();
         }
 
-        public IInternalFluentApiTester<IShouldBe> Api { get; set; }
+        public IInternalFluentApiTester Api { get; set; }
 
         [Fact]
         public void Get_should_return_ok()
@@ -98,7 +99,7 @@ namespace Fluent.Testing.Library.Tests
                 .Then
                 .Response
                 .ShouldBe
-                .BadRequest();
+                .StatusCodeShouldBe(HttpStatusCode.BadRequest);
         }
     }
 }

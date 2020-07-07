@@ -1,7 +1,7 @@
 namespace Fluent.Testing.Library.Then
 {
-    public interface IThen<out TShouldBe> where TShouldBe : IShouldBeBase
+    public interface IThen
     {
-        IResponse<TShouldBe> Response { get; }
+        IResponse Response { get; }
     }
 }

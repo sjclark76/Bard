@@ -4,57 +4,63 @@ using System.Net;
 
 namespace Fluent.Testing.Library.Then
 {
-    public class BadRequestResponseDecorator : IBadRequestResponse
+    public class BadRequestProviderDecorator : IBadRequestProvider
     {
         private readonly IShouldBeBase _shouldBe;
-        private readonly IBadRequestResponse _toDecorate;
+        private readonly IBadRequestProvider _toDecorate;
 
-        public BadRequestResponseDecorator(IShouldBeBase shouldBe, IBadRequestResponse decorate)
+        public BadRequestProviderDecorator(IShouldBeBase shouldBe, IBadRequestProvider decorate)
         {
             _shouldBe = shouldBe;
             _toDecorate = decorate;
         }
 
-        public IBadRequestResponse ForProperty<TCommand>(Expression<Func<TCommand, object?>> expression)
+        public IBadRequestProvider ForProperty<TCommand>(Expression<Func<TCommand, object?>> expression)
         {
             EnsureIsBadRequest();
 
             return _toDecorate.ForProperty(expression);
         }
 
-        public IBadRequestResponse ForProperty(string propertyName)
+        public IBadRequestProvider ForProperty(string propertyName)
         {
             EnsureIsBadRequest();
 
             return _toDecorate.ForProperty(propertyName);
         }
 
-        public IBadRequestResponse WithMessage(string message)
+        public IBadRequestProvider WithMessage(string message)
         {
             EnsureIsBadRequest();
 
             return _toDecorate.WithMessage(message);
         }
 
-        public IBadRequestResponse WithErrorCode(string errorCode)
+        public IBadRequestProvider WithErrorCode(string errorCode)
         {
             EnsureIsBadRequest();
 
             return _toDecorate.WithErrorCode(errorCode);
         }
 
-        public IBadRequestResponse StartsWithMessage(string message)
+        public IBadRequestProvider StartsWithMessage(string message)
         {
             EnsureIsBadRequest();
 
             return _toDecorate.StartsWithMessage(message);
         }
 
-        public IBadRequestResponse EndsWithMessage(string message)
+        public IBadRequestProvider EndsWithMessage(string message)
         {
             EnsureIsBadRequest();
 
             return _toDecorate.EndsWithMessage(message);
+        }
+
+        public string StringContent
+        {
+            get => _toDecorate.StringContent;
+            set => _toDecorate.StringContent = value;
         }
 
         private void EnsureIsBadRequest()

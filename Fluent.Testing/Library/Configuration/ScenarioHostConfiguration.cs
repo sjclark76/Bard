@@ -2,11 +2,11 @@ using System.Net.Http;
 
 namespace Fluent.Testing.Library.Configuration
 {
-    public class FluentApiRegistry
+    public class ScenarioHostConfiguration
     {
         public static IHttpClientProvided TheApiUses(HttpClient httpClient)
         {
-            return new RegistryData(httpClient);
+            return new ScenarioHostBuilder(httpClient);
         }
     }
 }

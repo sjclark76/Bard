@@ -1,6 +1,5 @@
 using Fluent.Testing.Library.Configuration;
 using Fluent.Testing.Library.Given;
-using Fluent.Testing.Library.Then.Advanced;
 using Fluent.Testing.Sample.Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -29,7 +28,7 @@ namespace Fluent.Testing.Library.Tests
                 .StartsWith<Start>()
                 .Build();
 
-            Scenario = FluentApiRegistry
+            Scenario = ScenarioHostConfiguration
                 .TheApiUses(httpClient)
                 .Log(output.WriteLine)
                 .AndBeginsWithScenario<Start>()
@@ -38,7 +37,7 @@ namespace Fluent.Testing.Library.Tests
 
         public Given<Start> Given { get; set; }
 
-        public IInternalFluentApiTester<IShouldBe> Scenario { get; set; }
+        public IInternalFluentApiTester Scenario { get; set; }
 
         [Fact]
         public void Post_should_return_400_if_required_field_is_not_provided22()

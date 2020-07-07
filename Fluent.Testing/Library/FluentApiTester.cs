@@ -6,20 +6,19 @@ using Fluent.Testing.Library.When;
 
 namespace Fluent.Testing.Library
 {
-    internal class FluentApiTester<TShouldBe> : IInternalFluentApiTester<TShouldBe> where TShouldBe : ShouldBeBase 
+    internal class ScenarioHost : IInternalFluentApiTester
     {
-        private readonly Then<TShouldBe> _then;
+        private readonly Then.Then _then;
 
-        public FluentApiTester(HttpClient httpClient, LogWriter logWriter,
-            Func<ApiResult, IResponse<TShouldBe>> responseFactory)
+        public ScenarioHost(HttpClient httpClient, LogWriter logWriter, Func<ApiResult, IResponse> responseFactory)
         {
-            When = new When<TShouldBe>(this, httpClient, logWriter, responseFactory);
-            _then = new Then<TShouldBe>(responseFactory);
+            When = new When.When(this, httpClient, logWriter, responseFactory);
+            _then = new Then.Then(responseFactory);
         }
 
-        public IWhen<TShouldBe> When { get; }
+        public IWhen When { get; }
 
-        public IThen<TShouldBe> Then => _then;
+        public IThen Then => _then;
 
         public void Publish(ApiResult apiResult)
         {

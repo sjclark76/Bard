@@ -8,16 +8,20 @@ using Shouldly;
 
 namespace Fluent.Testing.Library.Then
 {
-    public abstract class ShouldBeBase : IShouldBeBase
+    public class ShouldBe : IShouldBe
     {
         private readonly string _httpResponseString;
         private HttpResponseMessage _httpResponse;
 
-        protected ShouldBeBase(ApiResult apiResult)
+        public ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider) 
         {
+            badRequestProvider.StringContent = apiResult.ResponseString;
+            BadRequest = new BadRequestProviderDecorator(this, badRequestProvider);
             _httpResponse = apiResult.ResponseMessage;
             _httpResponseString = apiResult.ResponseString;
         }
+
+        public IBadRequestProvider BadRequest { get; }
 
         public void Ok()
         {

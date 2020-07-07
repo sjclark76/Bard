@@ -6,10 +6,10 @@ namespace Fluent.Testing.Library.Then
 {
     public class BadRequestProviderDecorator : IBadRequestProvider
     {
-        private readonly IShouldBeBase _shouldBe;
+        private readonly IShouldBe _shouldBe;
         private readonly IBadRequestProvider _toDecorate;
 
-        public BadRequestProviderDecorator(IShouldBeBase shouldBe, IBadRequestProvider decorate)
+        public BadRequestProviderDecorator(IShouldBe shouldBe, IBadRequestProvider decorate)
         {
             _shouldBe = shouldBe;
             _toDecorate = decorate;

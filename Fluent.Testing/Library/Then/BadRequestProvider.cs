@@ -6,8 +6,6 @@ namespace Fluent.Testing.Library.Then
 {
     public abstract class BadRequestProvider<TErrorMessage> : BadRequestProviderBase
     {
-       
-
         protected TErrorMessage Content()
         {
             TErrorMessage content = default!;

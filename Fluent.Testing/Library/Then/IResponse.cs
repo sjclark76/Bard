@@ -1,5 +1,4 @@
 using System.Net;
-using Fluent.Testing.Library.Then.Advanced;
 
 namespace Fluent.Testing.Library.Then
 {

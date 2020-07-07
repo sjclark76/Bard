@@ -2,8 +2,8 @@ using System;
 
 namespace Fluent.Testing.Library.Configuration
 {
-    public interface IStepOne
+    public interface IHttpClientProvided
     {
-        IStepTwo Log(Action<string> logMessage);
+        ILoggerProvided Log(Action<string> logMessage);
     }
 }

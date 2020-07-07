@@ -6,7 +6,7 @@ using Fluent.Testing.Library.When;
 
 namespace Fluent.Testing.Library
 {
-    internal class FluentApiTester<TShouldBe> : IInternalFluentApiTester<TShouldBe> where TShouldBe : ShouldBeBase
+    internal class FluentApiTester<TShouldBe> : IInternalFluentApiTester<TShouldBe> where TShouldBe : ShouldBeBase 
     {
         private readonly Then<TShouldBe> _then;
 

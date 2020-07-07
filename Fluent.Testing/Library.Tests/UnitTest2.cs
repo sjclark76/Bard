@@ -24,7 +24,7 @@ namespace Fluent.Testing.Library.Tests
 
             var httpClient = host.GetTestClient();
 
-            Api = FluentApiRegistry.For(httpClient)
+            Api = FluentApiRegistry.TheApiUses(httpClient)
                 .Log(output.WriteLine)
                 .Use<MyBadResponseProvider>()
                 .Build();

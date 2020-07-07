@@ -4,7 +4,7 @@ namespace Fluent.Testing.Library.Configuration
 {
     public class FluentApiRegistry
     {
-        public static IStepOne For(HttpClient httpClient)
+        public static IHttpClientProvided TheApiUses(HttpClient httpClient)
         {
             return new RegistryData(httpClient);
         }

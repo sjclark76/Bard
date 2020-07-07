@@ -24,26 +24,12 @@ namespace Fluent.Testing.Library.Tests
 
             var httpClient = host.GetTestClient();
 
-            Api = FluentApiRegistry.For(httpClient)
+            Api = FluentApiRegistry.TheApiUses(httpClient)
                 .Log(output.WriteLine)
                 .Build();
         }
 
         public IInternalFluentApiTester<IShouldBe> Api { get; set; }
-
-        [Fact]
-        public void List_should_return_ok()
-        {
-            Api
-                .When
-                .Get("WeatherForecast");
-
-            Api
-                .Then
-                .Response
-                .ShouldBe
-                .Ok();
-        }
 
         [Fact]
         public void Get_should_return_ok()
@@ -74,11 +60,25 @@ namespace Fluent.Testing.Library.Tests
         }
 
         [Fact]
+        public void List_should_return_ok()
+        {
+            Api
+                .When
+                .Get("WeatherForecast");
+
+            Api
+                .Then
+                .Response
+                .ShouldBe
+                .Ok();
+        }
+
+        [Fact]
         public void Post_should_return_201()
         {
             Api
                 .When
-                .Post("WeatherForecast", new WeatherForecast{TemperatureC = 21});
+                .Post("WeatherForecast", new WeatherForecast {TemperatureC = 21});
 
             Api
                 .Then
@@ -86,7 +86,7 @@ namespace Fluent.Testing.Library.Tests
                 .ShouldBe
                 .Created<WeatherForecast>();
         }
-        
+
         [Fact]
         public void Post_should_return_400_if_required_field_is_not_provided()
         {

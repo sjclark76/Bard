@@ -15,11 +15,13 @@ namespace Fluent.Testing.Library.When
     {
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;
+        private readonly FluentApiTester<TShouldBe> _parent;
         private readonly Func<ApiResult, IResponse<TShouldBe>> _responseFactory;
 
-        internal When(FluentApiTester<TShouldBe> parent, HttpClient httpClient, LogWriter logWriter, Func<ApiResult, IResponse<TShouldBe>> responseFactory)
+        internal When(FluentApiTester<TShouldBe> parent, HttpClient httpClient, LogWriter logWriter,
+            Func<ApiResult, IResponse<TShouldBe>> responseFactory)
         {
-            Parent = parent;
+            _parent = parent;
             _httpClient = httpClient;
             _logWriter = logWriter;
             _responseFactory = responseFactory;
@@ -62,9 +64,8 @@ namespace Fluent.Testing.Library.When
             var apiResult = new ApiResult(message, content);
 
             Publish(apiResult);
-            
-            return _responseFactory(apiResult);
 
+            return _responseFactory(apiResult);
         }
 
         private static StringContent CreateMessageContent(object? message)
@@ -72,9 +73,9 @@ namespace Fluent.Testing.Library.When
             var json = message == null
                 ? string.Empty
                 : JsonConvert.SerializeObject(message, new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            });
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
 
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
@@ -93,17 +94,15 @@ namespace Fluent.Testing.Library.When
             _logWriter.WriteHttpResponseToConsole(responseMessage);
 
             var apiResult = new ApiResult(responseMessage, responseString);
-            
+
             Publish(apiResult);
-            
+
             return _responseFactory(apiResult);
         }
 
         private void Publish(ApiResult apiResult)
         {
-            Parent.Publish(apiResult);
+            _parent.Publish(apiResult);
         }
-
-        internal FluentApiTester<TShouldBe> Parent { get; set; }
     }
 }

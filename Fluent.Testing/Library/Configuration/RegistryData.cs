@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using Fluent.Testing.Library.Given;
 using Fluent.Testing.Library.Infrastructure;
 using Fluent.Testing.Library.Then;
 using Fluent.Testing.Library.Then.Advanced;
@@ -8,7 +9,7 @@ using IShouldBe = Fluent.Testing.Library.Then.Advanced.IShouldBe;
 
 namespace Fluent.Testing.Library.Configuration
 {
-    public class RegistryData : IStepOne, IStepTwo, IStepThree
+    public class RegistryData : IHttpClientProvided, ILoggerProvided, ICustomErrorProviderSupplied, IStartingScenarioProvided
     {
         private readonly HttpClient _httpClient;
         private IBadRequestResponse? _badRequestHandler;
@@ -19,7 +20,7 @@ namespace Fluent.Testing.Library.Configuration
             _httpClient = httpClient;
         }
 
-        public IStepTwo Log(Action<string> logMessage)
+        public ILoggerProvided Log(Action<string> logMessage)
         {
             _logMessage = logMessage;
             return this;
@@ -40,7 +41,7 @@ namespace Fluent.Testing.Library.Configuration
                 result => new Response<AdvancedShouldBe>(new AdvancedShouldBe(result, _badRequestHandler)));
         }
 
-        IInternalFluentApiTester<Then.Basic.IShouldBe> IStepTwo.Build()
+        IInternalFluentApiTester<Then.Basic.IShouldBe> ILoggerProvided.Build()
         {
             if (_logMessage == null)
                 throw new Exception($"{nameof(Log)} method must be called first.");
@@ -52,11 +53,16 @@ namespace Fluent.Testing.Library.Configuration
                 result => new Response<BasicShouldBe>(new BasicShouldBe(result)));
         }
 
-        public IStepThree Use<T>() where T : IBadRequestResponse, new()
+        public ICustomErrorProviderSupplied Use<T>() where T : IBadRequestResponse, new()
         {
             _badRequestHandler = new T();
 
             return this;
+        }
+
+        public IStartingScenarioProvided AndBeginsWithScenario<TScenario>() where TScenario : IBeginAScenario, new()
+        {
+            throw new NotImplementedException();
         }
     }
 }

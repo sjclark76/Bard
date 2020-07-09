@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Fluent.Testing.Library.Configuration;
 using Fluent.Testing.Library.Given;
 using Fluent.Testing.Sample.Api;
@@ -24,29 +26,22 @@ namespace Fluent.Testing.Library.Tests
 
             var httpClient = host.GetTestClient();
 
-            Given = GivenFactory
-                .StartsWith<Start>()
-                .Build();
-
             Scenario = ScenarioHostConfiguration
                 .TheApiUses(httpClient)
                 .Log(output.WriteLine)
-                .AndBeginsWithScenario<Start>()
+                .AndBeginsWithScenario(() => new Start())
                 .Build();
         }
 
-        public Given<Start> Given { get; set; }
-
-        public IInternalFluentApiTester Scenario { get; set; }
+        public IFluentScenario<Start> Scenario { get; set; }
 
         [Fact]
         public void Post_should_return_400_if_required_field_is_not_provided22()
         {
-            Given
+            Scenario.Given
                 .That
-                .A_weather_forecast_has_been_created()
-                .And()
-                .The()
+                .Weather_forecast_has_been_created()
+                .Weather_forecast_has_been_updated()
                 .Weather_forecast_has_been_deleted();
 
             Scenario
@@ -63,14 +58,66 @@ namespace Fluent.Testing.Library.Tests
 
     public class Start : IBeginAScenario
     {
-        public Start A_weather_forecast_has_been_created()
+        public WeatherForecastCreated Weather_forecast_has_been_created()
         {
-            return this;
-        }
-
-        public Start Weather_forecast_has_been_deleted()
-        {
-            return this;
+            return new WeatherForecastCreated(() =>
+            {
+                // API Call
+                return new WeatherForecast
+                {
+                    Id = 1234,
+                    Summary = "its hot and sunny",
+                    TemperatureC = 21
+                };
+            });
         }
     }
+
+    public class WeatherForecastCreated : ScenarioStart<WeatherForecast>
+    {
+        public WeatherForecastCreated(Func<WeatherForecast> output) : base(output)
+        {
+        }
+
+        public WeatherForecastUpdated Weather_forecast_has_been_updated()
+        {
+            return new WeatherForecastUpdated(forecast =>
+            {
+                // API Call UPdate
+                return new WeatherForecast
+                {
+                    Id = forecast.Id,
+                    Summary = "its now cold.",
+                    TemperatureC = 12
+                };
+            }, PipelineBuilder);
+        }
+    }
+
+    public class WeatherForecastUpdated : ScenarioStep<WeatherForecast, WeatherForecast>
+    {
+        public WeatherForecastUpdated(Func<WeatherForecast, WeatherForecast> scenarioAction,
+            PipelineBuilder pipelineBuilder) : base(scenarioAction, pipelineBuilder)
+        {
+        }
+
+        public WeatherForecastDeleted Weather_forecast_has_been_deleted()
+        {
+            return new WeatherForecastDeleted(forecast =>
+            {
+                // Api Delete 
+                var idToDelete = forecast.Id;
+            }, PipelineBuilder);
+        }
+    }
+
+    public class WeatherForecastDeleted : ScenarioEnd<WeatherForecast>
+    {
+        public WeatherForecastDeleted(Action<WeatherForecast> scenarioAction, PipelineBuilder pipelineBuilder) : base(
+            scenarioAction, pipelineBuilder)
+        {
+        }
+    }
+
+    
 }

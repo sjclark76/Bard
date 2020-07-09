@@ -13,7 +13,7 @@ namespace Fluent.Testing.Library.Then
         private readonly string _httpResponseString;
         private HttpResponseMessage _httpResponse;
 
-        public ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider) 
+        public ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider)
         {
             badRequestProvider.StringContent = apiResult.ResponseString;
             BadRequest = new BadRequestProviderDecorator(this, badRequestProvider);

@@ -15,16 +15,16 @@ namespace Fluent.Testing.Library.When
     {
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;
-        private readonly ScenarioHost _parent;
+        private readonly Action<ApiResult> _publishResult;
         private readonly Func<ApiResult, IResponse> _responseFactory;
 
-        internal When(ScenarioHost parent, HttpClient httpClient, LogWriter logWriter,
-            Func<ApiResult, IResponse> responseFactory)
+        internal When(HttpClient httpClient, LogWriter logWriter,
+            Func<ApiResult, IResponse> responseFactory, Action<ApiResult> publishResult)
         {
-            _parent = parent;
             _httpClient = httpClient;
             _logWriter = logWriter;
             _responseFactory = responseFactory;
+            _publishResult = publishResult;
         }
 
         public IResponse Put<TModel>(string route, TModel model)
@@ -63,7 +63,7 @@ namespace Fluent.Testing.Library.When
 
             var apiResult = new ApiResult(message, content);
 
-            Publish(apiResult);
+            _publishResult(apiResult);
 
             return _responseFactory(apiResult);
         }
@@ -95,14 +95,9 @@ namespace Fluent.Testing.Library.When
 
             var apiResult = new ApiResult(responseMessage, responseString);
 
-            Publish(apiResult);
+            _publishResult(apiResult);
 
             return _responseFactory(apiResult);
-        }
-
-        private void Publish(ApiResult apiResult)
-        {
-            _parent.Publish(apiResult);
         }
     }
 }

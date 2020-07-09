@@ -6,7 +6,6 @@ namespace Fluent.Testing.Library
     {
         public void Publish(ApiResult apiResult)
         {
-            
         }
     }
 }

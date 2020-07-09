@@ -24,7 +24,7 @@ namespace Fluent.Testing.Library.Then
         public abstract IBadRequestProvider StartsWithMessage(string message);
 
         public abstract IBadRequestProvider EndsWithMessage(string message);
-        
+
         public string StringContent { get; set; } = string.Empty;
     }
 }

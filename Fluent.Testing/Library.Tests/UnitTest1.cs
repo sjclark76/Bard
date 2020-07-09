@@ -27,10 +27,11 @@ namespace Fluent.Testing.Library.Tests
             Api = ScenarioHostConfiguration
                 .TheApiUses(httpClient)
                 .Log(output.WriteLine)
+                .AndBeginsWithScenario(() => new Start())
                 .Build();
         }
 
-        public IInternalFluentApiTester Api { get; set; }
+        public IFluentScenario<Start> Api { get; set; }
 
         [Fact]
         public void Get_should_return_ok()

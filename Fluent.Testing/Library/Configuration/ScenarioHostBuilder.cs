@@ -6,11 +6,12 @@ using Fluent.Testing.Library.Then;
 
 namespace Fluent.Testing.Library.Configuration
 {
-    public class ScenarioHostBuilder : IHttpClientProvided, ILoggerProvided, ICustomErrorProviderSupplied,
-        IStartingScenarioProvided
+    public class ScenarioHostBuilder : IHttpClientProvided, ILoggerProvided, ICustomErrorProviderSupplied
+
     {
         private readonly HttpClient _httpClient;
         private IBadRequestProvider _badRequestProvider;
+        private IBeginAScenario? _beginAScenario;
         private Action<string>? _logMessage;
 
         public ScenarioHostBuilder(HttpClient httpClient)
@@ -25,10 +26,36 @@ namespace Fluent.Testing.Library.Configuration
             return this;
         }
 
-        public IInternalFluentApiTester Build()
+        public ICustomErrorProviderSupplied Use<T>() where T : IBadRequestProvider, new()
+        {
+            _badRequestProvider = new T();
+            return this;
+        }
+
+        public IStartingScenarioProvided<TScenario> AndBeginsWithScenario<TScenario>(Func<TScenario> createScenario)
+            where TScenario : IBeginAScenario, new()
+        {
+            return new Foo<TScenario>(_httpClient, _logMessage, _badRequestProvider, createScenario);
+        }
+    }
+
+    public class Foo<T> : IStartingScenarioProvided<T> where T : IBeginAScenario, new()
+    {
+        private readonly IBadRequestProvider _badRequestProvider;
+        private readonly HttpClient _httpClient;
+        private readonly Action<string>? _logMessage;
+
+        public Foo(HttpClient httpClient, Action<string>? logMessage, IBadRequestProvider badRequestProvider, Func<T> createScenario)
+        {
+            _httpClient = httpClient;
+            _logMessage = logMessage;
+            _badRequestProvider = badRequestProvider;
+        }
+
+        public IFluentScenario<T> Build()
         {
             if (_logMessage == null)
-                throw new Exception($"{nameof(Log)} method must be called first.");
+                throw new Exception("Log method must be called first.");
 
             if (_logMessage == null)
                 throw new Exception("Then method must be called first.");
@@ -36,20 +63,8 @@ namespace Fluent.Testing.Library.Configuration
             if (_badRequestProvider == null)
                 throw new Exception("Use method must be called first.");
 
-            return new ScenarioHost(_httpClient, new LogWriter(_logMessage),
+            return new FluentScenario<T>(_httpClient, new LogWriter(_logMessage),
                 result => new Response(result, _badRequestProvider));
-        }
-
-        public ICustomErrorProviderSupplied Use<T>() where T : IBadRequestProvider, new()
-        {
-            _badRequestProvider = new T();
-
-            return this;
-        }
-
-        public IStartingScenarioProvided AndBeginsWithScenario<TScenario>() where TScenario : IBeginAScenario, new()
-        {
-            throw new NotImplementedException();
         }
     }
 }

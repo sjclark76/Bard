@@ -12,10 +12,7 @@ namespace Fluent.Testing.Library.Infrastructure
         {
             var prop = base.CreateProperty(member, memberSerialization);
 
-            if (prop.Writable)
-            {
-                return prop;
-            }
+            if (prop.Writable) return prop;
 
             if (member is PropertyInfo property)
             {

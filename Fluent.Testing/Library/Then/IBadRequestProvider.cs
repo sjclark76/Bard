@@ -5,6 +5,7 @@ namespace Fluent.Testing.Library.Then
 {
     public interface IBadRequestProvider
     {
+        string StringContent { get; set; }
         IBadRequestProvider ForProperty<TCommand>(Expression<Func<TCommand, object?>> expression);
 
         IBadRequestProvider ForProperty(string propertyName);
@@ -16,7 +17,5 @@ namespace Fluent.Testing.Library.Then
         IBadRequestProvider StartsWithMessage(string message);
 
         IBadRequestProvider EndsWithMessage(string message);
-        
-        string StringContent { get; set; }
     }
 }

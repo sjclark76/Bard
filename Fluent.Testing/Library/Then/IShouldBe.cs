@@ -2,8 +2,9 @@ using System.Net;
 
 namespace Fluent.Testing.Library.Then
 {
-    public interface IShouldBe 
+    public interface IShouldBe
     {
+        IBadRequestProvider BadRequest { get; }
         void Ok();
 
         void NoContent();
@@ -19,7 +20,5 @@ namespace Fluent.Testing.Library.Then
         void NotFound();
 
         void StatusCodeShouldBe(HttpStatusCode statusCode);
-        
-        IBadRequestProvider BadRequest { get; }
     }
 }

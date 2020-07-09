@@ -1,7 +1,9 @@
+using Fluent.Testing.Library.Given;
+
 namespace Fluent.Testing.Library.Configuration
 {
     public interface ICustomErrorProviderSupplied
     {
-        IInternalFluentApiTester Build();
+        // IFluentScenario<T> Build<T>() where T : IBeginAScenario;
     }
 }

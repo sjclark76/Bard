@@ -15,16 +15,17 @@ namespace Fluent.Testing.Library.When
     {
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;
-        private readonly Action<ApiResult> _publishResult;
-        private readonly Func<ApiResult, IResponse> _responseFactory;
-
+        private readonly IBadRequestProvider _badRequestProvider;
+        private readonly Action<IResponse> _publishResponse;
+        
         internal When(HttpClient httpClient, LogWriter logWriter,
-            Func<ApiResult, IResponse> responseFactory, Action<ApiResult> publishResult)
+            IBadRequestProvider badRequestProvider, Action<IResponse> publishResponse)
         {
             _httpClient = httpClient;
             _logWriter = logWriter;
-            _responseFactory = responseFactory;
-            _publishResult = publishResult;
+            _badRequestProvider = badRequestProvider;
+           
+            _publishResponse = publishResponse;
         }
 
         public IResponse Put<TModel>(string route, TModel model)
@@ -63,9 +64,10 @@ namespace Fluent.Testing.Library.When
 
             var apiResult = new ApiResult(message, content);
 
-            _publishResult(apiResult);
+            var response = new Response(apiResult, _badRequestProvider);
+            _publishResponse(response);
 
-            return _responseFactory(apiResult);
+            return response;
         }
 
         private static StringContent CreateMessageContent(object? message)
@@ -95,9 +97,11 @@ namespace Fluent.Testing.Library.When
 
             var apiResult = new ApiResult(responseMessage, responseString);
 
-            _publishResult(apiResult);
+            var response = new Response(apiResult, _badRequestProvider);
+            
+            _publishResponse(response);
 
-            return _responseFactory(apiResult);
+            return response;
         }
     }
 }

@@ -9,7 +9,6 @@ namespace Fluent.Testing.Library.Given
         {
             PipelineBuilder = new PipelineBuilder();
 
-            var foo = output();
             PipelineBuilder.AddStep(o => output());
         }
 

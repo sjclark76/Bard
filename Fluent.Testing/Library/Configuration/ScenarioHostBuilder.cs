@@ -46,7 +46,8 @@ namespace Fluent.Testing.Library.Configuration
         private readonly HttpClient _httpClient;
         private readonly Action<string>? _logMessage;
 
-        public Foo(HttpClient httpClient, Action<string>? logMessage, IBadRequestProvider badRequestProvider, Func<T> createScenario)
+        public Foo(HttpClient httpClient, Action<string>? logMessage, IBadRequestProvider badRequestProvider,
+            Func<T> createScenario)
         {
             _httpClient = httpClient;
             _logMessage = logMessage;
@@ -65,8 +66,8 @@ namespace Fluent.Testing.Library.Configuration
             if (_badRequestProvider == null)
                 throw new Exception("Use method must be called first.");
 
-            return new FluentScenario<T>(_httpClient, new LogWriter(_logMessage),
-                result => new Response(result, _badRequestProvider), _createScenario);
+            return new FluentScenario<T>(_httpClient, new LogWriter(_logMessage), _badRequestProvider
+                , _createScenario);
         }
     }
 }

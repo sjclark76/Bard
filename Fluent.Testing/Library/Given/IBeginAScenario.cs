@@ -1,6 +1,13 @@
 namespace Fluent.Testing.Library.Given
 {
-    public interface IBeginAScenario
+    public abstract class BeginAScenario
     {
+        protected BeginAScenario()
+        {
+            PipelineBuilder = new PipelineBuilder();
+        }
+
+        public PipelineBuilder PipelineBuilder { get; set; }
     }
+  
 }

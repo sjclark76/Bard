@@ -11,7 +11,7 @@ namespace Fluent.Testing.Library.Configuration
     {
         private readonly HttpClient _httpClient;
         private IBadRequestProvider _badRequestProvider;
-        private IBeginAScenario? _beginAScenario;
+        private BeginAScenario? _beginAScenario;
         private Action<string>? _logMessage;
 
         public ScenarioHostBuilder(HttpClient httpClient)
@@ -33,15 +33,16 @@ namespace Fluent.Testing.Library.Configuration
         }
 
         public IStartingScenarioProvided<TScenario> AndBeginsWithScenario<TScenario>(Func<TScenario> createScenario)
-            where TScenario : IBeginAScenario, new()
+            where TScenario : BeginAScenario, new()
         {
             return new Foo<TScenario>(_httpClient, _logMessage, _badRequestProvider, createScenario);
         }
     }
 
-    public class Foo<T> : IStartingScenarioProvided<T> where T : IBeginAScenario, new()
+    public class Foo<T> : IStartingScenarioProvided<T> where T : BeginAScenario, new()
     {
         private readonly IBadRequestProvider _badRequestProvider;
+        private readonly Func<T> _createScenario;
         private readonly HttpClient _httpClient;
         private readonly Action<string>? _logMessage;
 
@@ -50,6 +51,7 @@ namespace Fluent.Testing.Library.Configuration
             _httpClient = httpClient;
             _logMessage = logMessage;
             _badRequestProvider = badRequestProvider;
+            _createScenario = createScenario;
         }
 
         public IFluentScenario<T> Build()
@@ -64,7 +66,7 @@ namespace Fluent.Testing.Library.Configuration
                 throw new Exception("Use method must be called first.");
 
             return new FluentScenario<T>(_httpClient, new LogWriter(_logMessage),
-                result => new Response(result, _badRequestProvider));
+                result => new Response(result, _badRequestProvider), _createScenario);
         }
     }
 }

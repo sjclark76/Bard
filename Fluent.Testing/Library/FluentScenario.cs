@@ -7,13 +7,15 @@ using Fluent.Testing.Library.When;
 
 namespace Fluent.Testing.Library
 {
-    internal class FluentScenario<T> : IFluentScenario<T> where T : IBeginAScenario, new()
+    internal class FluentScenario<T> : IFluentScenario<T> where T : BeginAScenario, new()
     {
         private readonly Then.Then _then;
 
-        public FluentScenario(HttpClient httpClient, LogWriter logWriter, Func<ApiResult, IResponse> responseFactory)
+        public FluentScenario(HttpClient httpClient, LogWriter logWriter, Func<ApiResult, IResponse> responseFactory, Func<T> createScenario)
         {
-            Given = new Given<T>(new T());
+            var beginningScenario = createScenario();
+            
+            Given = new Given<T>(createScenario());
             _then = new Then.Then(responseFactory);
             When = new When.When(httpClient, logWriter, responseFactory, _then.SetTheResponse);
         }

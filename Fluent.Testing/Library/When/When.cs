@@ -18,7 +18,7 @@ namespace Fluent.Testing.Library.When
             Action onCalled,
             Action<IResponse> onResponsePublished)
         {
-            _api = new Api(httpClient, logWriter);
+            _api = new Api(httpClient, logWriter, badRequestProvider);
             _badRequestProvider = badRequestProvider;
             _onCalled = onCalled;
 
@@ -50,13 +50,11 @@ namespace Fluent.Testing.Library.When
             return CallApi(() => _api.Get(route));
         }
 
-        private IResponse CallApi(Func<ApiResult> callApi)
+        private IResponse CallApi(Func<IResponse> callApi)
         {
             _onCalled();
 
-            var apiResult = callApi();
-
-            var response = new Response(apiResult, _badRequestProvider);
+            var response = callApi();
 
             _onResponsePublished(response);
 

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Fluent.Testing.Library.Infrastructure;
+using Fluent.Testing.Library.Then;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -14,38 +15,40 @@ namespace Fluent.Testing.Library.When
     {
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;
+        private readonly IBadRequestProvider _badRequestProvider;
 
-        public Api(HttpClient httpClient, LogWriter logWriter)
+        public Api(HttpClient httpClient, LogWriter logWriter, IBadRequestProvider badRequestProvider)
         {
             _httpClient = httpClient;
             _logWriter = logWriter;
+            _badRequestProvider = badRequestProvider;
         }
 
-        public ApiResult Put<TModel>(string route, TModel model)
+        public IResponse Put<TModel>(string route, TModel model)
         {
             return PostOrPut(route, model, (client, messageContent) => client.PutAsync(route, messageContent));
         }
 
-        public ApiResult Post<TModel>(string route, TModel model)
+        public IResponse Post<TModel>(string route, TModel model)
         {
             return PostOrPut(route, model, (client, messageContent) => client.PostAsync(route, messageContent));
         }
 
-        public ApiResult Get(string uri, string name, string value)
+        public IResponse Get(string uri, string name, string value)
         {
             var url = QueryHelpers.AddQueryString(uri, name, value);
 
             return Get(url);
         }
 
-        public ApiResult Get(string uri, IDictionary<string, string> queryParameters)
+        public IResponse Get(string uri, IDictionary<string, string> queryParameters)
         {
             var url = QueryHelpers.AddQueryString(uri, queryParameters);
 
             return Get(url);
         }
 
-        public ApiResult Get(string route)
+        public IResponse Get(string route)
         {
             _logWriter.WriteStringToConsole($"GET {route}");
 
@@ -56,7 +59,9 @@ namespace Fluent.Testing.Library.When
 
             var apiResult = new ApiResult(message, content);
 
-            return apiResult;
+            var response = new Response(apiResult, _badRequestProvider);
+            
+            return response;
         }
 
         private static StringContent CreateMessageContent(object? message)
@@ -71,7 +76,7 @@ namespace Fluent.Testing.Library.When
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
-        private ApiResult PostOrPut<TModel>(string route, TModel model,
+        private IResponse PostOrPut<TModel>(string route, TModel model,
             Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
         {
             var messageContent = CreateMessageContent(model);
@@ -85,8 +90,10 @@ namespace Fluent.Testing.Library.When
             _logWriter.WriteHttpResponseToConsole(responseMessage);
 
             var apiResult = new ApiResult(responseMessage, responseString);
-
-            return apiResult;
+ 
+            var response = new Response(apiResult, _badRequestProvider);
+            
+            return response;
         }
     }
 }

@@ -17,9 +17,9 @@ namespace Fluent.Testing.Library.Tests
                     TemperatureC = 21
                 };
                 // API Call
-                var result = Context.Api.Post("WeatherForecast", weatherForecast );
+                var response = Context.Api.Post("WeatherForecast", weatherForecast );
 
-                return weatherForecast;
+                return response.Content<WeatherForecast>();
             });
         }
     }

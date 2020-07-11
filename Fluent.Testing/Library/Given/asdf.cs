@@ -3,6 +3,17 @@ using System.Collections.Generic;
 
 namespace Fluent.Testing.Library.Given
 {
+    public class ScenarioInput<TInput> where TInput : class
+    {
+        public ScenarioContext? Context { get; set; }
+        
+        public void UseResult(Action<TInput> useResult)
+        {
+            var input = Context.ExecutePipeline() as TInput;
+            useResult(input);
+
+        }
+    }
     public class ScenarioStart<TActionResult>
     {
         public ScenarioStart(Func<TActionResult> output)
@@ -15,16 +26,16 @@ namespace Fluent.Testing.Library.Given
         public PipelineBuilder PipelineBuilder { get; set; }
     }
 
-    public class ScenarioStep<TInput, TActionResult> where TInput : class
-    {
-        public ScenarioStep(Func<TInput, TActionResult> scenarioAction, PipelineBuilder pipelineBuilder)
-        {
-            PipelineBuilder = pipelineBuilder;
-            PipelineBuilder.AddStep(o => scenarioAction(o as TInput));
-        }
-
-        public PipelineBuilder PipelineBuilder { get; }
-    }
+    // public class ScenarioStep<TInput, TActionResult> where TInput : class
+    // {
+    //     public ScenarioStep(Func<TInput, TActionResult> scenarioAction, PipelineBuilder pipelineBuilder)
+    //     {
+    //         PipelineBuilder = pipelineBuilder;
+    //         PipelineBuilder.AddStep(o => scenarioAction(o as TInput));
+    //     }
+    //
+    //     public PipelineBuilder PipelineBuilder { get; }
+    // }
 
     public class ScenarioEnd<TInput>
     {
@@ -48,7 +59,7 @@ namespace Fluent.Testing.Library.Given
             _pipelineSteps.Add(stepFunc);
         }
 
-        public void Execute()
+        public object? Execute()
         {
             object? input = null;
 
@@ -57,6 +68,8 @@ namespace Fluent.Testing.Library.Given
                 var output = pipelineStep(input);
                 input = output;
             }
+
+            return input;
         }
     }
 }

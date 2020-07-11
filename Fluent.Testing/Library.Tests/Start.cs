@@ -8,62 +8,65 @@ namespace Fluent.Testing.Library.Tests
     {
         public WeatherForecastCreated Weather_forecast_has_been_created()
         {
-            return new WeatherForecastCreated(() =>
+            return AddStep<WeatherForecastCreated, WeatherForecast>(() =>
             {
-                // API Call
-                return new WeatherForecast
+                var weatherForecast = new WeatherForecast
                 {
                     Id = 1234,
                     Summary = "its hot and sunny",
                     TemperatureC = 21
                 };
+                // API Call
+                var result = Context.Api.Post("WeatherForecast", weatherForecast );
+
+                return weatherForecast;
             });
         }
     }
     
-    public class WeatherForecastCreated : ScenarioStart<WeatherForecast>
+    public class WeatherForecastCreated : ScenarioInput<WeatherForecast> // : //ScenarioStart<WeatherForecast>
     {
-        public WeatherForecastCreated(Func<WeatherForecast> output) : base(output)
-        {
-        }
+        // public WeatherForecastCreated(Func<WeatherForecast> output) : base(output)
+        // {
+        // }
 
-        public WeatherForecastUpdated Weather_forecast_has_been_updated()
-        {
-            return new WeatherForecastUpdated(forecast =>
-            {
-                // API Call UPdate
-                return new WeatherForecast
-                {
-                    Id = forecast.Id,
-                    Summary = "its now cold.",
-                    TemperatureC = 12
-                };
-            }, PipelineBuilder);
-        }
+        // public WeatherForecastUpdated Weather_forecast_has_been_updated()
+        // {
+        //     return new WeatherForecastUpdated(forecast =>
+        //     {
+        //         // API Call UPdate
+        //         return new WeatherForecast
+        //         {
+        //             Id = forecast.Id,
+        //             Summary = "its now cold.",
+        //             TemperatureC = 12
+        //         };
+        //     }, PipelineBuilder);
+        // }
     }
 
-    public class WeatherForecastUpdated : ScenarioStep<WeatherForecast, WeatherForecast>
-    {
-        public WeatherForecastUpdated(Func<WeatherForecast, WeatherForecast> scenarioAction,
-            PipelineBuilder pipelineBuilder) : base(scenarioAction, pipelineBuilder)
-        {
-        }
-
-        public WeatherForecastDeleted Weather_forecast_has_been_deleted()
-        {
-            return new WeatherForecastDeleted(forecast =>
-            {
-                // Api Delete 
-                var idToDelete = forecast.Id;
-            }, PipelineBuilder);
-        }
-    }
-
-    public class WeatherForecastDeleted : ScenarioEnd<WeatherForecast>
-    {
-        public WeatherForecastDeleted(Action<WeatherForecast> scenarioAction, PipelineBuilder pipelineBuilder) : base(
-            scenarioAction, pipelineBuilder)
-        {
-        }
-    }
+    // public class WeatherForecastUpdated : ScenarioInput<>
+    // {
+    //     public WeatherForecastUpdated(Func<WeatherForecast, WeatherForecast> scenarioAction,
+    //         PipelineBuilder pipelineBuilder) : base(scenarioAction, pipelineBuilder)
+    //     {
+    //     }
+    //
+    //     public WeatherForecastDeleted Weather_forecast_has_been_deleted()
+    //     {
+    //         return new WeatherForecastDeleted(forecast =>
+    //         {
+    //             // Api Delete 
+    //             var idToDelete = forecast.Id;
+    //         }, PipelineBuilder);
+    //     }
+    // }
+    //
+    // public class WeatherForecastDeleted : ScenarioEnd<WeatherForecast>
+    // {
+    //     public WeatherForecastDeleted(Action<WeatherForecast> scenarioAction, PipelineBuilder pipelineBuilder) : base(
+    //         scenarioAction, pipelineBuilder)
+    //     {
+    //     }
+    // }
 }

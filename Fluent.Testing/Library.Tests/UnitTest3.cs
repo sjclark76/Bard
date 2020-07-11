@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Fluent.Testing.Library.Configuration;
 using Fluent.Testing.Library.Given;
 using Fluent.Testing.Sample.Api;
@@ -38,15 +36,20 @@ namespace Fluent.Testing.Library.Tests
         [Fact]
         public void Post_should_return_400_if_required_field_is_not_provided22()
         {
-            Scenario.Given
+            WeatherForecast foo = new WeatherForecast();
+            Scenario
+                .Given
                 .That
+                .A()
                 .Weather_forecast_has_been_created()
-                .Weather_forecast_has_been_updated()
-                .Weather_forecast_has_been_deleted();
+                .UseResult(forecast => foo = forecast);
+            
+                //.Weather_forecast_has_been_updated()
+                //.Weather_forecast_has_been_deleted();
 
             Scenario
                 .When
-                .Get("WeatherForecast/5");
+                .Get($"WeatherForecast/{foo.Id}");
 
             Scenario
                 .Then

@@ -11,7 +11,6 @@ namespace Fluent.Testing.Library.Configuration
     {
         private readonly HttpClient _httpClient;
         private IBadRequestProvider _badRequestProvider;
-        private BeginAScenario? _beginAScenario;
         private Action<string>? _logMessage;
 
         public ScenarioHostBuilder(HttpClient httpClient)
@@ -35,18 +34,18 @@ namespace Fluent.Testing.Library.Configuration
         public IStartingScenarioProvided<TScenario> AndBeginsWithScenario<TScenario>(Func<TScenario> createScenario)
             where TScenario : BeginAScenario, new()
         {
-            return new Foo<TScenario>(_httpClient, _logMessage, _badRequestProvider, createScenario);
+            return new FluentScenarioBuilder<TScenario>(_httpClient, _logMessage, _badRequestProvider, createScenario);
         }
     }
 
-    public class Foo<T> : IStartingScenarioProvided<T> where T : BeginAScenario, new()
+    public class FluentScenarioBuilder<T> : IStartingScenarioProvided<T> where T : BeginAScenario, new()
     {
         private readonly IBadRequestProvider _badRequestProvider;
         private readonly Func<T> _createScenario;
         private readonly HttpClient _httpClient;
         private readonly Action<string>? _logMessage;
 
-        public Foo(HttpClient httpClient, Action<string>? logMessage, IBadRequestProvider badRequestProvider,
+        public FluentScenarioBuilder(HttpClient httpClient, Action<string>? logMessage, IBadRequestProvider badRequestProvider,
             Func<T> createScenario)
         {
             _httpClient = httpClient;

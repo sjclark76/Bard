@@ -3,7 +3,9 @@ using System.Runtime.CompilerServices;
 
 namespace Fluent.Testing.Library.Given
 {
-    public class ScenarioStep<TInput> : ScenarioBase where TInput : class, new()
+    public delegate TOutput ScenarioStepAction<in TInput, out TOutput>(ScenarioContext context, TInput input);
+
+    public abstract class ScenarioStep<TInput> : ScenarioBase where TInput : class, new()
     {
         public void UseResult(Action<TInput> useResult)
         {
@@ -16,17 +18,15 @@ namespace Fluent.Testing.Library.Given
             useResult(input);
         }
 
-        protected TNextStep AddStep<TNextStep, TOutput>(Func<TInput, TOutput> stepAction,
+        protected TNextStep AddStep<TNextStep, TOutput>(ScenarioStepAction<TInput, TOutput> stepAction,
             [CallerMemberName] string memberName = "")
             where TNextStep : ScenarioStep<TOutput>, new() where TOutput : class, new()
         {
-            Context.AddPipelineStep(memberName, input => input == null
-                ? stepAction(new TInput())
-                : stepAction((TInput) input));
+            Context?.AddPipelineStep(memberName, input => input == null
+                ? stepAction(Context, new TInput())
+                : stepAction(Context, (TInput) input));
 
-            var nextStep = new TNextStep();
-
-            nextStep.SetContext(Context);
+            var nextStep = new TNextStep {Context = Context};
 
             return nextStep;
         }

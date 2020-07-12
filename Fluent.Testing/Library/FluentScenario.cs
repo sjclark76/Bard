@@ -16,7 +16,7 @@ namespace Fluent.Testing.Library
         {
             var beginningScenario = createScenario();
             var context = new ScenarioContext(new PipelineBuilder(logWriter), new Api(httpClient, logWriter, badRequestProvider), logWriter);
-            beginningScenario.SetContext(context);
+            beginningScenario.Context = context;
             
             Given = new Given<T>(beginningScenario);
             

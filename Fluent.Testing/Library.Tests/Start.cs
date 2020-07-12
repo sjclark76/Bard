@@ -7,7 +7,7 @@ namespace Fluent.Testing.Library.Tests
     {
         public WeatherForecastCreated Weather_forecast_has_been_created()
         {
-            return AddStep<WeatherForecastCreated, WeatherForecast>(() =>
+            return AddStep<WeatherForecastCreated, WeatherForecast>((context) =>
             {
                 var weatherForecast = new WeatherForecast
                 {
@@ -16,7 +16,7 @@ namespace Fluent.Testing.Library.Tests
                     TemperatureC = 21
                 };
                 // API Call
-                var response = Context.Api.Post("WeatherForecast", weatherForecast);
+                var response = context.Api.Post("WeatherForecast", weatherForecast);
 
                 return response.Content<WeatherForecast>();
             });
@@ -27,13 +27,13 @@ namespace Fluent.Testing.Library.Tests
     {
         public WeatherForecastUpdated Weather_forecast_has_been_updated()
         {
-            return AddStep<WeatherForecastUpdated, WeatherForecast>(forecast =>
+            return AddStep<WeatherForecastUpdated, WeatherForecast>((context, forecast) =>
             {
                 // API Call Update
                 forecast.Summary = "its now cold.";
                 forecast.TemperatureC = 12;
 
-                Context.Api.Put($"WeatherForecast/{forecast.Id}", forecast);
+                context.Api.Put($"WeatherForecast/{forecast.Id}", forecast);
 
                 return forecast;
             });
@@ -44,9 +44,9 @@ namespace Fluent.Testing.Library.Tests
     {
         public WeatherForecastDeleted Weather_forecast_has_been_deleted()
         {
-            return AddStep<WeatherForecastDeleted, WeatherForecast>(forecast =>
+            return AddStep<WeatherForecastDeleted, WeatherForecast>((context, forecast) =>
             {
-                Context.Api.Delete($"WeatherForecast/{forecast.Id}");
+                context.Api.Delete($"WeatherForecast/{forecast.Id}");
 
                 return forecast;
             });

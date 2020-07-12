@@ -1,6 +1,6 @@
 ﻿using System;
 using Fluent.Testing.Library.Given;
-using Fluent.Testing.Sample.Api;
+using Fluent.Testing.Sample.Api.Model;
 
 namespace Fluent.Testing.Library.Tests.Scenario
 {
@@ -8,7 +8,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
     {
         public BankAccountHasBeenCreated BankAccount_has_been_created(Action<BankAccount>? configureBankAccount = null)
         {
-            return AddStep<BankAccountHasBeenCreated, BankAccount>(() =>
+            return AddStep<BankAccountHasBeenCreated, BankAccount>((context) =>
             {
                 var bankAccount = new BankAccount
                 {
@@ -17,7 +17,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
 
                 configureBankAccount?.Invoke(bankAccount);
 
-                var response = Context.Api.Post("api/bankaccount", bankAccount);
+                var response = context.Api.Post("api/bankaccounts", bankAccount);
 
                 return response.Content<BankAccount>();
             });

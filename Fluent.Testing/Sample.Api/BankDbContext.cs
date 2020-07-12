@@ -1,14 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Fluent.Testing.Sample.Api.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fluent.Testing.Sample.Api
 {
-    public class BankAccount
-    {
-        public int? Id { get; set; }
-        
-        public string? CustomerName { get; set; }
-    }
-
     public class BankDbContext : DbContext
     {
         public BankDbContext(DbContextOptions<BankDbContext> options)

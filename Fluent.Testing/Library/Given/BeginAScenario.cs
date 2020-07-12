@@ -5,15 +5,13 @@ namespace Fluent.Testing.Library.Given
 {
     public abstract class BeginAScenario : ScenarioBase
     {
-        protected TNextStep AddStep<TNextStep, TOutput>(Func<TOutput> stepAction,
+        protected TNextStep AddStep<TNextStep, TOutput>(Func<ScenarioContext, TOutput> stepAction,
             [CallerMemberName] string memberName = "") where TNextStep : ScenarioStep<TOutput>, new()
             where TOutput : class, new()
         {
-            Context.AddPipelineStep(memberName, o => stepAction());
+            Context?.AddPipelineStep(memberName, o => stepAction(Context));
 
-            var nextStep = new TNextStep();
-
-            nextStep.SetContext(Context);
+            var nextStep = new TNextStep {Context = Context};
 
             return nextStep;
         }

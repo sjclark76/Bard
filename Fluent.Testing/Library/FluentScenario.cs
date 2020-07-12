@@ -25,9 +25,9 @@ namespace Fluent.Testing.Library
            return _pipelineBuilder.Execute();
         }
 
-        public void AddPipelineStep(Func<object, object> func)
+        public void AddPipelineStep(string stepName, Func<object, object> func)
         {
-            _pipelineBuilder.AddStep(func);
+            _pipelineBuilder.AddStep(stepName, func);
         }
     }
 
@@ -39,7 +39,7 @@ namespace Fluent.Testing.Library
             Func<T> createScenario)
         {
             var beginningScenario = createScenario();
-            var context = new ScenarioContext(new PipelineBuilder(), new Api(httpClient, logWriter, badRequestProvider), logWriter);
+            var context = new ScenarioContext(new PipelineBuilder(logWriter), new Api(httpClient, logWriter, badRequestProvider), logWriter);
             beginningScenario.Context = context;
             
             Given = new Given<T>(beginningScenario);

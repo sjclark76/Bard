@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Fluent.Testing.Library.Given
 {
@@ -9,9 +10,9 @@ namespace Fluent.Testing.Library.Given
             
         }
 
-        protected TNextStep AddStep<TNextStep, TOutput>(Func<TOutput> stepAction) where TNextStep : ScenarioStep<TOutput>, new() where TOutput : class
+        protected TNextStep AddStep<TNextStep, TOutput>(Func<TOutput> stepAction, [CallerMemberName] string memberName = "") where TNextStep : ScenarioStep<TOutput>, new() where TOutput : class
         {
-            Context.AddPipelineStep(o => stepAction());
+            Context.AddPipelineStep(memberName, o => stepAction());
 
             var nextStep = new TNextStep {Context = Context};
 

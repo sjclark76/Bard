@@ -1,18 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using Fluent.Testing.Library.Infrastructure;
 
 namespace Fluent.Testing.Library.Given
 {
+    public class PipelineStep
+    {
+        public string StepName { get; }
+        public Func<object?, object?> StepFunc { get; }
+
+        public PipelineStep(string stepName, Func<object?, object?> stepFunc)
+        {
+            StepName = stepName;
+            StepFunc = stepFunc;
+        }
+    }
+    
     public class PipelineBuilder
     {
+        private readonly LogWriter _logWriter;
         private bool _hasBeenExecuted;
-        private readonly List<Func<object?, object?>> _pipelineSteps = new List<Func<object?, object?>>();
+        private readonly List<PipelineStep> _pipelineSteps = new List<PipelineStep>();
+
+        public PipelineBuilder(LogWriter logWriter)
+        {
+            _logWriter = logWriter;
+        }
 
         public object? Result { get; set; }
 
-        public void AddStep(Func<object?, object?> stepFunc)
+        public void AddStep(string stepName, Func<object?, object?> stepFunc)
         {
-            _pipelineSteps.Add(stepFunc);
+            _pipelineSteps.Add(new PipelineStep(stepName, stepFunc));
         }
 
         public object? Execute()
@@ -25,7 +44,8 @@ namespace Fluent.Testing.Library.Given
 
             foreach (var pipelineStep in _pipelineSteps)
             {
-                var output = pipelineStep(input);
+                _logWriter.WriteStringToConsole(pipelineStep.StepName);
+                var output = pipelineStep.StepFunc(input);
                 input = output;
             }
 

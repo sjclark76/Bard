@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Fluent.Testing.Library.Given
 {
@@ -8,14 +9,16 @@ namespace Fluent.Testing.Library.Given
 
         public void UseResult(Action<TInput> useResult)
         {
-            var input = Context.ExecutePipeline() as TInput;
+            var input = (TInput) Context.ExecutePipeline();
+            
             useResult(input);
         }
 
-        protected TNextStep AddStep<TNextStep, TOutput>(Func<TInput, TOutput> stepAction)
+        protected TNextStep AddStep<TNextStep, TOutput>(Func<TInput, TOutput> stepAction,
+            [CallerMemberName] string memberName = "")
             where TNextStep : ScenarioStep<TOutput>, new() where TOutput : class
         {
-            Context.AddPipelineStep(o => stepAction((TInput) o));
+            Context.AddPipelineStep(memberName, o => stepAction((TInput) o));
 
             var nextStep = new TNextStep {Context = Context};
 

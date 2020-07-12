@@ -37,6 +37,7 @@ namespace Fluent.Testing.Library.Tests
         public void Post_should_return_400_if_required_field_is_not_provided22()
         {
             WeatherForecast foo = new WeatherForecast();
+            
             Scenario
                 .Given
                 .That

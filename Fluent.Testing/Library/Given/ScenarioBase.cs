@@ -22,5 +22,10 @@ namespace Fluent.Testing.Library.Given
         {
             _context = context;
         }
+
+        public void AddMessage(string message)
+        {
+            Context.AddPipelineStep(message);
+        }
     }
 }

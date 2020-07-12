@@ -27,5 +27,10 @@ namespace Fluent.Testing.Library
         {
             _pipelineBuilder.AddStep(stepName, func);
         }
+        
+        public void AddPipelineStep(string message)
+        {
+            _pipelineBuilder.AddStep(message);
+        }
     }
 }

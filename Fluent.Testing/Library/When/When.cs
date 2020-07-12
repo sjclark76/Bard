@@ -6,12 +6,11 @@ using Fluent.Testing.Library.Then;
 
 namespace Fluent.Testing.Library.When
 {
-    public class When : IWhen
+    public class When : IWhen, IApi
     {
-        private readonly IBadRequestProvider _badRequestProvider;
+        private readonly Api _api;
         private readonly Action _onCalled;
         private readonly Action<IResponse> _onResponsePublished;
-        private readonly Api _api;
 
         internal When(HttpClient httpClient, LogWriter logWriter,
             IBadRequestProvider badRequestProvider,
@@ -19,10 +18,14 @@ namespace Fluent.Testing.Library.When
             Action<IResponse> onResponsePublished)
         {
             _api = new Api(httpClient, logWriter, badRequestProvider);
-            _badRequestProvider = badRequestProvider;
             _onCalled = onCalled;
 
             _onResponsePublished = onResponsePublished;
+        }
+
+        public IResponse Delete(string route)
+        {
+            return CallApi(() => _api.Delete(route));
         }
 
         public IResponse Put<TModel>(string route, TModel model)

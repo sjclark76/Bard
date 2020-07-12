@@ -46,6 +46,19 @@ namespace Fluent.Testing.Sample.Api.Controllers
             return Ok(forecast);
         }
 
+        [HttpPut("{id}")]
+        public ActionResult Update([FromRoute] int id, [FromBody] WeatherForecast weatherForecast)
+        {
+            var forecastToUpdate = _forecasts.SingleOrDefault(forecast => forecast.Id == id);
+            
+            if (forecastToUpdate == null)
+                return NotFound();
+
+            _forecasts[_forecasts.IndexOf(forecastToUpdate)] = weatherForecast;
+
+            return NoContent();
+        }
+        
         [HttpPost]
         public ActionResult Create(WeatherForecast weatherForecast)
         {

@@ -9,7 +9,7 @@ namespace Fluent.Testing.Library.Given
             
         }
 
-        protected TNextStep AddStep<TNextStep, TOutput>(Func<TOutput> stepAction) where TNextStep : ScenarioInput<TOutput>, new() where TOutput : class
+        protected TNextStep AddStep<TNextStep, TOutput>(Func<TOutput> stepAction) where TNextStep : ScenarioStep<TOutput>, new() where TOutput : class
         {
             Context.AddPipelineStep(o => stepAction());
 

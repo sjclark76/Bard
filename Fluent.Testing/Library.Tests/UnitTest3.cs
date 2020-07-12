@@ -42,10 +42,8 @@ namespace Fluent.Testing.Library.Tests
                 .That
                 .A()
                 .Weather_forecast_has_been_created()
-                .UseResult(forecast => foo = forecast);
-            
-                //.Weather_forecast_has_been_updated()
-                //.Weather_forecast_has_been_deleted();
+                .Weather_forecast_has_been_updated()
+                .Weather_forecast_has_been_deleted();
 
             Scenario
                 .When

@@ -72,12 +72,14 @@ namespace Fluent.Testing.Library.Then
             StatusCodeShouldBe(HttpStatusCode.NotFound);
         }
 
-        public void StatusCodeShouldBe(HttpStatusCode statusCode)
+        public void StatusCodeShouldBe(HttpStatusCode httpStatusCode)
         {
             if (_httpResponse == null)
                 throw new Exception($"{nameof(_httpResponse)} property has not been set.");
 
-            _httpResponse?.StatusCode.ShouldBe(statusCode,
+            var statusCode = _httpResponse.StatusCode;
+            
+            statusCode.ShouldBe(httpStatusCode,
                 $"Status code mismatch, response was {_httpResponse.StatusCode}");
         }
 
@@ -98,7 +100,7 @@ namespace Fluent.Testing.Library.Then
                 // ok..
             }
 
-            return content ?? throw new Exception($"Unable to serialize to {typeof(T).FullName}");
+            return content ?? throw new Exception($"Unable to serialize {_httpResponseString}");
         }
     }
 }

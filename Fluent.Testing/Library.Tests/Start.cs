@@ -1,5 +1,4 @@
-﻿using System;
-using Fluent.Testing.Library.Given;
+﻿using Fluent.Testing.Library.Given;
 using Fluent.Testing.Sample.Api;
 
 namespace Fluent.Testing.Library.Tests
@@ -17,56 +16,46 @@ namespace Fluent.Testing.Library.Tests
                     TemperatureC = 21
                 };
                 // API Call
-                var response = Context.Api.Post("WeatherForecast", weatherForecast );
+                var response = Context.Api.Post("WeatherForecast", weatherForecast);
 
                 return response.Content<WeatherForecast>();
             });
         }
     }
-    
-    public class WeatherForecastCreated : ScenarioInput<WeatherForecast> // : //ScenarioStart<WeatherForecast>
-    {
-        // public WeatherForecastCreated(Func<WeatherForecast> output) : base(output)
-        // {
-        // }
 
-        // public WeatherForecastUpdated Weather_forecast_has_been_updated()
-        // {
-        //     return new WeatherForecastUpdated(forecast =>
-        //     {
-        //         // API Call UPdate
-        //         return new WeatherForecast
-        //         {
-        //             Id = forecast.Id,
-        //             Summary = "its now cold.",
-        //             TemperatureC = 12
-        //         };
-        //     }, PipelineBuilder);
-        // }
+    public class WeatherForecastCreated : ScenarioStep<WeatherForecast> 
+    {
+        public WeatherForecastUpdated Weather_forecast_has_been_updated()
+        {
+            return AddStep<WeatherForecastUpdated, WeatherForecast>(forecast =>
+            {
+                // API Call UPdate
+                forecast.Summary = "its now cold.";
+                forecast.TemperatureC = 12;
+
+                Context.Api.Put($"WeatherForecast/{forecast.Id}", forecast);
+
+                return forecast;
+            });
+        }
     }
 
-    // public class WeatherForecastUpdated : ScenarioInput<>
-    // {
-    //     public WeatherForecastUpdated(Func<WeatherForecast, WeatherForecast> scenarioAction,
-    //         PipelineBuilder pipelineBuilder) : base(scenarioAction, pipelineBuilder)
-    //     {
-    //     }
-    //
-    //     public WeatherForecastDeleted Weather_forecast_has_been_deleted()
-    //     {
-    //         return new WeatherForecastDeleted(forecast =>
-    //         {
-    //             // Api Delete 
-    //             var idToDelete = forecast.Id;
-    //         }, PipelineBuilder);
-    //     }
-    // }
-    //
-    // public class WeatherForecastDeleted : ScenarioEnd<WeatherForecast>
-    // {
-    //     public WeatherForecastDeleted(Action<WeatherForecast> scenarioAction, PipelineBuilder pipelineBuilder) : base(
-    //         scenarioAction, pipelineBuilder)
-    //     {
-    //     }
-    // }
+    public class WeatherForecastUpdated : ScenarioStep<WeatherForecast>
+    {
+        public WeatherForecastDeleted Weather_forecast_has_been_deleted()
+        {
+            return AddStep<WeatherForecastDeleted, WeatherForecast>(forecast =>
+            {
+                Context.Api.Delete($"WeatherForecast/{forecast.Id}");
+
+                return forecast;
+            });
+        }
+    }
+
+    
+    public class WeatherForecastDeleted : ScenarioStep<WeatherForecast>
+    {
+      
+    }
 }

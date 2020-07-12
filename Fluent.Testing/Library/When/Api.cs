@@ -11,7 +11,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Fluent.Testing.Library.When
 {
-    public class Api
+    public class Api : IApi
     {
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;
@@ -64,6 +64,22 @@ namespace Fluent.Testing.Library.When
             return response;
         }
 
+        public IResponse Delete(string route)
+        {
+            _logWriter.WriteStringToConsole($"DELETE {route}");
+
+            var message = AsyncHelper.RunSync(() => _httpClient.DeleteAsync(route));
+
+            _logWriter.WriteHttpResponseToConsole(message);
+
+            var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
+            
+            var apiResult = new ApiResult(message, content);
+
+            var response = new Response(apiResult, _badRequestProvider);
+            
+            return response;
+        }
         private static StringContent CreateMessageContent(object? message)
         {
             var json = message == null

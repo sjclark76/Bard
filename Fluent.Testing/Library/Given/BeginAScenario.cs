@@ -3,23 +3,19 @@ using System.Runtime.CompilerServices;
 
 namespace Fluent.Testing.Library.Given
 {
-    public abstract class BeginAScenario
+    public abstract class BeginAScenario : ScenarioBase
     {
-        protected BeginAScenario()
-        {
-            
-        }
-
-        protected TNextStep AddStep<TNextStep, TOutput>(Func<TOutput> stepAction, [CallerMemberName] string memberName = "") where TNextStep : ScenarioStep<TOutput>, new() where TOutput : class
+        protected TNextStep AddStep<TNextStep, TOutput>(Func<TOutput> stepAction,
+            [CallerMemberName] string memberName = "") where TNextStep : ScenarioStep<TOutput>, new()
+            where TOutput : class, new()
         {
             Context.AddPipelineStep(memberName, o => stepAction());
 
-            var nextStep = new TNextStep {Context = Context};
+            var nextStep = new TNextStep();
+
+            nextStep.SetContext(Context);
 
             return nextStep;
         }
-
-        public ScenarioContext? Context { get; set; }
     }
-  
 }

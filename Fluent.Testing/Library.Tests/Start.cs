@@ -29,7 +29,7 @@ namespace Fluent.Testing.Library.Tests
         {
             return AddStep<WeatherForecastUpdated, WeatherForecast>(forecast =>
             {
-                // API Call UPdate
+                // API Call Update
                 forecast.Summary = "its now cold.";
                 forecast.TemperatureC = 12;
 
@@ -53,7 +53,6 @@ namespace Fluent.Testing.Library.Tests
         }
     }
 
-    
     public class WeatherForecastDeleted : ScenarioStep<WeatherForecast>
     {
       

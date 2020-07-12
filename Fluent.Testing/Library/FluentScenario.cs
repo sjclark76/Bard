@@ -7,30 +7,6 @@ using Fluent.Testing.Library.When;
 
 namespace Fluent.Testing.Library
 {
-    public class ScenarioContext
-    {
-        private readonly PipelineBuilder _pipelineBuilder;
-        public Api Api { get; }
-        public LogWriter Writer { get; }
-
-        public ScenarioContext(PipelineBuilder pipelineBuilder, Api api, LogWriter logWriter)
-        {
-            _pipelineBuilder = pipelineBuilder;
-            Api = api;
-            Writer = logWriter;
-        }
-
-        public object? ExecutePipeline()
-        {
-           return _pipelineBuilder.Execute();
-        }
-
-        public void AddPipelineStep(string stepName, Func<object, object> func)
-        {
-            _pipelineBuilder.AddStep(stepName, func);
-        }
-    }
-
     internal class FluentScenario<T> : IFluentScenario<T> where T : BeginAScenario, new()
     {
         private readonly Then.Then _then;
@@ -40,7 +16,7 @@ namespace Fluent.Testing.Library
         {
             var beginningScenario = createScenario();
             var context = new ScenarioContext(new PipelineBuilder(logWriter), new Api(httpClient, logWriter, badRequestProvider), logWriter);
-            beginningScenario.Context = context;
+            beginningScenario.SetContext(context);
             
             Given = new Given<T>(beginningScenario);
             

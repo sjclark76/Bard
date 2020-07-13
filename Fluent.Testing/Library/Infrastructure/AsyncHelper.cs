@@ -13,17 +13,21 @@ namespace Fluent.Testing.Library.Infrastructure
                 TaskScheduler.Default);
 
         public static TResult RunSync<TResult>(Func<Task<TResult>> func)
-            => TaskFactory
+        {
+            return TaskFactory
                 .StartNew(func)
                 .Unwrap()
                 .GetAwaiter()
                 .GetResult();
+        }
 
         public static void RunSync(Func<Task> func)
-            => TaskFactory
+        {
+            TaskFactory
                 .StartNew(func)
                 .Unwrap()
                 .GetAwaiter()
                 .GetResult();
+        }
     }
 }

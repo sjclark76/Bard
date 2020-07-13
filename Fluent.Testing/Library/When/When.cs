@@ -1,109 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Fluent.Testing.Library.Infrastructure;
 using Fluent.Testing.Library.Then;
-using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Fluent.Testing.Library.When
 {
-    public class When<TShouldBe> : IWhen<TShouldBe> where TShouldBe : ShouldBeBase
+    public class When : IWhen, IApi
     {
-        private readonly HttpClient _httpClient;
-        private readonly LogWriter _logWriter;
-        private readonly Func<ApiResult, IResponse<TShouldBe>> _responseFactory;
+        private readonly Api _api;
+        private readonly Action _onCalled;
+        private readonly Action<IResponse> _onResponsePublished;
 
-        internal When(FluentApiTester<TShouldBe> parent, HttpClient httpClient, LogWriter logWriter, Func<ApiResult, IResponse<TShouldBe>> responseFactory)
+        internal When(HttpClient httpClient, LogWriter logWriter,
+            IBadRequestProvider badRequestProvider,
+            Action onCalled,
+            Action<IResponse> onResponsePublished)
         {
-            Parent = parent;
-            _httpClient = httpClient;
-            _logWriter = logWriter;
-            _responseFactory = responseFactory;
+            _api = new Api(httpClient, logWriter, badRequestProvider);
+            _onCalled = onCalled;
+
+            _onResponsePublished = onResponsePublished;
         }
 
-        public IResponse<TShouldBe> Put<TModel>(string route, TModel model)
+        public IResponse Delete(string route)
         {
-            return PostOrPut(route, model, (client, messageContent) => client.PutAsync(route, messageContent));
+            return CallApi(() => _api.Delete(route));
         }
 
-        public IResponse<TShouldBe> Post<TModel>(string route, TModel model)
+        public IResponse Put<TModel>(string route, TModel model)
         {
-            return PostOrPut(route, model, (client, messageContent) => client.PostAsync(route, messageContent));
+            return CallApi(() => _api.Put(route, model));
         }
 
-        public IResponse<TShouldBe> Get(string uri, string name, string value)
+        public IResponse Post<TModel>(string route, TModel model)
         {
-            var url = QueryHelpers.AddQueryString(uri, name, value);
-
-            return Get(url);
+            return CallApi(() => _api.Post(route, model));
         }
 
-        public IResponse<TShouldBe> Get(string uri, IDictionary<string, string> queryParameters)
+        public IResponse Get(string uri, string name, string value)
         {
-            var url = QueryHelpers.AddQueryString(uri, queryParameters);
-
-            return Get(url);
+            return CallApi(() => _api.Get(uri, name, value));
         }
 
-        public IResponse<TShouldBe> Get(string route)
+        public IResponse Get(string uri, IDictionary<string, string> queryParameters)
         {
-            _logWriter.WriteStringToConsole($"GET {route}");
-
-            var message = AsyncHelper.RunSync(() => _httpClient.GetAsync(route));
-            var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
-            //var response = new Response<TShouldBe>(message, content);
-
-            _logWriter.WriteHttpResponseToConsole(message);
-
-            var apiResult = new ApiResult(message, content);
-
-            Publish(apiResult);
-            
-            return _responseFactory(apiResult);
-
+            return CallApi(() => _api.Get(uri, queryParameters));
         }
 
-        private static StringContent CreateMessageContent(object? message)
+        public IResponse Get(string route)
         {
-            var json = message == null
-                ? string.Empty
-                : JsonConvert.SerializeObject(message, new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            });
-
-            return new StringContent(json, Encoding.UTF8, "application/json");
+            return CallApi(() => _api.Get(route));
         }
 
-        private IResponse<TShouldBe> PostOrPut<TModel>(string route, TModel model,
-            Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
+        private IResponse CallApi(Func<IResponse> callApi)
         {
-            var messageContent = CreateMessageContent(model);
-            var responseMessage = AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
+            _onCalled();
 
-            _logWriter.WriteStringToConsole($"REQUEST: {responseMessage.RequestMessage.Method.Method} {route}");
-            _logWriter.WriteObjectToConsole(model);
+            var response = callApi();
 
-            var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
+            _onResponsePublished(response);
 
-            _logWriter.WriteHttpResponseToConsole(responseMessage);
-
-            var apiResult = new ApiResult(responseMessage, responseString);
-            
-            Publish(apiResult);
-            
-            return _responseFactory(apiResult);
+            return response;
         }
-
-        private void Publish(ApiResult apiResult)
-        {
-            Parent.Publish(apiResult);
-        }
-
-        internal FluentApiTester<TShouldBe> Parent { get; set; }
     }
 }

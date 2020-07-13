@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using Fluent.Testing.Library.Given;
 using Fluent.Testing.Sample.Api.Model;
 
 namespace Fluent.Testing.Library.Tests.Scenario
 {
-    public class BankAccountHasBeenCreated : ScenarioStep<BankAccount>
+    public class DepositMade : ScenarioStep<BankAccount>
     {
         public DepositMade Deposit_has_been_made(Action<Deposit>? modifyRequest = null)
         {
@@ -16,10 +16,9 @@ namespace Fluent.Testing.Library.Tests.Scenario
 
         public WithdrawalMade Withdrawal_has_been_made(Action<Withdrawal>? modifyRequest = null)
         {
-            return
-                ForRequest(modifyRequest)
-                    .Returns(BankingScenarioFunctions.MakeAWithdrawal)
-                    .ContinueTo<WithdrawalMade>();
+            return ForRequest(modifyRequest)
+                .Returns(BankingScenarioFunctions.MakeAWithdrawal)
+                .ContinueTo<WithdrawalMade>();
         }
     }
 }

@@ -8,7 +8,6 @@ using Fluent.Testing.Sample.Api.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
-using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -16,8 +15,6 @@ namespace Fluent.Testing.Library.Tests.POST
 {
     public class CreatingABankAccount
     {
-        private const string ApiBankaccounts = "api/bankaccounts";
-
         public CreatingABankAccount(ITestOutputHelper output)
         {
             var hostBuilder = new HostBuilder()
@@ -41,6 +38,8 @@ namespace Fluent.Testing.Library.Tests.POST
             When = Scenario.When;
             Then = Scenario.Then;
         }
+
+        private const string ApiBankaccounts = "api/bankaccounts";
 
         public IGiven<BankingScenario> Given { get; set; }
         public IWhen When { get; set; }
@@ -68,8 +67,8 @@ namespace Fluent.Testing.Library.Tests.POST
         [Fact]
         public void When_retrieving_a_bank_account()
         {
-            int customerId = 0;
-            
+            var customerId = 0;
+
             Given
                 .That
                 .A()
@@ -83,32 +82,6 @@ namespace Fluent.Testing.Library.Tests.POST
                 .Response
                 .ShouldBe
                 .Ok<BankAccount>();
-        }
-        
-        [Fact]
-        public void When_retrievinddddg_a_bank_account()
-        {
-            int customerId = 0;
-            
-            Given
-                .That
-                .A()
-                .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
-                .And()
-                .Deposit_has_been_made()
-                .Deposit_has_been_made()
-                .Deposit_has_been_made()
-                .UseResult(account => customerId = account.Id.GetValueOrDefault());
-
-            When
-                .Get($"{ApiBankaccounts}/{customerId}");
-
-            Then
-                .Response
-                .ShouldBe
-                .Ok<BankAccount>()
-                .Balance
-                .ShouldBe(300);
         }
     }
 }

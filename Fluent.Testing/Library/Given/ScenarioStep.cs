@@ -18,6 +18,22 @@ namespace Fluent.Testing.Library.Given
             useResult(input);
         }
 
+        protected IStageOne<TInput, TRequest> ForRequest<TRequest>(Action<TRequest>? modifyRequest = null) where TRequest : new()
+        {
+            if (Context == null)
+                throw new ApplicationException($"{nameof(Context)} has not been set.");
+            
+            return new StageOne<TInput, TRequest>(Context, modifyRequest, "");
+        }
+        
+        /// <summary>
+        /// Blah blah blah
+        /// </summary>
+        /// <param name="stepAction">f</param>
+        /// <param name="memberName">x</param>
+        /// <typeparam name="TNextStep">y</typeparam>
+        /// <typeparam name="TOutput">z</typeparam>
+        /// <returns>bb</returns>
         protected TNextStep AddStep<TNextStep, TOutput>(ScenarioStepAction<TInput, TOutput> stepAction,
             [CallerMemberName] string memberName = "")
             where TNextStep : ScenarioStep<TOutput>, new() where TOutput : class, new()

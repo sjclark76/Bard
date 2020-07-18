@@ -2,7 +2,6 @@ using System;
 using System.Net.Http;
 using Fluent.Testing.Library.Infrastructure;
 using Fluent.Testing.Library.Internal;
-using Fluent.Testing.Library.Then;
 
 namespace Fluent.Testing.Library.Configuration
 {

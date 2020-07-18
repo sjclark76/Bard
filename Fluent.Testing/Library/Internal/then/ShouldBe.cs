@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using Fluent.Testing.Library.Infrastructure;
+using Fluent.Testing.Library.Internal.When;
 using Fluent.Testing.Library.When;
 using Newtonsoft.Json;
 using Shouldly;

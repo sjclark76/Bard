@@ -1,4 +1,5 @@
 using System.Net;
+using Fluent.Testing.Library.Internal.When;
 using Fluent.Testing.Library.When;
 
 namespace Fluent.Testing.Library.Then

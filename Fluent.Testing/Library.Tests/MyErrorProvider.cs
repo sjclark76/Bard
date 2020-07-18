@@ -1,4 +1,3 @@
-using Fluent.Testing.Library.Then;
 using Shouldly;
 
 namespace Fluent.Testing.Library.Tests

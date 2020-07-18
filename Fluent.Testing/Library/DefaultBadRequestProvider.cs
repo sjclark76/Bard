@@ -1,6 +1,6 @@
 using Shouldly;
 
-namespace Fluent.Testing.Library.Then
+namespace Fluent.Testing.Library
 {
     public class DefaultBadRequestProvider : BadRequestProviderBase
     {

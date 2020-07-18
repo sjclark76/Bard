@@ -2,7 +2,7 @@ using System;
 using System.Linq.Expressions;
 using Fluent.Testing.Library.Infrastructure;
 
-namespace Fluent.Testing.Library.Then
+namespace Fluent.Testing.Library
 {
     public abstract class BadRequestProviderBase : IBadRequestProvider
     {

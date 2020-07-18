@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Fluent.Testing.Library.Then
+namespace Fluent.Testing.Library
 {
     public interface IShouldBe
     {

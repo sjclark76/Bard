@@ -1,6 +1,5 @@
 ﻿using System;
 using Fluent.Testing.Library.Infrastructure;
-using Fluent.Testing.Library.When;
 
 namespace Fluent.Testing.Library
 {

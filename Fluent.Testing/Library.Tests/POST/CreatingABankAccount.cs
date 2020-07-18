@@ -1,7 +1,5 @@
 ﻿using Fluent.Testing.Library.Configuration;
 using Fluent.Testing.Library.Tests.Scenario;
-using Fluent.Testing.Library.Then;
-using Fluent.Testing.Library.When;
 using Fluent.Testing.Sample.Api;
 using Fluent.Testing.Sample.Api.Model;
 using Microsoft.AspNetCore.Hosting;

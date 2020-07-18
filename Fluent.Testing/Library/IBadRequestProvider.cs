@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Fluent.Testing.Library.Then
+namespace Fluent.Testing.Library
 {
     public interface IBadRequestProvider
     {

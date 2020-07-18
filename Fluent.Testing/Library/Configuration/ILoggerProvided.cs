@@ -1,5 +1,4 @@
 using System;
-using Fluent.Testing.Library.Then;
 
 namespace Fluent.Testing.Library.Configuration
 {

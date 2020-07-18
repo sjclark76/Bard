@@ -4,7 +4,7 @@ using Newtonsoft.Json.Serialization;
 
 namespace Fluent.Testing.Library.Infrastructure
 {
-    public class ResolvePrivateSetters : DefaultContractResolver
+    internal class ResolvePrivateSetters : DefaultContractResolver
     {
         protected override JsonProperty CreateProperty(
             MemberInfo member,

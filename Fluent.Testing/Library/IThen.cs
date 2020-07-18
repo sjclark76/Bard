@@ -1,4 +1,4 @@
-namespace Fluent.Testing.Library.Then
+namespace Fluent.Testing.Library
 {
     public interface IThen
     {

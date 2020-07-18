@@ -2,7 +2,7 @@ using System;
 using Fluent.Testing.Library.Infrastructure;
 using Newtonsoft.Json;
 
-namespace Fluent.Testing.Library.Then
+namespace Fluent.Testing.Library
 {
     public abstract class BadRequestProvider<TErrorMessage> : BadRequestProviderBase
     {

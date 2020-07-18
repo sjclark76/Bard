@@ -8,19 +8,41 @@ namespace Fluent.Testing.Library.Tests.Scenario
     {
         public BankAccountHasBeenCreated BankAccount_has_been_created(Action<BankAccount>? configureBankAccount = null)
         {
-            return AddStep<BankAccountHasBeenCreated, BankAccount>((context) =>
-            {
-                var bankAccount = new BankAccount
+            return When(context =>
                 {
-                    CustomerName = "Ranulph Fiennes"
-                };
+                    var bankAccount = new BankAccount
+                    {
+                        CustomerName = "Ranulph Fiennes"
+                    };
 
-                configureBankAccount?.Invoke(bankAccount);
+                    configureBankAccount?.Invoke(bankAccount);
 
-                var response = context.Api.Post("api/bankaccounts", bankAccount);
+                    var response = context.Api.Post("api/bankaccounts", bankAccount);
 
-                return response.Content<BankAccount>();
-            });
+                    return response.Content<BankAccount>();
+                })
+                .Then<BankAccountHasBeenCreated>();
+        }
+        
+        public BankAccountHasBeenCreated BankAccount_has_been_created2(Action<BankAccount>? configureBankAccount = null)
+        {
+           return Given(() =>
+           {
+               var bankAccount = new BankAccount
+               {
+                   CustomerName = "Ranulph Fiennes"
+               };
+
+               return bankAccount;
+           })
+               .When((context, bankAccount) =>
+               {
+                   var response = context.Api.Post("api/bankaccounts", bankAccount);
+
+                   return response.Content<BankAccount>();
+               })
+               .Then<BankAccountHasBeenCreated>();
+
         }
     }
 }

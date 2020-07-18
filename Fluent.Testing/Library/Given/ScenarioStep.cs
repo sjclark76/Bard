@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace Fluent.Testing.Library.Given
 {
@@ -18,33 +17,21 @@ namespace Fluent.Testing.Library.Given
             useResult(input);
         }
 
-        protected IStageOne<TStepInput, TRequest> CreateRequest<TRequest>(Action<TRequest> createRequest) where TRequest : new()
+        protected IStage3<TOutput> When<TOutput>(Func<ScenarioContext, TStepInput, TOutput> execute)
+            where TOutput : class, new()
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
-            
-            return new StageOne<TStepInput, TRequest>(Context, createRequest, "");
+
+            return new StageThree<TStepInput, TOutput>(Context, execute);
         }
-        
-        /// <summary>
-        /// Blah blah blah
-        /// </summary>
-        /// <param name="stepAction">f</param>
-        /// <param name="memberName">x</param>
-        /// <typeparam name="TNextStep">y</typeparam>
-        /// <typeparam name="TOutput">z</typeparam>
-        /// <returns>bb</returns>
-        protected TNextStep AddStep<TNextStep, TOutput>(ScenarioStepAction<TStepInput, TOutput> stepAction,
-            [CallerMemberName] string memberName = "")
-            where TNextStep : ScenarioStep<TOutput>, new() where TOutput : class, new()
+
+        protected IStageOne<TStepInput, TRequest> Given<TRequest>(Func<TRequest> createRequest) where TRequest : new()
         {
-            Context?.AddPipelineStep(memberName, input => input == null
-                ? stepAction(Context, new TStepInput())
-                : stepAction(Context, (TStepInput) input));
+            if (Context == null)
+                throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            var nextStep = new TNextStep {Context = Context};
-
-            return nextStep;
+            return new StageOne<TStepInput, TRequest>(Context, createRequest);
         }
     }
 }

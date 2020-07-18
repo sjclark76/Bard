@@ -1,19 +1,24 @@
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Fluent.Testing.Library.Given
 {
     public abstract class BeginAScenario : ScenarioBase
     {
-        protected TNextStep AddStep<TNextStep, TOutput>(Func<ScenarioContext, TOutput> stepAction,
-            [CallerMemberName] string memberName = "") where TNextStep : ScenarioStep<TOutput>, new()
+        protected IBeginWhen<TOutput> When<TOutput>(Func<ScenarioContext, TOutput> execute)
             where TOutput : class, new()
         {
-            Context?.AddPipelineStep(memberName, o => stepAction(Context));
+            if (Context == null)
+                throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            var nextStep = new TNextStep {Context = Context};
+            return new BeginWhen<TOutput>(Context, execute);
+        }
 
-            return nextStep;
+        protected IBeginGiven<TRequest> Given<TRequest>(Func<TRequest> createRequest)
+        {
+            if (Context == null)
+                throw new ApplicationException($"{nameof(Context)} has not been set.");
+
+            return new BeginGiven<TRequest>(Context, createRequest);
         }
     }
 }

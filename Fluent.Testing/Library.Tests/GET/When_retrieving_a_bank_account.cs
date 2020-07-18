@@ -25,11 +25,11 @@ namespace Fluent.Testing.Library.Tests.GET
                 .A()
                 .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
                 .And()
-                .Deposit_has_been_made(deposit => deposit.Amount = 100)
+                .Deposit_has_been_made(100)
                 .And().A()
-                .Withdrawal_has_been_made(withdrawal => withdrawal.Amount = 50)
+                .Withdrawal_has_been_made(50)
                 .And().A()
-                .Deposit_has_been_made(deposit => deposit.Amount = 25)
+                .Deposit_has_been_made(25)
                 .UseResult(account => customerId = account.Id.GetValueOrDefault());
 
             When
@@ -54,13 +54,13 @@ namespace Fluent.Testing.Library.Tests.GET
                 .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
                 .And()
                 .A()
-                .Deposit_has_been_made(deposit => deposit.Amount = 50)
+                .Deposit_has_been_made(50)
                 .And()
                 .A()
-                .Deposit_has_been_made(deposit => deposit.Amount = 100)
+                .Deposit_has_been_made(50)
                 .And()
                 .A()
-                .Withdrawal_has_been_made(deposit => deposit.Amount = 25)
+                .Withdrawal_has_been_made(25)
                 .UseResult(account => customerId = account.Id.GetValueOrDefault());
 
             When

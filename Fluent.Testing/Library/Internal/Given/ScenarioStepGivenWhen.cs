@@ -1,9 +1,10 @@
 using System;
 using System.Runtime.CompilerServices;
+using Fluent.Testing.Library.Given;
 
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library.Internal.Given
 {
-    public class ScenarioStepGivenWhen<TInput, TRequest, TOutput> : IScenarioStepGivenWhen<TOutput> where TRequest : new()
+    internal class ScenarioStepGivenWhen<TInput, TRequest, TOutput> : IScenarioStepGivenWhen<TOutput> where TRequest : new()
         where TOutput : class, new()
         where TInput : new()
     {

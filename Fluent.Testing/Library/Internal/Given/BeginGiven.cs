@@ -1,8 +1,9 @@
 ﻿using System;
+using Fluent.Testing.Library.Given;
 
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library.Internal.Given
 {
-    public class BeginGiven<TRequest> : IBeginGiven<TRequest>
+    internal class BeginGiven<TRequest> : IBeginGiven<TRequest>
     {
         private readonly ScenarioContext _context;
         private readonly Func<TRequest> _createRequest;

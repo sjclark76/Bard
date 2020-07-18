@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using Fluent.Testing.Library.Given;
 using Fluent.Testing.Library.Infrastructure;
+using Fluent.Testing.Library.Internal.Given;
 using Fluent.Testing.Library.Then;
 using Fluent.Testing.Library.When;
 

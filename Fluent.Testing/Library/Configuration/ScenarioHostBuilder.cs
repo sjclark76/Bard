@@ -45,7 +45,8 @@ namespace Fluent.Testing.Library.Configuration
         private readonly HttpClient _httpClient;
         private readonly Action<string>? _logMessage;
 
-        public FluentScenarioBuilder(HttpClient httpClient, Action<string>? logMessage, IBadRequestProvider badRequestProvider,
+        public FluentScenarioBuilder(HttpClient httpClient, Action<string>? logMessage,
+            IBadRequestProvider badRequestProvider,
             Func<T> createScenario)
         {
             _httpClient = httpClient;

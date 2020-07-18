@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Fluent.Testing.Library.Given;
 
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library.Internal.Given
 {
-    public class BeginGivenWhen<TRequest, TOutput> : IBeginGivenWhen<TOutput> where TOutput : class, new()
+    internal class BeginGivenWhen<TRequest, TOutput> : IBeginGivenWhen<TOutput> where TOutput : class, new()
     {
         private readonly ScenarioContext _context;
         private readonly Func<TRequest> _createRequest;

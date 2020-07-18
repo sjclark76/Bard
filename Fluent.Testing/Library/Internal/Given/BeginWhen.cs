@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Fluent.Testing.Library.Given;
 
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library.Internal.Given
 {
-    public class BeginWhen<TOutput> : IBeginWhen<TOutput> where TOutput : class, new()
+    internal class BeginWhen<TOutput> : IBeginWhen<TOutput> where TOutput : class, new()
     {
         private readonly ScenarioContext _context;
         private readonly Func<ScenarioContext, TOutput> _execute;

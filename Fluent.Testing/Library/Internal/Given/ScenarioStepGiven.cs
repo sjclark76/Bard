@@ -1,8 +1,9 @@
 using System;
+using Fluent.Testing.Library.Given;
 
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library.Internal.Given
 {
-    public class ScenarioStepGiven<TInput, TRequest> : IScenarioStepGiven<TInput, TRequest> where TRequest : new() where TInput : new()
+    internal class ScenarioStepGiven<TInput, TRequest> : IScenarioStepGiven<TInput, TRequest> where TRequest : new() where TInput : new()
     {
         private readonly ScenarioContext _context;
         private readonly Func<TRequest> _createRequest;

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Fluent.Testing.Library.Given;
 
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library.Internal.Given
 {
-    public class ScenarioStepWhen<TInput, TOutput> : IScenarioStepWhen<TOutput> where TOutput : class, new() where TInput : class, new()
+    internal class ScenarioStepWhen<TInput, TOutput> : IScenarioStepWhen<TOutput> where TOutput : class, new() where TInput : class, new()
     {
         private readonly ScenarioContext _context;
         private readonly Func<ScenarioContext, TInput, TOutput> _execute;

@@ -6,7 +6,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
 {
     public class WithdrawalMade : ScenarioStep<BankAccount>
     {
-        public DepositMade Deposit_has_been_made(Action<Deposit>? modifyRequest = null)
+        public DepositMade Deposit_has_been_made(Action<Deposit> modifyRequest)
         {
             return
                 CreateRequest(modifyRequest)
@@ -14,7 +14,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
                     .GoToNextStep<DepositMade>();
         }
 
-        public WithdrawalMade Withdrawal_has_been_made(Action<Withdrawal>? modifyRequest = null)
+        public WithdrawalMade Withdrawal_has_been_made(Action<Withdrawal> modifyRequest)
         {
             return CreateRequest(modifyRequest)
                 .CallApi(BankingScenarioFunctions.MakeAWithdrawal)

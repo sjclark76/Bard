@@ -15,14 +15,11 @@ namespace Fluent.Testing.Library.Given
         public StageTwo(StageOne<TInput, TRequest> stageOne, Func<ScenarioContext, TInput, TRequest, TOutput> execute)
         {
             Context = stageOne.Context;
-            MemberName = stageOne.MemberName;
             ModifyRequest = stageOne.ModifyRequest;
             Execute = execute;
         }
 
         private Action<TRequest>? ModifyRequest { get; }
-
-        private string MemberName { get; }
 
         private ScenarioContext Context { get; }
 

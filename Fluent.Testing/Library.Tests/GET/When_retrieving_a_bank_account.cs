@@ -53,10 +53,13 @@ namespace Fluent.Testing.Library.Tests.GET
                 .A()
                 .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
                 .And()
+                .A()
                 .Deposit_has_been_made(deposit => deposit.Amount = 50)
-                .And().A()
+                .And()
+                .A()
                 .Deposit_has_been_made(deposit => deposit.Amount = 100)
-                .And().A()
+                .And()
+                .A()
                 .Withdrawal_has_been_made(deposit => deposit.Amount = 25)
                 .UseResult(account => customerId = account.Id.GetValueOrDefault());
 

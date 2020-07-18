@@ -1,25 +1,4 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=144a82de_002D2a9d_002D4bdf_002Dac38_002D4f6c9beca2f8/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="2" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::869F4DF1-78E1-47B2-9326-2467B00C7C57::.NETCoreApp,Version=v3.1::Fluent.Testing.Library.Tests.UnitTest1&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3d7bcd26_002D7db0_002D4e1d_002Dae32_002D4114682b615e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Then_the_customer_name_should_be_correct" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::869F4DF1-78E1-47B2-9326-2467B00C7C57::.NETCoreApp,Version=v3.1::Fluent.Testing.Library.Tests.GET.When_retrieving_a_bank_account.Then_the_customer_name_should_be_correct&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::869F4DF1-78E1-47B2-9326-2467B00C7C57::.NETCoreApp,Version=v3.1::Fluent.Testing.Library.Tests.GET.When_retrieving_a_bank_account.Given_that_a_mixture_of_deposits_and_withdrawals_have_been_made_then_the_balance_should_be_correct&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::869F4DF1-78E1-47B2-9326-2467B00C7C57::.NETCoreApp,Version=v3.1::Fluent.Testing.Library.Tests.GET.When_retrieving_a_bank_account.Given_that_multiple_deposits_have_been_made_then_the_balance_should_be_correct&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=50fc285e_002D1396_002D4d9d_002Daa06_002D04edfe86fc4b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5b41f614_002D6889_002D4fa8_002Db17e_002D4dcbc8c944a7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=76472da8_002Da53d_002D43f3_002D88fa_002D45a7a5c26b1b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7ee3b336_002D7c33_002D4fcf_002Daa4d_002Db471317171b7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Given_that_a_mixture_of_deposits_and_withdrawals_have_been_made_then_the_balance_should_be_correct" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::869F4DF1-78E1-47B2-9326-2467B00C7C57::.NETCoreApp,Version=v3.1::Fluent.Testing.Library.Tests.GET.When_retrieving_a_bank_account.Given_that_a_mixture_of_deposits_and_withdrawals_have_been_made_then_the_balance_should_be_correct&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	</wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -5,25 +5,25 @@ namespace Fluent.Testing.Library.Given
 {
     public delegate TOutput ScenarioStepAction<in TInput, out TOutput>(ScenarioContext context, TInput input);
 
-    public abstract class ScenarioStep<TInput> : ScenarioBase where TInput : class, new()
+    public abstract class ScenarioStep<TStepInput> : ScenarioBase where TStepInput : class, new()
     {
-        public void UseResult(Action<TInput> useResult)
+        public void UseResult(Action<TStepInput> useResult)
         {
             var pipelineResult = Context?.ExecutePipeline();
 
             if (pipelineResult == null) return;
 
-            var input = (TInput) pipelineResult;
+            var input = (TStepInput) pipelineResult;
 
             useResult(input);
         }
 
-        protected IStageOne<TInput, TRequest> ForRequest<TRequest>(Action<TRequest>? modifyRequest = null) where TRequest : new()
+        protected IStageOne<TStepInput, TRequest> CreateRequest<TRequest>(Action<TRequest> createRequest) where TRequest : new()
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
             
-            return new StageOne<TInput, TRequest>(Context, modifyRequest, "");
+            return new StageOne<TStepInput, TRequest>(Context, createRequest, "");
         }
         
         /// <summary>
@@ -34,13 +34,13 @@ namespace Fluent.Testing.Library.Given
         /// <typeparam name="TNextStep">y</typeparam>
         /// <typeparam name="TOutput">z</typeparam>
         /// <returns>bb</returns>
-        protected TNextStep AddStep<TNextStep, TOutput>(ScenarioStepAction<TInput, TOutput> stepAction,
+        protected TNextStep AddStep<TNextStep, TOutput>(ScenarioStepAction<TStepInput, TOutput> stepAction,
             [CallerMemberName] string memberName = "")
             where TNextStep : ScenarioStep<TOutput>, new() where TOutput : class, new()
         {
             Context?.AddPipelineStep(memberName, input => input == null
-                ? stepAction(Context, new TInput())
-                : stepAction(Context, (TInput) input));
+                ? stepAction(Context, new TStepInput())
+                : stepAction(Context, (TStepInput) input));
 
             var nextStep = new TNextStep {Context = Context};
 

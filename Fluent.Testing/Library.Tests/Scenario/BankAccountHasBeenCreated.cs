@@ -6,20 +6,20 @@ namespace Fluent.Testing.Library.Tests.Scenario
 {
     public class BankAccountHasBeenCreated : ScenarioStep<BankAccount>
     {
-        public DepositMade Deposit_has_been_made(Action<Deposit>? modifyRequest = null)
+        public DepositMade Deposit_has_been_made(Action<Deposit> createRequest)
         {
             return
-                ForRequest(modifyRequest)
-                    .Returns(BankingScenarioFunctions.MakeADeposit)
-                    .ContinueTo<DepositMade>();
+                CreateRequest(createRequest)
+                    .CallApi(BankingScenarioFunctions.MakeADeposit)
+                    .GoToNextStep<DepositMade>();
         }
 
-        public WithdrawalMade Withdrawal_has_been_made(Action<Withdrawal>? modifyRequest = null)
+        public WithdrawalMade Withdrawal_has_been_made(Action<Withdrawal> modifyRequest)
         {
             return
-                ForRequest(modifyRequest)
-                    .Returns(BankingScenarioFunctions.MakeAWithdrawal)
-                    .ContinueTo<WithdrawalMade>();
+                CreateRequest(modifyRequest)
+                    .CallApi(BankingScenarioFunctions.MakeAWithdrawal)
+                    .GoToNextStep<WithdrawalMade>();
         }
     }
 }

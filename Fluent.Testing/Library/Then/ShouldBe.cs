@@ -100,7 +100,7 @@ namespace Fluent.Testing.Library.Then
                 // ok..
             }
 
-            return content ?? throw new Exception($"Unable to serialize {_httpResponseString}");
+            return content ?? throw new Exception($"Unable to serialize api response {_httpResponseString}");
         }
     }
 }

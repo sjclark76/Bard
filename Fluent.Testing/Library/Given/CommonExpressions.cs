@@ -4,25 +4,25 @@ namespace Fluent.Testing.Library.Given
     {
         public static T And<T>(this T current) where T : ScenarioBase
         {
-            current.AddMessage("and");
+            current.AddMessage("And");
             return current;
         }
 
         public static T The<T>(this T current) where T : ScenarioBase
         {
-            current.AddMessage("the");
+            current.AddMessage("The");
             return current;
         }
 
         public static T Then<T>(this T current) where T : ScenarioBase
         {
-            current.AddMessage("then");
+            current.AddMessage("Then");
             return current;
         }
 
         public static T A<T>(this T current) where T : ScenarioBase
         {
-            current.AddMessage("a");
+            current.AddMessage("A");
             return current;
         }
     }

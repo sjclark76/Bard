@@ -7,7 +7,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
     {
         public static readonly Func<ScenarioContext, BankAccount, Deposit, BankAccount> MakeADeposit = (context, input, request) =>
         {
-            var response = context.Api.Post($"api/bankaccounts/{input.Id}/deposits", new Deposit {Amount = 100});
+            var response = context.Api.Post($"api/bankaccounts/{input.Id}/deposits", request);
 
             return response.Content<BankAccount>();
         };
@@ -15,10 +15,12 @@ namespace Fluent.Testing.Library.Tests.Scenario
         public static readonly Func<ScenarioContext, BankAccount, Withdrawal, BankAccount> MakeAWithdrawal =
             (context, input, request) =>
             {
-                var response = context.Api.Post($"api/bankaccounts/{input.Id}/withdrawals",
+                context.Api.Post($"api/bankaccounts/{input.Id}/withdrawals",
                     request);
 
-                return response.Content<BankAccount>();
+                input.Balance -= request.Amount.GetValueOrDefault();
+                
+                return input;
             };
     }
 }

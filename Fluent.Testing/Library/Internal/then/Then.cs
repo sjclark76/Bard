@@ -1,8 +1,8 @@
 using System;
 
-namespace Fluent.Testing.Library.Then
+namespace Fluent.Testing.Library.Internal.Then
 {
-    public class Then : IThen
+    internal class Then : IThen
     {
         private IResponse? _response;
 

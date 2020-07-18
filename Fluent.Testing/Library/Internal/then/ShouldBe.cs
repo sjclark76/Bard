@@ -3,13 +3,12 @@ using System.Net;
 using System.Net.Http;
 using Fluent.Testing.Library.Infrastructure;
 using Fluent.Testing.Library.Internal.When;
-using Fluent.Testing.Library.When;
 using Newtonsoft.Json;
 using Shouldly;
 
-namespace Fluent.Testing.Library.Then
+namespace Fluent.Testing.Library.Internal.Then
 {
-    public class ShouldBe : IShouldBe
+    internal class ShouldBe : IShouldBe
     {
         private readonly string _httpResponseString;
         private HttpResponseMessage _httpResponse;

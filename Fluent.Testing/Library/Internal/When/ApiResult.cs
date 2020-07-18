@@ -1,8 +1,8 @@
 using System.Net.Http;
 
-namespace Fluent.Testing.Library.When
+namespace Fluent.Testing.Library.Internal.When
 {
-    public class ApiResult
+    internal class ApiResult
     {
         public ApiResult(HttpResponseMessage responseMessage, string responseString)
         {

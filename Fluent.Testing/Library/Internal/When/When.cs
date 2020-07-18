@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using Fluent.Testing.Library.Infrastructure;
-using Fluent.Testing.Library.Internal.When;
-using Fluent.Testing.Library.Then;
 
-namespace Fluent.Testing.Library.When
+namespace Fluent.Testing.Library.Internal.When
 {
-    public class When : IWhen, IApi
+    internal class When : IWhen, IApi
     {
         private readonly Api _api;
         private readonly Action _onCalled;

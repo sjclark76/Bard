@@ -1,10 +1,9 @@
 using System.Net;
 using Fluent.Testing.Library.Internal.When;
-using Fluent.Testing.Library.When;
 
-namespace Fluent.Testing.Library.Then
+namespace Fluent.Testing.Library.Internal.Then
 {
-    public class Response : IResponse
+    internal class Response : IResponse
     {
         private readonly ShouldBe _shouldBe;
 

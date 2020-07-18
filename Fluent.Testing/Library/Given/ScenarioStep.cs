@@ -17,21 +17,21 @@ namespace Fluent.Testing.Library.Given
             useResult(input);
         }
 
-        protected IStage3<TOutput> When<TOutput>(Func<ScenarioContext, TStepInput, TOutput> execute)
+        protected IScenarioStepWhen<TOutput> When<TOutput>(Func<ScenarioContext, TStepInput, TOutput> execute)
             where TOutput : class, new()
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            return new StageThree<TStepInput, TOutput>(Context, execute);
+            return new ScenarioStepWhen<TStepInput, TOutput>(Context, execute);
         }
 
-        protected IStageOne<TStepInput, TRequest> Given<TRequest>(Func<TRequest> createRequest) where TRequest : new()
+        protected IScenarioStepGiven<TStepInput, TRequest> Given<TRequest>(Func<TRequest> createRequest) where TRequest : new()
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            return new StageOne<TStepInput, TRequest>(Context, createRequest);
+            return new ScenarioStepGiven<TStepInput, TRequest>(Context, createRequest);
         }
     }
 }

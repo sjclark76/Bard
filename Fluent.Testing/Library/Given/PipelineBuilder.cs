@@ -44,7 +44,6 @@ namespace Fluent.Testing.Library.Given
                     stringBuilder.Append(" ");
                 
                 stringBuilder.Append(pipelineStep.StepName);
-                // stringBuilder.Append(" ");
 
                 if (pipelineStep.StepFunc != null)
                 {

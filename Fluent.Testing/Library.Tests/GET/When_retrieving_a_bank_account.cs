@@ -71,7 +71,7 @@ namespace Fluent.Testing.Library.Tests.GET
                 .ShouldBe
                 .Ok<BankAccount>()
                 .Balance
-                .ShouldBe(125);
+                .ShouldBe(75);
         }
 
         [Fact]

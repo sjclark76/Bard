@@ -1,4 +1,3 @@
-using Fluent.Testing.Library.Given;
 using Fluent.Testing.Sample.Api.Model;
 using Shouldly;
 using Xunit;

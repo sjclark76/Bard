@@ -1,7 +1,7 @@
 ﻿using System;
 using Fluent.Testing.Library.Internal.Given;
 
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library
 {
     public delegate TOutput ScenarioStepAction<in TInput, out TOutput>(ScenarioContext context, TInput input);
 

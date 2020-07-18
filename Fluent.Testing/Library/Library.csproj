@@ -14,4 +14,9 @@
         <PackageReference Include="Shouldly" Version="3.0.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Given" />
+      <Folder Include="Internal\Then" />
+    </ItemGroup>
+
 </Project>

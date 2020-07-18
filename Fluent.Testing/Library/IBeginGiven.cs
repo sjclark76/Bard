@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library
 {
     public interface IBeginGiven<out TRequest>
     {

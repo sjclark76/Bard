@@ -1,5 +1,4 @@
 using Fluent.Testing.Library.Configuration;
-using Fluent.Testing.Library.Given;
 using Fluent.Testing.Library.Tests.Scenario;
 using Fluent.Testing.Library.Then;
 using Fluent.Testing.Library.When;

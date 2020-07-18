@@ -1,5 +1,3 @@
-using Fluent.Testing.Library.Given;
-
 namespace Fluent.Testing.Library.Internal.Given
 {
     internal class Given<TScenario> : IGiven<TScenario> where TScenario : BeginAScenario

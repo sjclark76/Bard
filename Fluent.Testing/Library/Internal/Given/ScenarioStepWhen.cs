@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using Fluent.Testing.Library.Given;
 
 namespace Fluent.Testing.Library.Internal.Given
 {

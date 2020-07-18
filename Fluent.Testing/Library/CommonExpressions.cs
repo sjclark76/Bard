@@ -1,4 +1,4 @@
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library
 {
     public static class CommonExpressions
     {

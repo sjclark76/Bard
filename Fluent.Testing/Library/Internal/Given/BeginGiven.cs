@@ -1,5 +1,4 @@
 ﻿using System;
-using Fluent.Testing.Library.Given;
 
 namespace Fluent.Testing.Library.Internal.Given
 {

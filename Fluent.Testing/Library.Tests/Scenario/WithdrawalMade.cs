@@ -1,5 +1,4 @@
 using System;
-using Fluent.Testing.Library.Given;
 using Fluent.Testing.Sample.Api.Model;
 
 namespace Fluent.Testing.Library.Tests.Scenario

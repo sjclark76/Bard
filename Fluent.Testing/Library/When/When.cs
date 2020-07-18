@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using Fluent.Testing.Library.Infrastructure;
+using Fluent.Testing.Library.Internal.When;
 using Fluent.Testing.Library.Then;
 
 namespace Fluent.Testing.Library.When

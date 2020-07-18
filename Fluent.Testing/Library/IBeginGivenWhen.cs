@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library
 {
     public interface IBeginGivenWhen<TOutput> where TOutput : class, new()
     {

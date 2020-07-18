@@ -1,4 +1,4 @@
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library
 {
     public interface IGiven<out TScenario> where TScenario : BeginAScenario
     {

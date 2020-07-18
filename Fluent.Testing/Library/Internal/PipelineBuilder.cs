@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Fluent.Testing.Library.Infrastructure;
 
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library.Internal
 {
-    public class PipelineBuilder
+    internal class PipelineBuilder : IPipelineBuilder
     {
         private readonly LogWriter _logWriter;
         private readonly List<PipelineStep> _pipelineSteps = new List<PipelineStep>();

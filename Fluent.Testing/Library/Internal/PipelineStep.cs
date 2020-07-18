@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Fluent.Testing.Library.Given
+namespace Fluent.Testing.Library.Internal
 {
-    public class PipelineStep
+    internal class PipelineStep
     {
         public string StepName { get; }
         

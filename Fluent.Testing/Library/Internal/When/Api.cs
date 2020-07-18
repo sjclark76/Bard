@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Fluent.Testing.Library.Infrastructure;
 using Fluent.Testing.Library.Then;
+using Fluent.Testing.Library.When;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Fluent.Testing.Library.When
+namespace Fluent.Testing.Library.Internal.When
 {
-    public class Api : IApi
+    internal class Api : IApi
     {
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;

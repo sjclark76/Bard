@@ -1,12 +1,12 @@
 using System;
 using System.Net.Http;
-using Fluent.Testing.Library.Given;
 using Fluent.Testing.Library.Infrastructure;
 using Fluent.Testing.Library.Internal.Given;
+using Fluent.Testing.Library.Internal.When;
 using Fluent.Testing.Library.Then;
 using Fluent.Testing.Library.When;
 
-namespace Fluent.Testing.Library
+namespace Fluent.Testing.Library.Internal
 {
     internal class FluentScenario<T> : IFluentScenario<T> where T : BeginAScenario, new()
     {
@@ -21,7 +21,7 @@ namespace Fluent.Testing.Library
             
             Given = new Given<T>(beginningScenario);
             
-            When = new When.When(httpClient, logWriter, badRequestProvider,
+            When = new Library.When.When(httpClient, logWriter, badRequestProvider,
                 () => context.ExecutePipeline(), 
                 response => _then.Response = response);
 

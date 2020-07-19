@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+
+        <IsPackable>false</IsPackable>
+
+        <AssemblyName>Fluent.Testing.Library.Tests</AssemblyName>
+
+        <RootNamespace>Fluent.Testing.Library.Tests</RootNamespace>
+
+        <LangVersion>8</LangVersion>
+
+        <Nullable>enable</Nullable>
+
+        <OutputType>Library</OutputType>
+
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.5" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.2" />
+        <PackageReference Include="coverlet.collector" Version="1.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Bard\Bard.csproj" />
+      <ProjectReference Include="..\Sample.Api\Sample.Api.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -56,7 +56,7 @@ namespace Bard.Internal
                     }
                     catch (Exception exception)
                     {
-                        throw new ScenarioStepException($"Error executing scenario step {pipelineStep.StepName}", exception);
+                        throw new ChapterException($"Error executing story {pipelineStep.StepName}", exception);
                     }
                 }
             }

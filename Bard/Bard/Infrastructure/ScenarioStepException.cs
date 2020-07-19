@@ -2,9 +2,9 @@
 
 namespace Bard.Infrastructure
 {
-    public class ScenarioStepException : Exception 
+    public class ChapterException : Exception 
     {
-        public ScenarioStepException(string? message, Exception? innerException) : base(message, innerException)
+        public ChapterException(string? message, Exception? innerException) : base(message, innerException)
         {
         }
     }

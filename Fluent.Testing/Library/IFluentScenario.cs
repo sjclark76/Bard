@@ -1,10 +1,6 @@
-using Fluent.Testing.Library.Given;
-using Fluent.Testing.Library.Then;
-using Fluent.Testing.Library.When;
-
 namespace Fluent.Testing.Library
 {
-    public interface IFluentScenario<out TIBeginAScenario> where TIBeginAScenario : BeginAScenario
+    public interface IFluentScenario<out TIBeginAScenario> where TIBeginAScenario : StoryBook
     {
         IGiven<TIBeginAScenario> Given { get; }
 

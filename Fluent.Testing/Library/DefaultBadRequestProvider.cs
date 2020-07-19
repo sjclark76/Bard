@@ -1,8 +1,8 @@
 using Shouldly;
 
-namespace Fluent.Testing.Library.Tests
+namespace Fluent.Testing.Library
 {
-    public class MyBadRequestProvider : BadRequestProvider<MyCustomErrorMessage>
+    public class DefaultBadRequestProvider : BadRequestProviderBase
     {
         public override IBadRequestProvider ForProperty(string propertyName)
         {

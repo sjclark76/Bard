@@ -1,8 +1,5 @@
 ﻿using Fluent.Testing.Library.Configuration;
-using Fluent.Testing.Library.Given;
 using Fluent.Testing.Library.Tests.Scenario;
-using Fluent.Testing.Library.Then;
-using Fluent.Testing.Library.When;
 using Fluent.Testing.Sample.Api;
 using Fluent.Testing.Sample.Api.Model;
 using Microsoft.AspNetCore.Hosting;
@@ -28,11 +25,12 @@ namespace Fluent.Testing.Library.Tests.POST
 
             var httpClient = host.GetTestClient();
 
-            Scenario = ScenarioHostConfiguration
-                .TheApiUses(httpClient)
-                .Log(output.WriteLine)
-                .AndBeginsWithScenario(() => new BankingScenario())
-                .Build();
+            Scenario = ScenarioConfiguration
+                .Configure<BankingStory>(options =>
+                {
+                    options.UseHttpClient(httpClient);
+                    options.Log(output.WriteLine);
+                });
 
             Given = Scenario.Given;
             When = Scenario.When;
@@ -41,11 +39,11 @@ namespace Fluent.Testing.Library.Tests.POST
 
         private const string ApiBankaccounts = "api/bankaccounts";
 
-        public IGiven<BankingScenario> Given { get; set; }
+        public IGiven<BankingStory> Given { get; set; }
         public IWhen When { get; set; }
         public IThen Then { get; set; }
 
-        public IFluentScenario<BankingScenario> Scenario { get; set; }
+        public IFluentScenario<BankingStory> Scenario { get; set; }
 
         [Fact]
         public void When_creating_a_bank_account()

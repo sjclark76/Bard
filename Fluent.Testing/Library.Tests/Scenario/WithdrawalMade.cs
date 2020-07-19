@@ -1,24 +1,23 @@
 using System;
-using Fluent.Testing.Library.Given;
 using Fluent.Testing.Sample.Api.Model;
 
 namespace Fluent.Testing.Library.Tests.Scenario
 {
-    public class WithdrawalMade : ScenarioStep<BankAccount>
+    public class WithdrawalMade : Chapter<BankAccount>
     {
-        public DepositMade Deposit_has_been_made(Action<Deposit>? modifyRequest = null)
+        public DepositMade Deposit_has_been_made(decimal amount)
         {
             return
-                ForRequest(modifyRequest)
-                    .Returns(BankingScenarioFunctions.MakeADeposit)
-                    .ContinueTo<DepositMade>();
+                Given(() => new Deposit{Amount = amount})
+                    .When(BankingScenarioFunctions.MakeADeposit)
+                    .Then<DepositMade>();
         }
 
-        public WithdrawalMade Withdrawal_has_been_made(Action<Withdrawal>? modifyRequest = null)
+        public WithdrawalMade Withdrawal_has_been_made(Func<Withdrawal> modifyRequest)
         {
-            return ForRequest(modifyRequest)
-                .Returns(BankingScenarioFunctions.MakeAWithdrawal)
-                .ContinueTo<WithdrawalMade>();
+            return Given(modifyRequest)
+                .When(BankingScenarioFunctions.MakeAWithdrawal)
+                .Then<WithdrawalMade>();
         }
     }
 }

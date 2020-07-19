@@ -1,6 +1,6 @@
 ﻿namespace Fluent.Testing.Library
 {
-    public abstract class ScenarioBase
+    public abstract class StoryBookBase
     {
         public ScenarioContext? Context { get; set; }
 

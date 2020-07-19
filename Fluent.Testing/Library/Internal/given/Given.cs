@@ -1,6 +1,6 @@
 namespace Fluent.Testing.Library.Internal.Given
 {
-    internal class Given<TScenario> : IGiven<TScenario> where TScenario : BeginAScenario
+    internal class Given<TScenario> : IGiven<TScenario> where TScenario : StoryBook
     {
         public Given(TScenario scenario)
         {

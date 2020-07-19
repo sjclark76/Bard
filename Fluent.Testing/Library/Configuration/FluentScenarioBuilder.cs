@@ -5,7 +5,7 @@ using Fluent.Testing.Library.Internal;
 
 namespace Fluent.Testing.Library.Configuration
 {
-    public class FluentScenarioBuilder<T> : IStartingScenarioProvided<T> where T : BeginAScenario, new()
+    public class FluentScenarioBuilder<T> : IStartingScenarioProvided<T> where T : StoryBook, new()
     {
         private readonly IBadRequestProvider _badRequestProvider;
         private readonly Func<T> _createScenario;

@@ -17,7 +17,7 @@ namespace Fluent.Testing.Library.Internal.Given
         }
         
         public TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
-            where TNextStep : ScenarioStep<TOutput>, new()
+            where TNextStep : Chapter<TOutput>, new()
         {
             var request = _createRequest();
             _context.AddPipelineStep(memberName, input => _execute(_context, request));

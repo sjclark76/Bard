@@ -5,6 +5,6 @@ namespace Fluent.Testing.Library
     public interface IBeginGivenWhen<TOutput> where TOutput : class, new()
     {
         TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
-            where TNextStep : ScenarioStep<TOutput>, new();
+            where TNextStep : Chapter<TOutput>, new();
     }
 }

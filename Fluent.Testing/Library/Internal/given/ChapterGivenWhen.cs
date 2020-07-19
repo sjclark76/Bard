@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Fluent.Testing.Library.Internal.Given
 {
-    internal class ScenarioStepGivenWhen<TInput, TRequest, TOutput> : IScenarioStepGivenWhen<TOutput> where TRequest : new()
+    internal class ChapterGivenWhen<TInput, TRequest, TOutput> : IChapterGivenWhen<TOutput> where TRequest : new()
         where TOutput : class, new()
         where TInput : new()
     {
@@ -11,7 +11,7 @@ namespace Fluent.Testing.Library.Internal.Given
         private readonly Func<TRequest> _createRequest;
         private readonly Func<ScenarioContext, TInput, TRequest, TOutput> _execute;
 
-        public ScenarioStepGivenWhen(ScenarioContext context, Func<TRequest> createRequest,
+        public ChapterGivenWhen(ScenarioContext context, Func<TRequest> createRequest,
             Func<ScenarioContext, TInput, TRequest, TOutput> execute)
         {
             _context = context;
@@ -20,7 +20,7 @@ namespace Fluent.Testing.Library.Internal.Given
         }
 
         public TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
-            where TNextStep : ScenarioStep<TOutput>, new()
+            where TNextStep : Chapter<TOutput>, new()
         {
             var request = _createRequest();
 

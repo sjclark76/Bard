@@ -6,6 +6,6 @@ namespace Fluent.Testing.Library.Configuration
     {
         ICustomErrorProviderSupplied Use<T>() where T : IBadRequestProvider, new();
 
-        IStartingScenarioProvided<TScenario> AndBeginsWithScenario<TScenario>(Func<TScenario> createScenario) where TScenario : BeginAScenario, new();
+        IStartingScenarioProvided<TScenario> AndBeginsWithScenario<TScenario>(Func<TScenario> createScenario) where TScenario : StoryBook, new();
     }
 }

@@ -3,7 +3,7 @@ using Fluent.Testing.Sample.Api.Model;
 
 namespace Fluent.Testing.Library.Tests.Scenario
 {
-    public class BankAccountHasBeenCreated : ScenarioStep<BankAccount>
+    public class BankAccountHasBeenCreated : Chapter<BankAccount>
     {
         public DepositMade BlahBlah()
         {

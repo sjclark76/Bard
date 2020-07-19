@@ -6,7 +6,7 @@ using Fluent.Testing.Library.Internal.When;
 
 namespace Fluent.Testing.Library.Internal
 {
-    internal class FluentScenario<T> : IFluentScenario<T> where T : BeginAScenario, new()
+    internal class FluentScenario<T> : IFluentScenario<T> where T : StoryBook, new()
     {
         private readonly Then.Then _then;
 

@@ -3,7 +3,7 @@ using Fluent.Testing.Library.Internal.Given;
 
 namespace Fluent.Testing.Library
 {
-    public abstract class BeginAScenario : ScenarioBase
+    public abstract class StoryBook : StoryBookBase
     {
         protected IBeginWhen<TOutput> When<TOutput>(Func<ScenarioContext, TOutput> execute)
             where TOutput : class, new()

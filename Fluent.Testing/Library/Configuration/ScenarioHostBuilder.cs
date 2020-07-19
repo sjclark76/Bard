@@ -29,7 +29,7 @@ namespace Fluent.Testing.Library.Configuration
         }
 
         public IStartingScenarioProvided<TScenario> AndBeginsWithScenario<TScenario>(Func<TScenario> createScenario)
-            where TScenario : BeginAScenario, new()
+            where TScenario : StoryBook, new()
         {
             return new FluentScenarioBuilder<TScenario>(_httpClient, _logMessage, _badRequestProvider, createScenario);
         }

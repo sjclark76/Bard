@@ -19,8 +19,8 @@ namespace Bard.Internal.given
             _execute = execute;
         }
 
-        public TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
-            where TNextStep : Chapter<TOutput>, new()
+        public TNextChapter Then<TNextChapter>([CallerMemberName] string memberName = "")
+            where TNextChapter : Chapter<TOutput>, new()
         {
             var request = _createRequest();
 
@@ -28,7 +28,7 @@ namespace Bard.Internal.given
                 ? _execute(_context, new TInput(), request)
                 : _execute(_context, (TInput) input, request));
 
-            var nextStep = new TNextStep {Context = _context};
+            var nextStep = new TNextChapter {Context = _context};
 
             return nextStep;
         }

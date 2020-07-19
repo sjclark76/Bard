@@ -3,7 +3,7 @@ using Fluent.Testing.Sample.Api.Model;
 
 namespace Fluent.Testing.Library.Tests.Scenario
 {
-    public class BankingScenario : StoryBook
+    public class BankingStory : StoryBook
     {
         public BankAccountHasBeenCreated BankAccount_has_been_created(Action<BankAccount>? configureBankAccount = null)
         {

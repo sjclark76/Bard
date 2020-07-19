@@ -1,5 +1,5 @@
 using System;
-using System.Net.Http;
+using Fluent.Testing.Library.Configuration;
 using Fluent.Testing.Library.Infrastructure;
 using Fluent.Testing.Library.Internal.Given;
 using Fluent.Testing.Library.Internal.When;
@@ -10,17 +10,22 @@ namespace Fluent.Testing.Library.Internal
     {
         private readonly Then.Then _then;
 
-        public FluentScenario(HttpClient httpClient, LogWriter logWriter, IBadRequestProvider badRequestProvider,
-            Func<T> createScenario)
+        public FluentScenario(ScenarioOptions<T> options)
         {
-            var beginningScenario = createScenario();
-            var context = new ScenarioContext(new PipelineBuilder(logWriter), new Api(httpClient, logWriter, badRequestProvider), logWriter);
-            beginningScenario.Context = context;
-            
-            Given = new Given<T>(beginningScenario);
-            
-            When = new When.When(httpClient, logWriter, badRequestProvider,
-                () => context.ExecutePipeline(), 
+            if (options.Client == null)
+                throw new Exception("Use method must be called first.");
+
+            var logWriter = new LogWriter(options.LogMessage);
+            var context = new ScenarioContext(new PipelineBuilder(logWriter),
+                new Api(options.Client, logWriter, options.BadRequestProvider), logWriter);
+
+            var story = options.Story;
+            story.Context = context;
+
+            Given = new Given<T>(story);
+
+            When = new When.When(options.Client, logWriter, options.BadRequestProvider,
+                () => context.ExecutePipeline(),
                 response => _then.Response = response);
 
             _then = new Then.Then();

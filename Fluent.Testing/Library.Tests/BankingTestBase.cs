@@ -23,11 +23,17 @@ namespace Fluent.Testing.Library.Tests
 
             var httpClient = host.GetTestClient();
 
-            var scenario = ScenarioHostConfiguration
-                .TheApiUses(httpClient)
-                .Log(output.WriteLine)
-                .AndBeginsWithScenario(() => new BankingScenario())
-                .Build();
+            var scenario = ScenarioConfiguration
+                .Configure<BankingStory>(options =>
+                {
+                    options.UseHttpClient(httpClient);
+                    options.Log(output.WriteLine);
+                });
+                
+                // .TheApiUses(httpClient)
+                // .Log(output.WriteLine)
+                // .AndBeginsWithScenario(() => new BankingStory())
+                // .Build();
 
             Given = scenario.Given;
             When = scenario.When;
@@ -38,6 +44,6 @@ namespace Fluent.Testing.Library.Tests
 
         public IWhen When { get; set; }
 
-        public IGiven<BankingScenario> Given { get; set; }
+        public IGiven<BankingStory> Given { get; set; }
     }
 }

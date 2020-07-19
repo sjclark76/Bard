@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Api", "Sample.Api\Sample.Api.csproj", "{AC905197-AEAB-44D8-B14F-259808835E3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bard.Tests", "Bard.Tests\Bard.Tests.csproj", "{712D9F9A-F947-4D57-9F73-79F64844CB30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bard", "Bard\Bard.csproj", "{6097C8C5-FEA0-4E5C-AF27-4D9DDA2F2D67}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC905197-AEAB-44D8-B14F-259808835E3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC905197-AEAB-44D8-B14F-259808835E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC905197-AEAB-44D8-B14F-259808835E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC905197-AEAB-44D8-B14F-259808835E3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{712D9F9A-F947-4D57-9F73-79F64844CB30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{712D9F9A-F947-4D57-9F73-79F64844CB30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{712D9F9A-F947-4D57-9F73-79F64844CB30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{712D9F9A-F947-4D57-9F73-79F64844CB30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6097C8C5-FEA0-4E5C-AF27-4D9DDA2F2D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6097C8C5-FEA0-4E5C-AF27-4D9DDA2F2D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6097C8C5-FEA0-4E5C-AF27-4D9DDA2F2D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6097C8C5-FEA0-4E5C-AF27-4D9DDA2F2D67}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

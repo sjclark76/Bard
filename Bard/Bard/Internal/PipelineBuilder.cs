@@ -42,7 +42,7 @@ namespace Bard.Internal
             {
                 if (stringBuilder.Length > 0)
                     stringBuilder.Append(" ");
-                
+
                 stringBuilder.Append(pipelineStep.StepName);
 
                 if (pipelineStep.StepFunc != null)

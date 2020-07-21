@@ -6,12 +6,13 @@ namespace Fluent.Testing.Library.Tests.Scenario
 {
     public static class BankingScenarioFunctions
     {
-        public static readonly Func<ScenarioContext, BankAccount, Deposit, BankAccount> MakeADeposit = (context, input, request) =>
-        {
-            var response = context.Api.Post($"api/bankaccounts/{input.Id}/deposits", request);
+        public static readonly Func<ScenarioContext, BankAccount, Deposit, BankAccount> MakeADeposit =
+            (context, input, request) =>
+            {
+                var response = context.Api.Post($"api/bankaccounts/{input.Id}/deposits", request);
 
-            return response.Content<BankAccount>();
-        };
+                return response.Content<BankAccount>();
+            };
 
         public static readonly Func<ScenarioContext, BankAccount, Withdrawal, BankAccount> MakeAWithdrawal =
             (context, input, request) =>
@@ -20,7 +21,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
                     request);
 
                 input.Balance -= request.Amount.GetValueOrDefault();
-                
+
                 return input;
             };
     }

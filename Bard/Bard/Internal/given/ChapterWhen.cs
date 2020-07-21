@@ -3,7 +3,8 @@ using System.Runtime.CompilerServices;
 
 namespace Bard.Internal.given
 {
-    internal class ChapterWhen<TInput, TOutput> : IChapterWhen<TOutput> where TOutput : class, new() where TInput : class, new()
+    internal class ChapterWhen<TInput, TOutput> : IChapterWhen<TOutput>
+        where TOutput : class, new() where TInput : class, new()
     {
         private readonly ScenarioContext _context;
         private readonly Func<ScenarioContext, TInput, TOutput> _execute;
@@ -14,7 +15,8 @@ namespace Bard.Internal.given
             _execute = execute;
         }
 
-        public TNextStep Then<TNextStep>([CallerMemberName] string memberName = "") where TNextStep : Chapter<TOutput>, new()
+        public TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
+            where TNextStep : Chapter<TOutput>, new()
         {
             _context.AddPipelineStep(memberName, input => input == null
                 ? _execute(_context, new TInput())

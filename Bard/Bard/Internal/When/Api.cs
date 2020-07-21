@@ -13,9 +13,9 @@ namespace Bard.Internal.When
 {
     internal class Api : IApi
     {
+        private readonly IBadRequestProvider _badRequestProvider;
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;
-        private readonly IBadRequestProvider _badRequestProvider;
 
         public Api(HttpClient httpClient, LogWriter logWriter, IBadRequestProvider badRequestProvider)
         {
@@ -60,7 +60,7 @@ namespace Bard.Internal.When
             var apiResult = new ApiResult(message, content);
 
             var response = new Response(apiResult, _badRequestProvider);
-            
+
             return response;
         }
 
@@ -73,13 +73,14 @@ namespace Bard.Internal.When
             _logWriter.WriteHttpResponseToConsole(message);
 
             var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
-            
+
             var apiResult = new ApiResult(message, content);
 
             var response = new Response(apiResult, _badRequestProvider);
-            
+
             return response;
         }
+
         private static StringContent CreateMessageContent(object? message)
         {
             var json = message == null
@@ -106,9 +107,9 @@ namespace Bard.Internal.When
             _logWriter.WriteHttpResponseToConsole(responseMessage);
 
             var apiResult = new ApiResult(responseMessage, responseString);
- 
+
             var response = new Response(apiResult, _badRequestProvider);
-            
+
             return response;
         }
     }

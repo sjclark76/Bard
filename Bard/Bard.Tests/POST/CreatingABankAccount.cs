@@ -1,6 +1,5 @@
 ﻿using Bard;
 using Bard.Configuration;
-using Fluent.Testing.Library.Tests.Scenario;
 using Fluent.Testing.Sample.Api;
 using Fluent.Testing.Sample.Api.Model;
 using Microsoft.AspNetCore.Hosting;
@@ -27,60 +26,36 @@ namespace Fluent.Testing.Library.Tests.POST
             var httpClient = host.GetTestClient();
 
             Scenario = ScenarioConfiguration
-                .Configure<BankingStory>(options =>
+                .Configure(options =>
                 {
                     options.UseHttpClient(httpClient);
                     options.Log(output.WriteLine);
                 });
 
-            Given = Scenario.Given;
             When = Scenario.When;
             Then = Scenario.Then;
         }
 
         private const string ApiBankaccounts = "api/bankaccounts";
 
-        public IGiven<BankingStory> Given { get; set; }
         public IWhen When { get; set; }
         public IThen Then { get; set; }
 
-        public IFluentScenario<BankingStory> Scenario { get; set; }
+        public IFluentScenario Scenario { get; set; }
 
         [Fact]
         public void When_creating_a_bank_account()
         {
-            Scenario
-                .When
+            When
                 .Post(ApiBankaccounts, new BankAccount
                 {
                     CustomerName = "Ranulph Fiennes"
                 });
 
-            Scenario
-                .Then
-                .Response
-                .ShouldBe
-                .Created();
-        }
-
-        [Fact]
-        public void When_retrieving_a_bank_account()
-        {
-            var customerId = 0;
-
-            Given
-                .That
-                .A()
-                .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
-                .UseResult(account => customerId = account.Id.GetValueOrDefault());
-
-            When
-                .Get($"{ApiBankaccounts}/{customerId}");
-
             Then
                 .Response
                 .ShouldBe
-                .Ok<BankAccount>();
+                .Created();
         }
     }
 }

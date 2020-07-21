@@ -78,7 +78,7 @@ namespace Bard.Internal.then
                 throw new Exception($"{nameof(_httpResponse)} property has not been set.");
 
             var statusCode = _httpResponse.StatusCode;
-            
+
             statusCode.ShouldBe(httpStatusCode,
                 $"Status code mismatch, response was {_httpResponse.StatusCode}");
         }

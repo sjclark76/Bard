@@ -9,7 +9,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
         public DepositMade Deposit_has_been_made(decimal amount)
         {
             return
-                Given(() => new Deposit{Amount = amount})
+                Given(() => new Deposit {Amount = amount})
                     .When(BankingScenarioFunctions.MakeADeposit)
                     .Then<DepositMade>();
         }

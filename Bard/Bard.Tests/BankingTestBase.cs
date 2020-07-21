@@ -30,11 +30,6 @@ namespace Fluent.Testing.Library.Tests
                     options.UseHttpClient(httpClient);
                     options.Log(output.WriteLine);
                 });
-                
-                // .TheApiUses(httpClient)
-                // .Log(output.WriteLine)
-                // .AndBeginsWithScenario(() => new BankingStory())
-                // .Build();
 
             Given = scenario.Given;
             When = scenario.When;

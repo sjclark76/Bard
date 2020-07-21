@@ -9,13 +9,14 @@ namespace Bard.Internal.given
         private readonly Func<TRequest> _createRequest;
         private readonly Func<ScenarioContext, TRequest, TOutput> _execute;
 
-        public BeginGivenWhen(ScenarioContext context, Func<TRequest> createRequest, Func<ScenarioContext, TRequest, TOutput> execute)
+        public BeginGivenWhen(ScenarioContext context, Func<TRequest> createRequest,
+            Func<ScenarioContext, TRequest, TOutput> execute)
         {
             _context = context;
             _createRequest = createRequest;
             _execute = execute;
         }
-        
+
         public TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
             where TNextStep : Chapter<TOutput>, new()
         {

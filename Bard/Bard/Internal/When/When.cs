@@ -8,6 +8,7 @@ namespace Bard.Internal.When
     internal class When : IWhen, IApi
     {
         private readonly Api _api;
+        private readonly LogWriter _logWriter;
         private readonly Action _onCalled;
         private readonly Action<IResponse> _onResponsePublished;
 
@@ -17,6 +18,7 @@ namespace Bard.Internal.When
             Action<IResponse> onResponsePublished)
         {
             _api = new Api(httpClient, logWriter, badRequestProvider);
+            _logWriter = logWriter;
             _onCalled = onCalled;
 
             _onResponsePublished = onResponsePublished;
@@ -54,6 +56,8 @@ namespace Bard.Internal.When
 
         private IResponse CallApi(Func<IResponse> callApi)
         {
+            WriteHeader();
+
             _onCalled();
 
             var response = callApi();
@@ -61,6 +65,15 @@ namespace Bard.Internal.When
             _onResponsePublished(response);
 
             return response;
+        }
+
+        private void WriteHeader()
+        {
+            _logWriter.WriteStringToConsole("");
+            _logWriter.WriteStringToConsole("****************************************");
+            _logWriter.WriteStringToConsole("*             WHEN                     *");
+            _logWriter.WriteStringToConsole("****************************************");
+            _logWriter.WriteStringToConsole("");
         }
     }
 }

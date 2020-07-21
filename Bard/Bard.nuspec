@@ -2,15 +2,14 @@
 <package>
     <metadata>
         <id>Bard</id>
-        <version>1.0.0</version>
+        <version>0.0.1</version>
         <title>Bard Fluent Api Tester</title>
         <authors>Stuart Clark</authors>
         <owners>Stuart Clark</owners>
-        <licenseUrl>https://github.com/sjclark76/bard/blob/master/LICENSE</licenseUrl>
-        <projectUrl>https://github.com/sjclark76/bard</projectUrl>
+        <projectUrl>https://sjclark76.github.io/bard/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Bard is an opinionated .NET library for writing API tests in a fluent and human readable manner.</description>
-        <releaseNotes>1.0.0 initial commit</releaseNotes>        
+        <releaseNotes>0.0.1 initial commit</releaseNotes>        
         <tags>BDD Testing Fluent API micro services</tags>
         <dependencies>           
             <dependency id="Microsoft.AspNetCore.WebUtilities" version="2.2.0" />

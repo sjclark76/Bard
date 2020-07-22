@@ -23,6 +23,7 @@ namespace Bard.Internal
                 throw new Exception("Use method must be called first.");
 
             var logWriter = new LogWriter(logMessage);
+            
             Context = new ScenarioContext(new PipelineBuilder(logWriter),
                 new Api(client, logWriter, badRequestProvider), logWriter);
 
@@ -36,6 +37,7 @@ namespace Bard.Internal
         protected ScenarioContext Context { get; set; }
 
         public IWhen When { get; }
+        
         public IThen Then => _then;
     }
 

@@ -11,24 +11,9 @@ namespace Bard.Configuration
             BadRequestProvider = new DefaultBadRequestProvider();
         }
 
-        public HttpClient? Client { get; private set; }
-        public Action<string> LogMessage { get; private set; }
-        public IBadRequestProvider BadRequestProvider { get; private set; }
-
-        public void UseHttpClient(HttpClient httpClient)
-        {
-            Client = httpClient;
-        }
-
-        public void Log(Action<string> logMessage)
-        {
-            LogMessage = logMessage;
-        }
-
-        public void Use<T>() where T : IBadRequestProvider, new()
-        {
-            BadRequestProvider = new T();
-        }
+        public HttpClient? Client { get; set; }
+        public Action<string> LogMessage { get; set; }
+        public IBadRequestProvider BadRequestProvider { get; set; }
     }
 
     public class ScenarioOptions<TStoryBook> : ScenarioOptions where TStoryBook : StoryBook, new()

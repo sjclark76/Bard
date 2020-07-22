@@ -28,8 +28,8 @@ namespace Fluent.Testing.Library.Tests.POST
             Scenario = ScenarioConfiguration
                 .Configure(options =>
                 {
-                    options.UseHttpClient(httpClient);
-                    options.Log(output.WriteLine);
+                    options.Client = httpClient;
+                    options.LogMessage = output.WriteLine;
                 });
 
             When = Scenario.When;
@@ -38,10 +38,10 @@ namespace Fluent.Testing.Library.Tests.POST
 
         private const string ApiBankaccounts = "api/bankaccounts";
 
-        public IWhen When { get; set; }
-        public IThen Then { get; set; }
+        public IWhen When { get; }
+        public IThen Then { get; }
 
-        public IFluentScenario Scenario { get; set; }
+        public IFluentScenario Scenario { get; }
 
         [Fact]
         public void When_creating_a_bank_account()

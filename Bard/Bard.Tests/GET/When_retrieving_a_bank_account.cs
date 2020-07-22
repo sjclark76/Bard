@@ -22,13 +22,12 @@ namespace Fluent.Testing.Library.Tests.GET
 
             Given
                 .That
-                .A()
                 .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
                 .And()
                 .Deposit_has_been_made(100)
-                .And().A()
+                .And()
                 .Withdrawal_has_been_made(50)
-                .And().A()
+                .And()
                 .Deposit_has_been_made(25)
                 .UseResult(account => customerId = account.Id.GetValueOrDefault());
 
@@ -50,16 +49,12 @@ namespace Fluent.Testing.Library.Tests.GET
 
             Given
                 .That
-                .A()
                 .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
                 .And()
-                .A()
                 .Deposit_has_been_made(50)
                 .And()
-                .A()
                 .Deposit_has_been_made(50)
                 .And()
-                .A()
                 .Withdrawal_has_been_made(25)
                 .UseResult(account => customerId = account.Id.GetValueOrDefault());
 
@@ -81,7 +76,6 @@ namespace Fluent.Testing.Library.Tests.GET
 
             Given
                 .That
-                .A()
                 .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
                 .UseResult(account => customerId = account.Id.GetValueOrDefault());
 

@@ -10,6 +10,7 @@ namespace Fluent.Testing.Sample.Api
         {
         }
 
+        public DbSet<Transfer> Transfers { get; set; } = null!;
         public DbSet<BankAccount> BankAccounts { get; set; } = null!;
     }
 }

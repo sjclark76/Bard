@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Fluent.Testing.Sample.Api.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace Fluent.Testing.Sample.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<BankAccount> Get([FromRoute] int id)
+        public async Task<ActionResult<BankAccount>> Get([FromRoute] int id)
         {
-            var bankAccount = _bankDbContext.BankAccounts.SingleOrDefault(ba => ba.Id == id);
+            var bankAccount = await _bankDbContext.BankAccounts.FindAsync(id);
 
             if (bankAccount == null)
                 return NotFound();
@@ -27,57 +28,57 @@ namespace Fluent.Testing.Sample.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute] int id)
+        public async Task<ActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken = default)
         {
-            var bankAccount = _bankDbContext.BankAccounts.SingleOrDefault(ba => ba.Id == id);
+            var bankAccount = await _bankDbContext.BankAccounts.FindAsync(id);
 
             if (bankAccount == null)
                 return NotFound();
 
             bankAccount.IsActive = false;
 
-            _bankDbContext.SaveChanges();
+            await _bankDbContext.SaveChangesAsync(cancellationToken);
 
             return NoContent();
         }
 
         [HttpPost]
-        public ActionResult Create(BankAccount bankAccount)
+        public async Task<ActionResult> Create(BankAccount bankAccount, CancellationToken cancellationToken = default)
         {
-            _bankDbContext.BankAccounts.Add(bankAccount);
+            await _bankDbContext.BankAccounts.AddAsync(bankAccount, cancellationToken);
 
-            _bankDbContext.SaveChanges();
+            await _bankDbContext.SaveChangesAsync(cancellationToken);
 
             return CreatedAtAction(nameof(Get), new {id = bankAccount.Id}, bankAccount);
         }
 
         [HttpPost("{id}/deposits")]
-        public ActionResult DepositMoney([FromRoute] int id, [FromBody] Deposit deposit)
+        public async Task<ActionResult> DepositMoney([FromRoute] int id, [FromBody] Deposit deposit, CancellationToken cancellationToken = default)
         {
-            var bankAccount = _bankDbContext.BankAccounts.SingleOrDefault(ba => ba.Id == id);
+            var bankAccount = await _bankDbContext.BankAccounts.FindAsync(id);
 
             if (bankAccount == null)
                 return NotFound();
 
-            bankAccount.DepositFunds(deposit);
+            bankAccount.DepositFunds(deposit.Amount.GetValueOrDefault());
 
-            _bankDbContext.SaveChanges();
+            await _bankDbContext.SaveChangesAsync(cancellationToken);
 
             return Ok(bankAccount);
         }
 
         [HttpPost("{id}/withdrawals")]
-        public ActionResult WithdrawMoney([FromRoute] int id, [FromBody] Withdrawal withdrawal)
+        public async Task<ActionResult> WithdrawMoney([FromRoute] int id, [FromBody] Withdrawal withdrawal, CancellationToken cancellationToken = default)
         {
-            var bankAccount = _bankDbContext.BankAccounts.SingleOrDefault(ba => ba.Id == id);
+            var bankAccount = await _bankDbContext.BankAccounts.FindAsync(id);
 
             if (bankAccount == null)
                 return NotFound();
 
-            if (bankAccount.CanMake(withdrawal))
+            if (bankAccount.HasFunds(withdrawal.Amount.GetValueOrDefault()))
             {
-                bankAccount.WithdrawFunds(withdrawal);
-                _bankDbContext.SaveChanges();
+                bankAccount.WithdrawFunds(withdrawal.Amount.GetValueOrDefault());
+                await _bankDbContext.SaveChangesAsync(cancellationToken);
                 return Ok();
             }
 

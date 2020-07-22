@@ -10,19 +10,19 @@
 
         public decimal Balance { get; set; }
 
-        public void DepositFunds(Deposit deposit)
+        public void DepositFunds(decimal amount)
         {
-            Balance += deposit.Amount.GetValueOrDefault();
+            Balance += amount;
         }
 
-        public bool CanMake(Withdrawal withdrawal)
+        public bool HasFunds(decimal amount)
         {
-            return Balance > withdrawal.Amount.GetValueOrDefault();
+            return Balance > amount;
         }
 
-        public void WithdrawFunds(Withdrawal withdrawal)
+        public void WithdrawFunds(decimal amount)
         {
-            Balance -= withdrawal.Amount.GetValueOrDefault();
+            Balance -= amount;
         }
     }
 }

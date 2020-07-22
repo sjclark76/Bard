@@ -2,15 +2,14 @@ using System;
 using System.Net.Http;
 using Bard.Configuration;
 using Bard.Infrastructure;
-using Bard.Internal.given;
-using Bard.Internal.then;
+using Bard.Internal.Given;
 using Bard.Internal.When;
 
 namespace Bard.Internal
 {
     internal class FluentScenario : IFluentScenario
     {
-        private readonly Then _then;
+        private readonly Then.Then _then;
 
         public FluentScenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
             options.BadRequestProvider)
@@ -31,7 +30,7 @@ namespace Bard.Internal
                 () => Context.ExecutePipeline(),
                 response => _then.Response = response);
 
-            _then = new Then();
+            _then = new Then.Then();
         }
 
         protected ScenarioContext Context { get; set; }

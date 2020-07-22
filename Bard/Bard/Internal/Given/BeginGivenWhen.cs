@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace Bard.Internal.given
+namespace Bard.Internal.Given
 {
     internal class BeginGivenWhen<TRequest, TOutput> : IBeginGivenWhen<TOutput> where TOutput : class, new()
     {

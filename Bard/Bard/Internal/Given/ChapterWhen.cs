@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace Bard.Internal.given
+namespace Bard.Internal.Given
 {
     internal class ChapterWhen<TInput, TOutput> : IChapterWhen<TOutput>
         where TOutput : class, new() where TInput : class, new()

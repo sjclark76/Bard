@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bard.Internal.given
+namespace Bard.Internal.Given
 {
     internal class BeginGiven<TRequest> : IBeginGiven<TRequest>
     {

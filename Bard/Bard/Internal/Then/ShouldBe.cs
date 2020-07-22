@@ -6,7 +6,7 @@ using Bard.Internal.When;
 using Newtonsoft.Json;
 using Shouldly;
 
-namespace Bard.Internal.then
+namespace Bard.Internal.Then
 {
     internal class ShouldBe : IShouldBe
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Bard.Internal.given
+namespace Bard.Internal.Given
 {
     internal class ChapterGiven<TInput, TRequest> : IChapterGiven<TInput, TRequest>
         where TRequest : new() where TInput : new()

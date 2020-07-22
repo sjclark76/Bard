@@ -1,5 +1,5 @@
 using System;
-using Bard.Internal.given;
+using Bard.Internal.Given;
 
 namespace Bard
 {

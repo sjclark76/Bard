@@ -1,6 +1,6 @@
 using System;
 
-namespace Bard.Internal.then
+namespace Bard.Internal.Then
 {
     internal class Then : IThen
     {

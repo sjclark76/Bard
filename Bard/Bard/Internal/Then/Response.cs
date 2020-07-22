@@ -1,7 +1,7 @@
 using System.Net;
 using Bard.Internal.When;
 
-namespace Bard.Internal.then
+namespace Bard.Internal.Then
 {
     internal class Response : IResponse
     {

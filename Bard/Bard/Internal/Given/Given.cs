@@ -1,4 +1,4 @@
-namespace Bard.Internal.given
+namespace Bard.Internal.Given
 {
     internal class Given<TScenario> : IGiven<TScenario> where TScenario : StoryBook
     {

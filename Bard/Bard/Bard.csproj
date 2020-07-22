@@ -4,6 +4,12 @@
         <Nullable>enable</Nullable>
         <LangVersion>8</LangVersion>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <PackageId>Bard</PackageId>
+        <Version>0.0.3</Version>
+        <Authors>Stuart Clark</Authors>
+        <Company>Stuart Clark</Company>
+        <PackageTags>BDD Testing Fluent API micro services</PackageTags>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <ItemGroup>

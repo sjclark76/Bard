@@ -4,6 +4,8 @@ Bard is an opinionated .NET library for writing API tests in a fluent and human 
 
 The philosophy behind Bard is it's a tool for developers and the emphasis has been on making a library that is a development tool as much as a test tool. 
 
+Get the full documentation [here](https://bard-1.gitbook.io/bard/)
+
 Typically a test would look something like this.
 
 ```C#

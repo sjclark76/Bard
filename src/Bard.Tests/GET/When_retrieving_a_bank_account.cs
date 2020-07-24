@@ -99,9 +99,7 @@ namespace Fluent.Testing.Library.Tests.GET
             Then
                 .Response
                 .ShouldBe
-                .Ok<BankAccount>()
-                .CustomerName
-                .ShouldBe("Dougal");
+                .NotFound();
         }
     }
 }

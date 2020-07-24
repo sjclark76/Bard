@@ -1,2 +1,0 @@
-# Closing a bank account
-

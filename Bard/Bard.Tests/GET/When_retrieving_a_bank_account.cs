@@ -89,5 +89,19 @@ namespace Fluent.Testing.Library.Tests.GET
                 .CustomerName
                 .ShouldBe("Dougal");
         }
+        
+        [Fact]
+        public void For_a_customer_that_does_not_exist()
+        {
+            When
+                .Get($"{ApiBankaccounts}/1234");
+
+            Then
+                .Response
+                .ShouldBe
+                .Ok<BankAccount>()
+                .CustomerName
+                .ShouldBe("Dougal");
+        }
     }
 }

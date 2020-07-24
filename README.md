@@ -1,35 +1,34 @@
-# Bard
+# Introduction
 
 Bard is an opinionated .NET library for writing API tests in a fluent and human readable manner.
 
-The philosophy behind Bard is it's a tool for developers and the emphasis has been on making a library that is a development tool as much as a test tool. 
-
-Get the full documentation [here](https://bard-1.gitbook.io/bard/)
+The philosophy behind Bard is it's a tool for developers and the emphasis has been on making a library that is a development tool as much as a test tool.
 
 Typically a test would look something like this.
 
-```C#
-   Given
-        .That    
-	.BankAccount_has_been_created(account => account.CustomerName = "Dougal")
-	.Deposit_has_been_made(100)
-	.UseResult(account => customerId = account.Id.GetValueOrDefault());
+```csharp
+Given
+     .That    
+	   .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
+	   .Deposit_has_been_made(100)
+	   .UseResult(account => customerId = account.Id.GetValueOrDefault());
 
-    When
-	.Get($"{ApiBankaccounts}/{customerId}");
+When
+    .Get($"{ApiBankaccounts}/{customerId}");
         
-    Then
-	.Response
-        .ShouldBe
-        .Ok<BankAccount>()
-        .Balance
-        .ShouldBe(100);
+Then
+    .Response
+    .ShouldBe
+    .Ok<BankAccount>()
+    .Balance
+    .ShouldBe(100);
 ```
+
 A lot of effort has been put into providing really good logging which allows the developer to 'dog food' their API whilst they're building and testing it.
 
 And the log output would looks something like this.
 
-```
+```text
 *********************************************
 * Given That A BankAccount_has_been_created *
 *********************************************
@@ -75,7 +74,3 @@ RESPONSE: Http Status Code:  OK (200)
 }
 ```
 
-
-
-
-![.NET Core](https://github.com/sjclark76/bard/workflows/.NET%20Core/badge.svg?branch=master)

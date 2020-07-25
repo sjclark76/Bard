@@ -9,7 +9,15 @@ Get the full documentation [here](https://bard-1.gitbook.io/bard/)
 
 ## Installation
 
+```text
+Install-Package Bard
+```
 
+Or using the .net core CLI from a terminal window:
+
+```text
+dotnet add package Bard
+```
 
 ## Why Bard?
 

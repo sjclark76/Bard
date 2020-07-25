@@ -1,8 +1,15 @@
----
-description: Bard is a .NET library for API testing.
----
 
 # Introduction
+
+Bard is a .NET library for API testing.
+
+## Documentation
+
+Get the full documentation [here](https://bard-1.gitbook.io/bard/)
+
+## Installation
+
+
 
 ## Why Bard?
 

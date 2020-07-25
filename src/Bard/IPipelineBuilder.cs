@@ -7,5 +7,6 @@ namespace Bard
         void AddStep(string stepName);
         void AddStep(string stepName, Func<object?, object?> stepFunc);
         object? Execute();
+        void Reset();
     }
 }

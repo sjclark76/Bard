@@ -2,7 +2,7 @@
 {
     public class BankAccount
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         public bool IsActive { get; set; }
 

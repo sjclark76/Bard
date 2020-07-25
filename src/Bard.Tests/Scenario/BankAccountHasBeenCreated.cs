@@ -6,16 +6,6 @@ namespace Fluent.Testing.Library.Tests.Scenario
 {
     public class BankAccountHasBeenCreated : Chapter<BankAccount>
     {
-        public DepositMade BlahBlah()
-        {
-            return When((context, account) =>
-                {
-                    // do something..
-                    return new BankAccount();
-                })
-                .Then<DepositMade>();
-        }
-
         public DepositMade Deposit_has_been_made(decimal amount)
         {
             return

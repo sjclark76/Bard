@@ -38,5 +38,10 @@ namespace Bard.Internal
         {
             _pipelineBuilder.AddStep(message);
         }
+
+        public void ResetPipepline()
+        {
+            _pipelineBuilder.Reset();
+        }
     }
 }

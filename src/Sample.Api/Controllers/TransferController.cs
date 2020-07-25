@@ -30,6 +30,12 @@ namespace Fluent.Testing.Sample.Api.Controllers
             var fromBankAccount = await _dbContext.BankAccounts.FindAsync(transfer.FromBankAccountId);
             var toBankAccount = await _dbContext.BankAccounts.FindAsync(transfer.ToBankAccountId);
 
+            if (fromBankAccount == null)
+                return BadRequest($"Bank account does not exist {transfer.FromBankAccountId}");
+            
+            if (toBankAccount == null)
+                return BadRequest($"Bank account does not exist {transfer.ToBankAccountId}");
+            
             if (fromBankAccount.HasFunds(transfer.Amount))
             {
                 await _dbContext.Transfers.AddAsync(transfer, cancellationToken);

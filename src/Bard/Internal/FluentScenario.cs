@@ -49,7 +49,7 @@ namespace Bard.Internal
             var story = options.Story;
             story.Context = Context;
 
-            Given = new Given<T>(story);
+            Given = new Given<T>(story, () => Context.ResetPipepline());
         }
 
         public IGiven<T> Given { get; }

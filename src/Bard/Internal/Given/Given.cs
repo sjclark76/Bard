@@ -1,12 +1,25 @@
+using System;
+
 namespace Bard.Internal.Given
 {
     internal class Given<TScenario> : IGiven<TScenario> where TScenario : StoryBook
     {
-        public Given(TScenario scenario)
+        private readonly Action _resetPipeline;
+        private readonly TScenario _that;
+
+        internal Given(TScenario scenario, Action resetPipeline)
         {
-            That = scenario;
+            _that = scenario;
+            _resetPipeline = resetPipeline;
         }
 
-        public TScenario That { get; }
+        public TScenario That
+        {
+            get
+            {
+                _resetPipeline();
+                return _that;
+            }
+        }
     }
 }

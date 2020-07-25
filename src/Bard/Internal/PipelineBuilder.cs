@@ -10,7 +10,7 @@ namespace Bard.Internal
         private readonly LogWriter _logWriter;
         private readonly List<PipelineStep> _pipelineSteps = new List<PipelineStep>();
         private bool _hasBeenExecuted;
-
+        private int _executionCount;
         public PipelineBuilder(LogWriter logWriter)
         {
             _logWriter = logWriter;
@@ -36,7 +36,8 @@ namespace Bard.Internal
 
             object? input = null;
 
-            StringBuilder stringBuilder = new StringBuilder("* Given That");
+            var initialMessage = _executionCount > 0 ? "* AND" : "* GIVEN THAT";
+            StringBuilder stringBuilder = new StringBuilder(initialMessage);
 
             foreach (var pipelineStep in _pipelineSteps)
             {
@@ -45,25 +46,32 @@ namespace Bard.Internal
 
                 stringBuilder.Append(pipelineStep.StepName);
 
-                if (pipelineStep.StepFunc != null)
-                {
-                    WriteHeader(stringBuilder);
+                if (pipelineStep.StepFunc == null) continue;
+                
+                WriteHeader(stringBuilder);
 
-                    try
-                    {
-                        var output = pipelineStep.StepFunc(input);
-                        input = output;
-                    }
-                    catch (Exception exception)
-                    {
-                        throw new ChapterException($"Error executing story {pipelineStep.StepName}", exception);
-                    }
+                try
+                {
+                    var output = pipelineStep.StepFunc(input);
+                    input = output;
+                }
+                catch (Exception exception)
+                {
+                    throw new ChapterException($"Error executing story {pipelineStep.StepName}", exception);
                 }
             }
 
+            _executionCount++;
+            
             Result = input;
 
             return Result;
+        }
+
+        public void Reset()
+        {
+            _hasBeenExecuted = false;
+            _pipelineSteps.Clear();
         }
 
         private void WriteHeader(StringBuilder stringBuilder)

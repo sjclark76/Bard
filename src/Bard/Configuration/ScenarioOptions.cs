@@ -14,6 +14,7 @@ namespace Bard.Configuration
         public HttpClient? Client { get; set; }
         public Action<string> LogMessage { get; set; }
         public IBadRequestProvider BadRequestProvider { get; set; }
+        public IServiceProvider? Services { get; set; }
     }
 
     public class ScenarioOptions<TStoryBook> : ScenarioOptions where TStoryBook : StoryBook, new()

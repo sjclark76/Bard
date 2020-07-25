@@ -30,6 +30,7 @@ namespace Fluent.Testing.Library.Tests.POST
                 {
                     options.Client = httpClient;
                     options.LogMessage = output.WriteLine;
+                    options.Services = host.Services;
                 });
 
             When = Scenario.When;

@@ -12,19 +12,20 @@ namespace Bard.Internal
         private readonly Then.Then _then;
 
         public FluentScenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
-            options.BadRequestProvider)
+            options.BadRequestProvider, options.Services)
         {
         }
 
-        protected FluentScenario(HttpClient? client, Action<string> logMessage, IBadRequestProvider badRequestProvider)
+        protected FluentScenario(HttpClient? client, Action<string> logMessage, IBadRequestProvider badRequestProvider,
+            IServiceProvider? services)
         {
             if (client == null)
                 throw new Exception("Use method must be called first.");
 
             var logWriter = new LogWriter(logMessage);
-            
+
             Context = new ScenarioContext(new PipelineBuilder(logWriter),
-                new Api(client, logWriter, badRequestProvider), logWriter);
+                new Api(client, logWriter, badRequestProvider), logWriter, services);
 
             When = new When.When(client, logWriter, badRequestProvider,
                 () => Context.ExecutePipeline(),
@@ -36,14 +37,14 @@ namespace Bard.Internal
         protected ScenarioContext Context { get; set; }
 
         public IWhen When { get; }
-        
+
         public IThen Then => _then;
     }
 
     internal class FluentScenario<T> : FluentScenario, IFluentScenario<T> where T : StoryBook, new()
     {
         public FluentScenario(ScenarioOptions<T> options) : base(options.Client, options.LogMessage,
-            options.BadRequestProvider)
+            options.BadRequestProvider, options.Services)
         {
             var story = options.Story;
             story.Context = Context;

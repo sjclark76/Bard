@@ -14,7 +14,7 @@ namespace Bard.Internal.Given
             _createRequest = createRequest;
         }
 
-        public IChapterGivenWhen<TOutput> When<TOutput>(Func<ScenarioContext, TInput, TRequest, TOutput> execute)
+        public IChapterGivenWhen<TOutput> When<TOutput>(Func<IScenarioContext, TInput, TRequest, TOutput> execute)
             where TOutput : class, new()
         {
             return new ChapterGivenWhen<TInput, TRequest, TOutput>(_context, _createRequest, execute);

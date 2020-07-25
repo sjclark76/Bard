@@ -2,9 +2,9 @@
 using Bard.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Bard
+namespace Bard.Internal
 {
-    public class ScenarioContext
+    internal class ScenarioContext : IScenarioContext
     {
         private readonly IPipelineBuilder _pipelineBuilder;
 

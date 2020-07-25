@@ -16,6 +16,18 @@ namespace Fluent.Testing.Library.Tests.GET
         private const string ApiBankaccounts = "api/bankaccounts";
 
         [Fact]
+        public void For_a_customer_that_does_not_exist()
+        {
+            When
+                .Get($"{ApiBankaccounts}/1234");
+
+            Then
+                .Response
+                .ShouldBe
+                .NotFound();
+        }
+
+        [Fact]
         public void Given_that_a_mixture_of_deposits_and_withdrawals_have_been_made_then_the_balance_should_be_correct()
         {
             var customerId = 0;
@@ -88,18 +100,6 @@ namespace Fluent.Testing.Library.Tests.GET
                 .Ok<BankAccount>()
                 .CustomerName
                 .ShouldBe("Dougal");
-        }
-        
-        [Fact]
-        public void For_a_customer_that_does_not_exist()
-        {
-            When
-                .Get($"{ApiBankaccounts}/1234");
-
-            Then
-                .Response
-                .ShouldBe
-                .NotFound();
         }
     }
 }

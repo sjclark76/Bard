@@ -9,9 +9,10 @@ namespace Bard.Internal
     {
         private readonly LogWriter _logWriter;
         private readonly List<PipelineStep> _pipelineSteps = new List<PipelineStep>();
-        private bool _hasBeenExecuted;
         private int _executionCount;
-        public PipelineBuilder(LogWriter logWriter)
+        private bool _hasBeenExecuted;
+
+        internal PipelineBuilder(LogWriter logWriter)
         {
             _logWriter = logWriter;
         }
@@ -47,7 +48,7 @@ namespace Bard.Internal
                 stringBuilder.Append(pipelineStep.StepName);
 
                 if (pipelineStep.StepFunc == null) continue;
-                
+
                 WriteHeader(stringBuilder);
 
                 try
@@ -62,7 +63,7 @@ namespace Bard.Internal
             }
 
             _executionCount++;
-            
+
             Result = input;
 
             return Result;

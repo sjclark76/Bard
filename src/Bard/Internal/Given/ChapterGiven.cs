@@ -8,7 +8,7 @@ namespace Bard.Internal.Given
         private readonly ScenarioContext _context;
         private readonly Func<TRequest> _createRequest;
 
-        public ChapterGiven(ScenarioContext context, Func<TRequest> createRequest)
+        internal ChapterGiven(ScenarioContext context, Func<TRequest> createRequest)
         {
             _context = context;
             _createRequest = createRequest;

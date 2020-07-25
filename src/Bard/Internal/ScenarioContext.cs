@@ -8,7 +8,7 @@ namespace Bard.Internal
     {
         private readonly IPipelineBuilder _pipelineBuilder;
 
-        public ScenarioContext(IPipelineBuilder pipelineBuilder, IApi api, LogWriter logWriter,
+        internal ScenarioContext(IPipelineBuilder pipelineBuilder, IApi api, LogWriter logWriter,
             IServiceProvider? services)
         {
             _pipelineBuilder = pipelineBuilder;
@@ -39,7 +39,7 @@ namespace Bard.Internal
             _pipelineBuilder.AddStep(message);
         }
 
-        public void ResetPipepline()
+        public void ResetPipeline()
         {
             _pipelineBuilder.Reset();
         }

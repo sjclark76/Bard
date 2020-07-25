@@ -7,7 +7,7 @@ namespace Bard.Internal.Given
         private readonly ScenarioContext _context;
         private readonly Func<TRequest> _createRequest;
 
-        public BeginGiven(ScenarioContext context, Func<TRequest> createRequest)
+        internal BeginGiven(ScenarioContext context, Func<TRequest> createRequest)
         {
             _context = context;
             _createRequest = createRequest;

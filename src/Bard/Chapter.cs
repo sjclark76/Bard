@@ -10,7 +10,7 @@ namespace Bard
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
-            
+
             var pipelineResult = ((ScenarioContext) Context).ExecutePipeline();
 
             if (pipelineResult == null) return;

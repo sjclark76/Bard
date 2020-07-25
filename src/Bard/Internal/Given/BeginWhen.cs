@@ -8,7 +8,7 @@ namespace Bard.Internal.Given
         private readonly ScenarioContext _context;
         private readonly Func<ScenarioContext, TOutput> _execute;
 
-        public BeginWhen(ScenarioContext context, Func<ScenarioContext, TOutput> execute)
+        internal BeginWhen(ScenarioContext context, Func<ScenarioContext, TOutput> execute)
         {
             _context = context;
             _execute = execute;

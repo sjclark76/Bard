@@ -23,7 +23,7 @@ namespace Fluent.Testing.Sample.Api.Controllers
 
             return Ok(transfer);
         }
-        
+
         [HttpPost]
         public async Task<ActionResult> Create(Transfer transfer, CancellationToken cancellationToken = default)
         {
@@ -32,16 +32,16 @@ namespace Fluent.Testing.Sample.Api.Controllers
 
             if (fromBankAccount == null)
                 return BadRequest($"Bank account does not exist {transfer.FromBankAccountId}");
-            
+
             if (toBankAccount == null)
                 return BadRequest($"Bank account does not exist {transfer.ToBankAccountId}");
-            
+
             if (fromBankAccount.HasFunds(transfer.Amount))
             {
                 await _dbContext.Transfers.AddAsync(transfer, cancellationToken);
                 fromBankAccount.WithdrawFunds(transfer.Amount);
                 toBankAccount.DepositFunds(transfer.Amount);
-                
+
                 await _dbContext.SaveChangesAsync(cancellationToken);
             }
             else

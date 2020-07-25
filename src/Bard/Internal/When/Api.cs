@@ -17,7 +17,7 @@ namespace Bard.Internal.When
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;
 
-        public Api(HttpClient httpClient, LogWriter logWriter, IBadRequestProvider badRequestProvider)
+        internal Api(HttpClient httpClient, LogWriter logWriter, IBadRequestProvider badRequestProvider)
         {
             _httpClient = httpClient;
             _logWriter = logWriter;

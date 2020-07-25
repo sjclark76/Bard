@@ -4,7 +4,7 @@ namespace Bard.Internal
 {
     internal class PipelineStep
     {
-        public PipelineStep(string stepName)
+        internal PipelineStep(string stepName)
         {
             StepName = stepName;
         }

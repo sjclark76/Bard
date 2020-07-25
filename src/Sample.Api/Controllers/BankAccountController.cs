@@ -53,7 +53,8 @@ namespace Fluent.Testing.Sample.Api.Controllers
         }
 
         [HttpPost("{id}/deposits")]
-        public async Task<ActionResult> DepositMoney([FromRoute] int id, [FromBody] Deposit deposit, CancellationToken cancellationToken = default)
+        public async Task<ActionResult> DepositMoney([FromRoute] int id, [FromBody] Deposit deposit,
+            CancellationToken cancellationToken = default)
         {
             var bankAccount = await _bankDbContext.BankAccounts.FindAsync(id);
 
@@ -68,7 +69,8 @@ namespace Fluent.Testing.Sample.Api.Controllers
         }
 
         [HttpPost("{id}/withdrawals")]
-        public async Task<ActionResult> WithdrawMoney([FromRoute] int id, [FromBody] Withdrawal withdrawal, CancellationToken cancellationToken = default)
+        public async Task<ActionResult> WithdrawMoney([FromRoute] int id, [FromBody] Withdrawal withdrawal,
+            CancellationToken cancellationToken = default)
         {
             var bankAccount = await _bankDbContext.BankAccounts.FindAsync(id);
 

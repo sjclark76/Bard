@@ -9,7 +9,7 @@ namespace Bard.Internal.Given
         private readonly ScenarioContext _context;
         private readonly Func<ScenarioContext, TInput, TOutput> _execute;
 
-        public ChapterWhen(ScenarioContext context, Func<ScenarioContext, TInput, TOutput> execute)
+        internal ChapterWhen(ScenarioContext context, Func<ScenarioContext, TInput, TOutput> execute)
         {
             _context = context;
             _execute = execute;

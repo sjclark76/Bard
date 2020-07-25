@@ -49,7 +49,7 @@ namespace Fluent.Testing.Library.Tests.POST
         {
             var richBankAccount = new BankAccount();
             var poorBankAccount = new BankAccount();
-            
+
             Given
                 .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Rich Person")

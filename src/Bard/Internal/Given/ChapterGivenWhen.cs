@@ -11,7 +11,7 @@ namespace Bard.Internal.Given
         private readonly Func<TRequest> _createRequest;
         private readonly Func<ScenarioContext, TInput, TRequest, TOutput> _execute;
 
-        public ChapterGivenWhen(ScenarioContext context, Func<TRequest> createRequest,
+        internal ChapterGivenWhen(ScenarioContext context, Func<TRequest> createRequest,
             Func<ScenarioContext, TInput, TRequest, TOutput> execute)
         {
             _context = context;

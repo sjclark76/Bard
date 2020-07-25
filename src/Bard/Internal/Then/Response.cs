@@ -7,7 +7,7 @@ namespace Bard.Internal.Then
     {
         private readonly ShouldBe _shouldBe;
 
-        public Response(ApiResult result, IBadRequestProvider badRequestProvider)
+        internal Response(ApiResult result, IBadRequestProvider badRequestProvider)
         {
             _shouldBe = new ShouldBe(result, badRequestProvider);
         }

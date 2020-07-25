@@ -13,7 +13,7 @@ namespace Bard.Internal.Then
         private readonly string _httpResponseString;
         private HttpResponseMessage _httpResponse;
 
-        public ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider)
+        internal ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider)
         {
             badRequestProvider.StringContent = apiResult.ResponseString;
             BadRequest = new BadRequestProviderDecorator(this, badRequestProvider);

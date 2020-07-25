@@ -11,23 +11,6 @@ namespace Fluent.Testing.Library.Tests.POST
         }
 
         [Fact]
-        public void If_the_withdrawal_is_successful_then_an_ok_response_should_be_returned()
-        {
-            var bankAccount = new BankAccount();
-
-            Given
-                .That
-                .BankAccount_has_been_created()
-                .Deposit_has_been_made(100)
-                .UseResult(account => bankAccount = account);
-
-            When
-                .Post($"api/bankaccounts/{bankAccount.Id}/withdrawals", new Withdrawal {Amount = 100});
-
-            Then.Response.ShouldBe.Ok();
-        }
-        
-        [Fact]
         public void If_a_withdrawal_is_made_for_bank_account_that_does_not_exist_then_a_404_should_be_returned()
         {
             When
@@ -38,9 +21,10 @@ namespace Fluent.Testing.Library.Tests.POST
                 .ShouldBe
                 .NotFound();
         }
-        
+
         [Fact]
-        public void If_a_withdrawal_is_requested_but_there_are_insufficient_funds_then_a_bad_request_should_be_returned()
+        public void
+            If_a_withdrawal_is_requested_but_there_are_insufficient_funds_then_a_bad_request_should_be_returned()
         {
             var bankAccount = new BankAccount();
 
@@ -58,6 +42,23 @@ namespace Fluent.Testing.Library.Tests.POST
                 .ShouldBe
                 .BadRequest
                 .WithMessage("Insufficient Funds to make withdrawal.");
+        }
+
+        [Fact]
+        public void If_the_withdrawal_is_successful_then_an_ok_response_should_be_returned()
+        {
+            var bankAccount = new BankAccount();
+
+            Given
+                .That
+                .BankAccount_has_been_created()
+                .Deposit_has_been_made(100)
+                .UseResult(account => bankAccount = account);
+
+            When
+                .Post($"api/bankaccounts/{bankAccount.Id}/withdrawals", new Withdrawal {Amount = 100});
+
+            Then.Response.ShouldBe.Ok();
         }
     }
 }

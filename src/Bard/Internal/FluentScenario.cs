@@ -11,7 +11,7 @@ namespace Bard.Internal
     {
         private readonly Then.Then _then;
 
-        public FluentScenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
+        internal FluentScenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
             options.BadRequestProvider, options.Services)
         {
         }
@@ -43,13 +43,13 @@ namespace Bard.Internal
 
     internal class FluentScenario<T> : FluentScenario, IFluentScenario<T> where T : StoryBook, new()
     {
-        public FluentScenario(ScenarioOptions<T> options) : base(options.Client, options.LogMessage,
+        internal FluentScenario(ScenarioOptions<T> options) : base(options.Client, options.LogMessage,
             options.BadRequestProvider, options.Services)
         {
             var story = options.Story;
             story.Context = Context;
 
-            Given = new Given<T>(story, () => Context.ResetPipepline());
+            Given = new Given<T>(story, () => Context.ResetPipeline());
         }
 
         public IGiven<T> Given { get; }

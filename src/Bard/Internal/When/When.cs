@@ -5,7 +5,7 @@ using Bard.Infrastructure;
 
 namespace Bard.Internal.When
 {
-    internal class When : IWhen, IApi
+    internal class When : IWhen
     {
         private readonly Api _api;
         private readonly LogWriter _logWriter;

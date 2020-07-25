@@ -17,7 +17,7 @@
 
         public bool HasFunds(decimal amount)
         {
-            return Balance > amount;
+            return Balance >= amount;
         }
 
         public void WithdrawFunds(decimal amount)

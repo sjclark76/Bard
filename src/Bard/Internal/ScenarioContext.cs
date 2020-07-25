@@ -14,7 +14,7 @@ namespace Bard.Internal
             _pipelineBuilder = pipelineBuilder;
             Api = api;
             Writer = logWriter;
-
+            
             if (services != null)
                 Services = services.CreateScope().ServiceProvider;
         }

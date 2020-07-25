@@ -4,7 +4,7 @@ using Bard.Internal.Given;
 
 namespace Bard
 {
-    public abstract class StoryBook : StoryBookBase
+    public abstract class StoryBook : ChapterBase
     {
         protected IBeginWhen<TOutput> When<TOutput>(Func<IScenarioContext, TOutput> execute)
             where TOutput : class, new()

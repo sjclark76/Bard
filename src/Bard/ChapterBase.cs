@@ -3,7 +3,7 @@ using Bard.Internal;
 
 namespace Bard
 {
-    public abstract class StoryBookBase
+    public abstract class ChapterBase
     {
         public IScenarioContext? Context { get; set; }
 

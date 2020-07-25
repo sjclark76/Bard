@@ -4,7 +4,7 @@ using Bard.Internal.Given;
 
 namespace Bard
 {
-    public abstract class Chapter<TChapterInput> : StoryBookBase where TChapterInput : class, new()
+    public abstract class Chapter<TChapterInput> : ChapterBase where TChapterInput : class, new()
     {
         public void UseResult(Action<TChapterInput> useResult)
         {

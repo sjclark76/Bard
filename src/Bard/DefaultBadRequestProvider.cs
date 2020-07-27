@@ -1,4 +1,5 @@
-using Shouldly;
+using System;
+using Bard.Internal;
 
 namespace Bard
 {
@@ -6,27 +7,21 @@ namespace Bard
     {
         public override IBadRequestProvider ForProperty(string propertyName)
         {
-            var content = StringContent;
-
-            content.ShouldContain(propertyName);
+            ShouldContain(propertyName);
 
             return this;
         }
 
         public override IBadRequestProvider WithMessage(string message)
         {
-            var content = StringContent;
-
-            content.ShouldContain(message);
+            ShouldContain(message);
 
             return this;
         }
 
         public override IBadRequestProvider WithErrorCode(string errorCode)
         {
-            var content = StringContent;
-
-            content.ShouldContain(errorCode);
+            ShouldContain(errorCode);
 
             return this;
         }
@@ -35,8 +30,9 @@ namespace Bard
         {
             var content = StringContent;
 
-            content.ShouldContain(message);
-
+            if (content.StartsWith(message) == false)
+                throw new BardException($"The received response did not start with the message:{message}");
+                
             return this;
         }
 
@@ -44,9 +40,17 @@ namespace Bard
         {
             var content = StringContent;
 
-            content.ShouldContain(message);
+            if (content.Equals(message) == false)
+                throw new BardException($"The received response did not end with the message:{message}");
 
             return this;
+        }
+        private void ShouldContain(string value)
+        {
+            if (StringContent.Contains(value, StringComparison.InvariantCultureIgnoreCase) == false)
+            {
+                throw new BardException($"The received response did not contain the message:{value}");
+            }
         }
     }
 }

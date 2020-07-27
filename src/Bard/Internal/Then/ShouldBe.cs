@@ -4,7 +4,6 @@ using System.Net.Http;
 using Bard.Infrastructure;
 using Bard.Internal.When;
 using Newtonsoft.Json;
-using Shouldly;
 
 namespace Bard.Internal.Then
 {
@@ -39,8 +38,7 @@ namespace Bard.Internal.Then
 
             var content = Content<T>();
 
-            content.ShouldNotBeNull(
-                $"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
+            AssertContentIsNotNull(content);
 
             return content;
         }
@@ -56,8 +54,7 @@ namespace Bard.Internal.Then
 
             var content = Content<T>();
 
-            content.ShouldNotBeNull(
-                $"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
+            AssertContentIsNotNull(content);
 
             return content;
         }
@@ -79,8 +76,16 @@ namespace Bard.Internal.Then
 
             var statusCode = _httpResponse.StatusCode;
 
-            statusCode.ShouldBe(httpStatusCode,
-                $"Status code mismatch, response was {_httpResponse.StatusCode}");
+            if (statusCode != httpStatusCode)
+                throw new BardException(
+                    $"Invalid HTTP Status Code Received \n Expected: {(int) httpStatusCode} {httpStatusCode} \n Actual: {(int) statusCode} {statusCode} \n ");
+        }
+
+        private void AssertContentIsNotNull<T>(T content)
+        {
+            if (content == null)
+                throw new BardException(
+                    $"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
         }
 
         public T Content<T>()
@@ -100,7 +105,7 @@ namespace Bard.Internal.Then
                 // ok..
             }
 
-            return content ?? throw new Exception($"Unable to serialize api response {_httpResponseString}");
+            return content ?? throw new BardException($"Unable to serialize api response {_httpResponseString}");
         }
     }
 }

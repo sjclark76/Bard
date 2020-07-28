@@ -7,7 +7,7 @@ namespace Bard
     {
         internal ScenarioContext? Context { get; set; }
 
-        public void AddMessage(string message)
+        internal void AddMessage(string message)
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");

@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 using Bard.Infrastructure;
+using Bard.Internal.Then;
 
 namespace Bard.Internal
 {
-    internal class PipelineBuilder : IPipelineBuilder
+    internal class PipelineBuilder : IPipelineBuilder, IObserver<Response>
     {
+        private IDisposable? _unSubscriber;
         private readonly LogWriter _logWriter;
         private readonly List<PipelineStep> _pipelineSteps = new List<PipelineStep>();
         private int _executionCount;
         private bool _hasBeenExecuted;
+        private bool _apiCalled;
 
         internal PipelineBuilder(LogWriter logWriter)
         {
@@ -42,6 +45,7 @@ namespace Bard.Internal
 
             foreach (var pipelineStep in _pipelineSteps)
             {
+                _apiCalled = false;
                 if (stringBuilder.Length > 0)
                     stringBuilder.Append(" ");
 
@@ -54,6 +58,13 @@ namespace Bard.Internal
                 try
                 {
                     var output = pipelineStep.StepFunc(input);
+                    if (_apiCalled == false)
+                    {
+                        // The API was not called through the context so log
+                        // the output instead.
+                        _logWriter.WriteObjectToConsole(output);
+                    }
+                    
                     input = output;
                 }
                 catch (Exception exception)
@@ -85,6 +96,30 @@ namespace Bard.Internal
             _logWriter.WriteStringToConsole("");
             stringBuilder.Clear();
             stringBuilder.Append("* ");
+        }
+
+        public void OnCompleted()
+        {
+        }
+
+        public void OnError(Exception error)
+        {
+        }
+
+        public void OnNext(Response value)
+        {
+            _apiCalled = true;
+        }
+
+        public void Subscribe(IObservable<Response> provider)
+        {
+            if (provider != null)
+                _unSubscriber = provider.Subscribe(this);
+        }
+        
+        public void UnSubscribe()
+        {
+            _unSubscriber?.Dispose();
         }
     }
 }

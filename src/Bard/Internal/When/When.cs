@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using Bard.Infrastructure;
 
 namespace Bard.Internal.When
@@ -10,18 +9,13 @@ namespace Bard.Internal.When
         private readonly Api _api;
         private readonly LogWriter _logWriter;
         private readonly Action _onCalled;
-        private readonly Action<IResponse> _onResponsePublished;
 
-        internal When(HttpClient httpClient, LogWriter logWriter,
-            IBadRequestProvider badRequestProvider,
-            Action onCalled,
-            Action<IResponse> onResponsePublished)
+        internal When(Api api, LogWriter logWriter,
+            Action onCalled)
         {
-            _api = new Api(httpClient, logWriter, badRequestProvider);
+            _api = api;
             _logWriter = logWriter;
             _onCalled = onCalled;
-
-            _onResponsePublished = onResponsePublished;
         }
 
         public IResponse Delete(string route)
@@ -61,8 +55,6 @@ namespace Bard.Internal.When
             _onCalled();
 
             var response = callApi();
-
-            _onResponsePublished(response);
 
             return response;
         }

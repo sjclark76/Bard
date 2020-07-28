@@ -7,7 +7,7 @@ using Bard.Internal.When;
 
 namespace Bard.Internal
 {
-    internal class FluentScenario : IFluentScenario
+   internal class FluentScenario : IFluentScenario
     {
         private readonly Then.Then _then;
 
@@ -23,18 +23,23 @@ namespace Bard.Internal
                 throw new Exception("Use method must be called first.");
 
             var logWriter = new LogWriter(logMessage);
+            var api = new Api(client, logWriter, badRequestProvider);
+            var pipeline = new PipelineBuilder(logWriter);
 
-            Context = new ScenarioContext(new PipelineBuilder(logWriter),
-                new Api(client, logWriter, badRequestProvider), logWriter, services);
+            Context = new ScenarioContext(pipeline, api, logWriter, services);
 
-            When = new When.When(client, logWriter, badRequestProvider,
-                () => Context.ExecutePipeline(),
-                response => _then.Response = response);
-
+            var when = new When.When(api, logWriter, 
+                () => Context.ExecutePipeline());
+            
+            When = when;
+            
             _then = new Then.Then();
+            
+            _then.Subscribe(api);
+            pipeline.Subscribe(api);
         }
 
-        protected ScenarioContext Context { get; set; }
+        protected ScenarioContext Context { get; }
 
         public IWhen When { get; }
 

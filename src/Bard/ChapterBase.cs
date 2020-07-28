@@ -5,14 +5,14 @@ namespace Bard
 {
     public abstract class ChapterBase
     {
-        public IScenarioContext? Context { get; set; }
+        internal ScenarioContext? Context { get; set; }
 
-        public void AddMessage(string message)
+        internal void AddMessage(string message)
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            ((ScenarioContext) Context).AddPipelineStep(message);
+            Context.AddPipelineStep(message);
         }
     }
 }

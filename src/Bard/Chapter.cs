@@ -1,5 +1,4 @@
 ﻿using System;
-using Bard.Internal;
 using Bard.Internal.Given;
 
 namespace Bard
@@ -11,7 +10,7 @@ namespace Bard
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            var pipelineResult = ((ScenarioContext) Context).ExecutePipeline();
+            var pipelineResult = Context.ExecutePipeline();
 
             if (pipelineResult == null) return;
 
@@ -26,7 +25,7 @@ namespace Bard
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            return new ChapterWhen<TChapterInput, TOutput>((ScenarioContext) Context, execute);
+            return new ChapterWhen<TChapterInput, TOutput>(Context, execute);
         }
 
         protected IChapterGiven<TChapterInput, TRequest> Given<TRequest>(Func<TRequest> createRequest)
@@ -35,7 +34,7 @@ namespace Bard
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            return new ChapterGiven<TChapterInput, TRequest>((ScenarioContext) Context, createRequest);
+            return new ChapterGiven<TChapterInput, TRequest>(Context, createRequest);
         }
     }
 }

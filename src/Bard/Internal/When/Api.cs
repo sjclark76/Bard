@@ -11,17 +11,19 @@ using Newtonsoft.Json.Serialization;
 
 namespace Bard.Internal.When
 {
-    internal class Api : IApi
+    internal class Api : IApi, IObservable<Response>
     {
         private readonly IBadRequestProvider _badRequestProvider;
         private readonly HttpClient _httpClient;
         private readonly LogWriter _logWriter;
+        private readonly List<IObserver<Response>> _observers;
 
         internal Api(HttpClient httpClient, LogWriter logWriter, IBadRequestProvider badRequestProvider)
         {
             _httpClient = httpClient;
             _logWriter = logWriter;
             _badRequestProvider = badRequestProvider;
+            _observers = new List<IObserver<Response>>();
         }
 
         public IResponse Put<TModel>(string route, TModel model)
@@ -58,9 +60,9 @@ namespace Bard.Internal.When
             _logWriter.WriteHttpResponseToConsole(message);
 
             var apiResult = new ApiResult(message, content);
-
             var response = new Response(apiResult, _badRequestProvider);
-
+            
+            PublishApiResponse(response);
             return response;
         }
 
@@ -75,9 +77,9 @@ namespace Bard.Internal.When
             var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
 
             var apiResult = new ApiResult(message, content);
-
             var response = new Response(apiResult, _badRequestProvider);
-
+            
+            PublishApiResponse(response);
             return response;
         }
 
@@ -98,7 +100,7 @@ namespace Bard.Internal.When
         {
             var messageContent = CreateMessageContent(model);
             var responseMessage = AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
-
+           
             _logWriter.WriteStringToConsole($"REQUEST: {responseMessage.RequestMessage.Method.Method} {route}");
             _logWriter.WriteObjectToConsole(model);
 
@@ -107,10 +109,52 @@ namespace Bard.Internal.When
             _logWriter.WriteHttpResponseToConsole(responseMessage);
 
             var apiResult = new ApiResult(responseMessage, responseString);
-
             var response = new Response(apiResult, _badRequestProvider);
-
+            PublishApiResponse(response);
             return response;
+        }
+
+        public IDisposable Subscribe(IObserver<Response> observer)
+        {
+            // Check whether observer is already registered. If not, add it
+            if (!_observers.Contains(observer))
+            {
+                _observers.Add(observer);
+            }
+            return new Unsubscriber(_observers, observer);
+        }
+
+        public void PublishApiResponse(Response? apiResponse)
+        {
+            foreach (var observer in _observers)
+            {
+                if (apiResponse == null)
+                {
+                    //observer.OnError(new LocationUnknownException());
+                }
+                else
+                {
+                    observer.OnNext(apiResponse);
+                }
+            }
+        }
+        
+        private class Unsubscriber : IDisposable
+        {
+            private readonly List<IObserver<Response>> _observers;
+            private readonly IObserver<Response> _observer;
+
+            public Unsubscriber(List<IObserver<Response>> observers, IObserver<Response> observer)
+            {
+                _observers = observers;
+                _observer = observer;
+            }
+
+            public void Dispose()
+            {
+                if (_observer != null && _observers.Contains(_observer))
+                    _observers.Remove(_observer);
+            }
         }
     }
 }

@@ -31,7 +31,6 @@ namespace Fluent.Testing.Library.Tests
                     options.LogMessage = output.WriteLine;
                 });
             
-
             Given = scenario.Given;
             When = scenario.When;
             Then = scenario.Then;

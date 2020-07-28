@@ -24,6 +24,6 @@ namespace Bard.Configuration
             Story = new TStoryBook();
         }
 
-        public TStoryBook Story { get; }
+        internal TStoryBook Story { get; }
     }
 }

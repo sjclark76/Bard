@@ -1,5 +1,4 @@
 ﻿using System;
-using Bard.Internal;
 using Bard.Internal.Given;
 
 namespace Bard

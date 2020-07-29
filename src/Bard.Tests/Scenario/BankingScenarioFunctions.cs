@@ -1,5 +1,5 @@
 using System;
-using Bard.Internal;
+using Bard;
 using Fluent.Testing.Sample.Api.Model;
 
 namespace Fluent.Testing.Library.Tests.Scenario

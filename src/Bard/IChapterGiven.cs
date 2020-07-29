@@ -1,5 +1,4 @@
 ﻿using System;
-using Bard.Internal;
 
 namespace Bard
 {

@@ -26,7 +26,7 @@ namespace Bard.Internal.Given
 
             _context.AddPipelineStep(memberName, input =>
             {
-                _context.StoryInput = input as TInput;
+                _context.SetStoryInput(input as TInput);
                    return _execute(_context, request);
             });
 

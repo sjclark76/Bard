@@ -22,7 +22,7 @@ namespace Bard.Internal.Given
             
             _context.AddPipelineStep(memberName, input =>
             {
-                nextContext.StoryInput = input as TInput;
+                nextContext.SetStoryInput(input as TInput);
                 return _execute(nextContext);
             });
 

@@ -1,13 +1,13 @@
 ﻿using System;
 using Bard.Configuration;
 using Bard.Infrastructure;
+using Bard.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Bard.Internal
+namespace Bard
 {
     public class ScenarioContext : IScenarioContext
     {
-        internal IPipelineBuilder Builder { get; }
         private IServiceProvider? _services;
 
         internal ScenarioContext(IPipelineBuilder pipelineBuilder, IApi api, LogWriter logWriter,
@@ -16,18 +16,21 @@ namespace Bard.Internal
             Builder = pipelineBuilder;
             Api = api;
             Writer = logWriter;
-            
+
             if (services != null)
                 Services = services.CreateScope().ServiceProvider;
         }
+
+        internal IPipelineBuilder Builder { get; }
 
         public IServiceProvider? Services
         {
             get
             {
                 if (_services == null)
-                    throw new BardConfigurationException($"Error Accessing {nameof(ScenarioContext)} {nameof(Services)} property. It has not been set in {nameof(ScenarioConfiguration)} {nameof(ScenarioConfiguration.Configure)} method.");
-                
+                    throw new BardConfigurationException(
+                        $"Error Accessing {nameof(ScenarioContext)} {nameof(Services)} property. It has not been set in {nameof(ScenarioConfiguration)} {nameof(ScenarioConfiguration.Configure)} method.");
+
                 return _services;
             }
             set => _services = value;
@@ -36,36 +39,40 @@ namespace Bard.Internal
         public IApi Api { get; }
         public LogWriter Writer { get; }
 
-        public object? ExecutePipeline()
+        internal object? ExecutePipeline()
         {
             return Builder.Execute();
         }
 
-        public void AddPipelineStep(string stepName, Func<object?, object?> func)
+        internal void AddPipelineStep(string stepName, Func<object?, object?> func)
         {
             Builder.AddStep(stepName, func);
         }
-
-        public void AddPipelineStep(string message)
-        {
-            Builder.AddStep(message);
-        }
-
-        public void ResetPipeline()
-        {
-            Builder.Reset();
-        }
-
-        public bool HasSteps => Builder.HasSteps;
     }
 
     public class ScenarioContext<TStoryInput> : ScenarioContext where TStoryInput : class, new()
     {
-        public TStoryInput? StoryInput { get; set; }
-        
-        internal ScenarioContext(ScenarioContext context) : base(context.Builder, context.Api, context.Writer, context.Services)
+        private TStoryInput? _storyInput;
+
+        internal ScenarioContext(ScenarioContext context) : base(context.Builder, context.Api, context.Writer,
+            context.Services)
         {
         }
+
+        public TStoryInput StoryInput
+        {
+            get
+            {
+                if (_storyInput == null)
+                    throw new BardException($"{nameof(StoryInput)} has not been set.");
+
+                return _storyInput;
+            }
+        }
+
+        public void SetStoryInput(TStoryInput? input)
+        {
+            _storyInput = input;
+        }
     }
-        
 }

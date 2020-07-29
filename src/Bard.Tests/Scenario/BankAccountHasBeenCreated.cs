@@ -10,6 +10,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
         {
             When(context =>
             {
+                
                 return new Deposit();
             });
         }

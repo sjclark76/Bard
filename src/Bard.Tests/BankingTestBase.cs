@@ -29,6 +29,7 @@ namespace Fluent.Testing.Library.Tests
                 {
                     options.Client = httpClient;
                     options.LogMessage = output.WriteLine;
+                    options.Services = host.Services;
                 });
             
             Given = scenario.Given;

@@ -1,4 +1,5 @@
 ﻿using System;
+using Bard.Configuration;
 using Bard.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,6 +8,7 @@ namespace Bard.Internal
     internal class ScenarioContext : IScenarioContext
     {
         private readonly IPipelineBuilder _pipelineBuilder;
+        private IServiceProvider? _services;
 
         internal ScenarioContext(IPipelineBuilder pipelineBuilder, IApi api, LogWriter logWriter,
             IServiceProvider? services)
@@ -19,7 +21,17 @@ namespace Bard.Internal
                 Services = services.CreateScope().ServiceProvider;
         }
 
-        public IServiceProvider? Services { get; set; }
+        public IServiceProvider? Services
+        {
+            get
+            {
+                if (_services == null)
+                    throw new BardConfigurationException($"Error Accessing {nameof(ScenarioContext)} {nameof(Services)} property. It has not been set in {nameof(ScenarioConfiguration)} {nameof(ScenarioConfiguration.Configure)} method.");
+                
+                return _services;
+            }
+            set => _services = value;
+        }
 
         public IApi Api { get; }
         public LogWriter Writer { get; }

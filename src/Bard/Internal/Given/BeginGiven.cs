@@ -16,7 +16,9 @@ namespace Bard.Internal.Given
         public IBeginGivenWhen<TOutput> When<TOutput>(Func<IScenarioContext, TRequest, TOutput> execute)
             where TOutput : class, new()
         {
-            return new BeginGivenWhen<TRequest, TOutput>(_context, _createRequest, execute);
+            var nextContext = new ScenarioContext<TOutput>(_context);
+            
+            return new BeginGivenWhen<TRequest, TOutput>(nextContext, _createRequest, execute);
         }
     }
 }

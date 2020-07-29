@@ -3,7 +3,7 @@ using System;
 namespace Bard.Internal.Given
 {
     internal class ChapterGiven<TInput, TRequest> : IChapterGiven<TInput, TRequest>
-        where TRequest : new() where TInput : new()
+        where TRequest : new() where TInput : class, new()
     {
         private readonly ScenarioContext _context;
         private readonly Func<TRequest> _createRequest;
@@ -14,10 +14,11 @@ namespace Bard.Internal.Given
             _createRequest = createRequest;
         }
 
-        public IChapterGivenWhen<TOutput> When<TOutput>(Func<IScenarioContext, TInput, TRequest, TOutput> execute)
-            where TOutput : class, new()
+     public IChapterGivenWhen<TOutput> When<TOutput>(Func<ScenarioContext<TInput>, TRequest, TOutput> execute) where TOutput : class, new()
         {
-            return new ChapterGivenWhen<TInput, TRequest, TOutput>(_context, _createRequest, execute);
+            var nextContext = new ScenarioContext<TInput>(_context);
+            return new ChapterGivenWhen<TInput, TRequest, TOutput>(nextContext, _createRequest, execute);
+            
         }
     }
 }

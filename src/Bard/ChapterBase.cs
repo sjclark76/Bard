@@ -1,18 +1,13 @@
-﻿using System;
-using Bard.Internal;
-
-namespace Bard
+﻿namespace Bard
 {
     public abstract class ChapterBase
     {
-        internal ScenarioContext? Context { get; set; }
-
-        internal void AddMessage(string message)
-        {
-            if (Context == null)
-                throw new ApplicationException($"{nameof(Context)} has not been set.");
-
-            Context.AddPipelineStep(message);
-        }
+        // internal void AddMessage(string message)
+        // {
+        //     if (Context == null)
+        //         throw new ApplicationException($"{nameof(Context)} has not been set.");
+        //
+        //     Context.AddPipelineStep(message);
+        // }
     }
 }

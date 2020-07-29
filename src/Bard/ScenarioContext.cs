@@ -5,15 +5,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Bard.Internal
 {
-    internal class ScenarioContext : IScenarioContext
+    public class ScenarioContext : IScenarioContext
     {
-        private readonly IPipelineBuilder _pipelineBuilder;
+        internal IPipelineBuilder Builder { get; }
         private IServiceProvider? _services;
 
         internal ScenarioContext(IPipelineBuilder pipelineBuilder, IApi api, LogWriter logWriter,
             IServiceProvider? services)
         {
-            _pipelineBuilder = pipelineBuilder;
+            Builder = pipelineBuilder;
             Api = api;
             Writer = logWriter;
             
@@ -38,24 +38,34 @@ namespace Bard.Internal
 
         public object? ExecutePipeline()
         {
-            return _pipelineBuilder.Execute();
+            return Builder.Execute();
         }
 
         public void AddPipelineStep(string stepName, Func<object?, object?> func)
         {
-            _pipelineBuilder.AddStep(stepName, func);
+            Builder.AddStep(stepName, func);
         }
 
         public void AddPipelineStep(string message)
         {
-            _pipelineBuilder.AddStep(message);
+            Builder.AddStep(message);
         }
 
         public void ResetPipeline()
         {
-            _pipelineBuilder.Reset();
+            Builder.Reset();
         }
 
-        public bool HasSteps => _pipelineBuilder.HasSteps;
+        public bool HasSteps => Builder.HasSteps;
     }
+
+    public class ScenarioContext<TStoryInput> : ScenarioContext where TStoryInput : class, new()
+    {
+        public TStoryInput? StoryInput { get; set; }
+        
+        internal ScenarioContext(ScenarioContext context) : base(context.Builder, context.Api, context.Writer, context.Services)
+        {
+        }
+    }
+        
 }

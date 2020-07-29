@@ -9,7 +9,7 @@ namespace Bard.Internal.Given
         private readonly Func<TRequest> _createRequest;
         private readonly Func<ScenarioContext, TRequest, TOutput> _execute;
 
-        internal BeginGivenWhen(ScenarioContext context, Func<TRequest> createRequest,
+        internal BeginGivenWhen(ScenarioContext<TOutput> context, Func<TRequest> createRequest,
             Func<ScenarioContext, TRequest, TOutput> execute)
         {
             _context = context;
@@ -23,7 +23,8 @@ namespace Bard.Internal.Given
             var request = _createRequest();
             _context.AddPipelineStep(memberName, input => _execute(_context, request));
 
-            var nextStep = new TNextStep {Context = _context};
+            var nextContext = new ScenarioContext<TOutput>(_context);
+            var nextStep = new TNextStep {Context = nextContext};
 
             return nextStep;
         }

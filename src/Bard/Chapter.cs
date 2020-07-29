@@ -1,10 +1,13 @@
 ﻿using System;
+using Bard.Internal;
 using Bard.Internal.Given;
 
 namespace Bard
 {
     public abstract class Chapter<TChapterInput> : ChapterBase where TChapterInput : class, new()
     {
+        internal ScenarioContext<TChapterInput>? Context { get; set; }
+        
         public void UseResult(Action<TChapterInput> useResult)
         {
             if (Context == null)
@@ -19,13 +22,15 @@ namespace Bard
             useResult(input);
         }
 
-        protected IChapterWhen<TOutput> When<TOutput>(Func<IScenarioContext, TChapterInput, TOutput> execute)
+        protected IChapterWhen<TOutput> When<TOutput>(Func<ScenarioContext<TChapterInput>, TOutput> execute)
             where TOutput : class, new()
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            return new ChapterWhen<TChapterInput, TOutput>(Context, execute);
+            var context = new ScenarioContext<TOutput>(Context);
+            
+            return new ChapterWhen<TChapterInput, TOutput>(context, execute);
         }
 
         protected IChapterGiven<TChapterInput, TRequest> Given<TRequest>(Func<TRequest> createRequest)

@@ -9,4 +9,9 @@ namespace Bard
         IApi Api { get; }
         LogWriter Writer { get; }
     }
+
+    public interface IScenarioContext<TStoryInput> where TStoryInput : class, new()
+    {
+        TStoryInput? StoryInput { get; set; }
+    }
 }

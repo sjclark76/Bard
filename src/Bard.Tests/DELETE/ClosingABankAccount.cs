@@ -2,7 +2,7 @@
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Fluent.Testing.Library.Tests.POST
+namespace Fluent.Testing.Library.Tests.DELETE
 {
     public class ClosingABankAccount : BankingTestBase
     {

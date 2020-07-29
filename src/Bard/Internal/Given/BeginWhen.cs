@@ -8,7 +8,7 @@ namespace Bard.Internal.Given
         private readonly ScenarioContext _context;
         private readonly Func<ScenarioContext, TOutput> _execute;
 
-        internal BeginWhen(ScenarioContext context, Func<ScenarioContext, TOutput> execute)
+        internal BeginWhen(ScenarioContext<TOutput> context, Func<ScenarioContext, TOutput> execute)
         {
             _context = context;
             _execute = execute;
@@ -19,7 +19,8 @@ namespace Bard.Internal.Given
         {
             _context.AddPipelineStep(memberName, input => _execute(_context));
 
-            var nextStep = new TNextStep {Context = _context};
+            var nextContext = new ScenarioContext<TOutput>(_context);
+            var nextStep = new TNextStep {Context = nextContext};
 
             return nextStep;
         }

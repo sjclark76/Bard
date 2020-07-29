@@ -1,4 +1,3 @@
-using Bard;
 using Fluent.Testing.Sample.Api.Model;
 using Shouldly;
 using Xunit;
@@ -35,11 +34,8 @@ namespace Fluent.Testing.Library.Tests.GET
             Given
                 .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
-                .And()
                 .Deposit_has_been_made(100)
-                .And()
                 .Withdrawal_has_been_made(50)
-                .And()
                 .Deposit_has_been_made(25)
                 .UseResult(account => customerId = account.Id);
 
@@ -62,11 +58,8 @@ namespace Fluent.Testing.Library.Tests.GET
             Given
                 .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
-                .And()
                 .Deposit_has_been_made(50)
-                .And()
                 .Deposit_has_been_made(50)
-                .And()
                 .Withdrawal_has_been_made(25)
                 .UseResult(account => customerId = account.Id);
 

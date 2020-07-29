@@ -7,9 +7,9 @@ namespace Bard.Internal.Given
         where TOutput : class, new() where TInput : class, new()
     {
         private readonly ScenarioContext _context;
-        private readonly Func<ScenarioContext, TInput, TOutput> _execute;
+        private readonly Func<ScenarioContext<TInput>, TOutput> _execute;
 
-        internal ChapterWhen(ScenarioContext context, Func<ScenarioContext, TInput, TOutput> execute)
+        internal ChapterWhen(ScenarioContext<TOutput> context, Func<ScenarioContext<TInput>, TOutput> execute)
         {
             _context = context;
             _execute = execute;
@@ -18,11 +18,15 @@ namespace Bard.Internal.Given
         public TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
             where TNextStep : Chapter<TOutput>, new()
         {
-            _context.AddPipelineStep(memberName, input => input == null
-                ? _execute(_context, new TInput())
-                : _execute(_context, (TInput) input));
+            var nextContext = new ScenarioContext<TInput>(_context);
+            
+            _context.AddPipelineStep(memberName, input =>
+            {
+                nextContext.StoryInput = input as TInput;
+                return _execute(nextContext);
+            });
 
-            var nextStep = new TNextStep {Context = _context};
+            var nextStep = new TNextStep {Context = new ScenarioContext<TOutput>(_context)};
 
             return nextStep;
         }

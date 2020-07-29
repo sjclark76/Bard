@@ -55,5 +55,7 @@ namespace Bard.Internal
         {
             _pipelineBuilder.Reset();
         }
+
+        public bool HasSteps => _pipelineBuilder.HasSteps;
     }
 }

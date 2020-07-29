@@ -8,14 +8,14 @@ namespace Bard.Internal.When
     {
         private readonly Api _api;
         private readonly LogWriter _logWriter;
-        private readonly Action _onCalled;
+        private readonly Action _preApiCall;
 
         internal When(Api api, LogWriter logWriter,
-            Action onCalled)
+            Action preApiCall)
         {
             _api = api;
             _logWriter = logWriter;
-            _onCalled = onCalled;
+            _preApiCall = preApiCall;
         }
 
         public IResponse Delete(string route)
@@ -50,10 +50,10 @@ namespace Bard.Internal.When
 
         private IResponse CallApi(Func<IResponse> callApi)
         {
+            _preApiCall();
+
             WriteHeader();
-
-            _onCalled();
-
+            
             var response = callApi();
 
             return response;

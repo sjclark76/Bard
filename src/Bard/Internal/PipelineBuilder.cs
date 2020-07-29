@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Bard.Infrastructure;
 using Bard.Internal.Then;
@@ -8,12 +9,11 @@ namespace Bard.Internal
 {
     internal class PipelineBuilder : IPipelineBuilder, IObserver<Response>
     {
-        private IDisposable? _unSubscriber;
         private readonly LogWriter _logWriter;
         private readonly List<PipelineStep> _pipelineSteps = new List<PipelineStep>();
-        private int _executionCount;
-        private bool _hasBeenExecuted;
         private bool _apiCalled;
+        private int _executionCount;
+        private IDisposable? _unSubscriber;
 
         internal PipelineBuilder(LogWriter logWriter)
         {
@@ -21,6 +21,19 @@ namespace Bard.Internal
         }
 
         public object? Result { get; set; }
+
+        public void OnCompleted()
+        {
+        }
+
+        public void OnError(Exception error)
+        {
+        }
+
+        public void OnNext(Response value)
+        {
+            _apiCalled = true;
+        }
 
         public void AddStep(string stepName)
         {
@@ -34,9 +47,9 @@ namespace Bard.Internal
 
         public object? Execute()
         {
-            if (_hasBeenExecuted) return Result;
+            if (HasSteps == false) return Result;
 
-            _hasBeenExecuted = true;
+            //_hasBeenExecuted = true;
 
             object? input = null;
 
@@ -59,12 +72,10 @@ namespace Bard.Internal
                 {
                     var output = pipelineStep.StepFunc(input);
                     if (_apiCalled == false)
-                    {
                         // The API was not called through the context so log
                         // the output instead.
                         _logWriter.WriteObjectToConsole(output);
-                    }
-                    
+
                     input = output;
                 }
                 catch (Exception exception)
@@ -72,7 +83,8 @@ namespace Bard.Internal
                     throw new ChapterException($"Error executing story {pipelineStep.StepName}", exception);
                 }
             }
-
+            Reset();
+            
             _executionCount++;
 
             Result = input;
@@ -82,9 +94,11 @@ namespace Bard.Internal
 
         public void Reset()
         {
-            _hasBeenExecuted = false;
+            //_hasBeenExecuted = false;
             _pipelineSteps.Clear();
         }
+
+        public bool HasSteps => _pipelineSteps.Any();
 
         private void WriteHeader(StringBuilder stringBuilder)
         {
@@ -98,25 +112,12 @@ namespace Bard.Internal
             stringBuilder.Append("* ");
         }
 
-        public void OnCompleted()
-        {
-        }
-
-        public void OnError(Exception error)
-        {
-        }
-
-        public void OnNext(Response value)
-        {
-            _apiCalled = true;
-        }
-
         public void Subscribe(IObservable<Response> provider)
         {
             if (provider != null)
                 _unSubscriber = provider.Subscribe(this);
         }
-        
+
         public void UnSubscribe()
         {
             _unSubscriber?.Dispose();

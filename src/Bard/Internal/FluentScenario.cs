@@ -54,7 +54,7 @@ namespace Bard.Internal
             var story = options.Story;
             story.Context = Context;
 
-            Given = new Given<T>(story, () => Context.ResetPipeline());
+            Given = new Given<T>(story, () => Context.ExecutePipeline());
         }
 
         public IGiven<T> Given { get; }

@@ -6,7 +6,9 @@ description: Bard is a .NET library for API testing.
 
 ## Why Bard?
 
-Bard is a test library written by Developers for Developers. It is as much a development tool as it is a test library. Although Bard is a .NET library it can be used to test any API if you want.
+Bard is a test library written by Developers for Developers. It is as much a development tool as it is a test library. Although Bard is a .NET library it can be used to test any API if you want
+
+
 
 ### First Class Test Logging
 

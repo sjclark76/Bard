@@ -26,6 +26,24 @@ namespace Fluent.Testing.Library.Tests.GET
         }
 
         [Fact]
+        public void Given_that_a_bank_account_has_been_created()
+        {
+            var customerId = 0;
+
+            Given
+                .That
+                .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
+                .UseResult(account => customerId = account.Id);
+
+            When
+                .Get($"{ApiBankaccounts}/{customerId}");
+
+            Then.Response
+                .ShouldBe
+                .Ok<BankAccount>();
+        }
+        
+        [Fact]
         public void Given_that_a_mixture_of_deposits_and_withdrawals_have_been_made_then_the_balance_should_be_correct()
         {
             var customerId = 0;

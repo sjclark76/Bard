@@ -17,7 +17,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
         public static readonly Func<ScenarioContext<BankAccount>, Withdrawal, BankAccount> MakeAWithdrawal =
             (context, request) =>
             {
-                context.Api.Post($"api/bankaccounts/{context.StoryInput?.Id}/withdrawals",
+                context.Api.Post($"api/bankaccounts/{context.StoryInput.Id}/withdrawals",
                     request);
                 
                 context.StoryInput.Balance -= request.Amount.GetValueOrDefault();

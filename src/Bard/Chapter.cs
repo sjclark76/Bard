@@ -1,4 +1,5 @@
 ﻿using System;
+using Bard.Internal;
 using Bard.Internal.Given;
 
 namespace Bard
@@ -6,19 +7,26 @@ namespace Bard
     public abstract class Chapter<TChapterInput> where TChapterInput : class, new()
     {
         internal ScenarioContext<TChapterInput>? Context { get; set; }
+
+        public TChapterInput? Result
+        {
+            get
+            {
+                if (Context == null)
+                    throw new ApplicationException($"{nameof(Context)} has not been set.");
+
+                var pipelineResult = Context.ExecutePipeline();
+
+                return pipelineResult as TChapterInput;
+            }
+        }
         
         public void UseResult(Action<TChapterInput> useResult)
         {
-            if (Context == null)
-                throw new ApplicationException($"{nameof(Context)} has not been set.");
-
-            var pipelineResult = Context.ExecutePipeline();
-
-            if (pipelineResult == null) return;
-
-            var input = (TChapterInput) pipelineResult;
-
-            useResult(input);
+            if (Result == null)
+                throw new BardException("Result is null");
+            
+            useResult(Result);
         }
 
         protected IChapterWhen<TOutput> When<TOutput>(Func<ScenarioContext<TChapterInput>, TOutput> execute)

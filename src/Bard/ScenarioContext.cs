@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Bard
 {
-    public class ScenarioContext : IScenarioContext
+    public class ScenarioContext
     {
         private IServiceProvider? _services;
 

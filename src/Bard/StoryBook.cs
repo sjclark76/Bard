@@ -15,7 +15,7 @@ namespace Bard
         /// <typeparam name="TStoryOutput"></typeparam>
         /// <returns></returns>
         /// <exception cref="BardConfigurationException"></exception>
-        protected IBeginWhen<TStoryOutput> When<TStoryOutput>(Func<IScenarioContext, TStoryOutput> story)
+        protected IBeginWhen<TStoryOutput> When<TStoryOutput>(Func<ScenarioContext, TStoryOutput> story)
             where TStoryOutput : class, new()
         {
             if (Context == null)

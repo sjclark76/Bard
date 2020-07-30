@@ -13,7 +13,7 @@ namespace Bard.Internal.Given
             _createRequest = createRequest;
         }
 
-        public IBeginGivenWhen<TOutput> When<TOutput>(Func<IScenarioContext, TRequest, TOutput> execute)
+        public IBeginGivenWhen<TOutput> When<TOutput>(Func<ScenarioContext, TRequest, TOutput> execute)
             where TOutput : class, new()
         {
             var nextContext = new ScenarioContext<TOutput>(_context);

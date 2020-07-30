@@ -6,13 +6,19 @@ namespace Fluent.Testing.Library.Tests.Scenario
 {
     public class BankAccountHasBeenCreated : Chapter<BankAccount>
     {
-        public void DeposBlahBlah()
+        public EndChapter<BankAccount> BankAccount_has_been_updated(Action<BankAccount>? updateBankAccount = null)
         {
-            When(context =>
+            return When(context =>
             {
+                var update = context.StoryInput;
                 
-                return new Deposit();
-            });
+                updateBankAccount?.Invoke(update);
+
+                context.Api.Put($"api/bankaccounts/{context.StoryInput.Id}", update);
+                
+                return update;
+            })
+                .End();
         }
         
         public DepositMade Deposit_has_been_made(decimal amount)

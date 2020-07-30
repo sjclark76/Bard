@@ -20,8 +20,7 @@ namespace Fluent.Testing.Library.Tests.GET
             When
                 .Get($"{ApiBankaccounts}/1234");
 
-            Then
-                .Response
+            Then.Response
                 .ShouldBe
                 .NotFound();
         }
@@ -42,8 +41,7 @@ namespace Fluent.Testing.Library.Tests.GET
             When
                 .Get($"{ApiBankaccounts}/{customerId}");
 
-            Then
-                .Response
+            Then.Response
                 .ShouldBe
                 .Ok<BankAccount>()
                 .Balance
@@ -55,8 +53,7 @@ namespace Fluent.Testing.Library.Tests.GET
         {
             var customerId = 0;
 
-            Given
-                .That
+            Given.That
                 .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
                 .Deposit_has_been_made(50)
                 .Deposit_has_been_made(50)
@@ -66,8 +63,7 @@ namespace Fluent.Testing.Library.Tests.GET
             When
                 .Get($"{ApiBankaccounts}/{customerId}");
 
-            Then
-                .Response
+            Then.Response
                 .ShouldBe
                 .Ok<BankAccount>()
                 .Balance
@@ -79,20 +75,38 @@ namespace Fluent.Testing.Library.Tests.GET
         {
             var customerId = 0;
 
-            Given
-                .That
+            Given.That
                 .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
                 .UseResult(account => customerId = account.Id);
 
             When
                 .Get($"{ApiBankaccounts}/{customerId}");
 
-            Then
-                .Response
+            Then.Response
                 .ShouldBe
                 .Ok<BankAccount>()
                 .CustomerName
                 .ShouldBe("Dougal");
+        }
+        
+        [Fact]
+        public void If_a_bank_account_has_been_updated_then_the_customer_name_should_be_correct()
+        {
+            var customerId = 0;
+
+            Given.That
+                .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
+                .BankAccount_has_been_updated(account => account.CustomerName = "Fergus")
+                .UseResult(account => customerId = account.Id);
+
+            When
+                .Get($"{ApiBankaccounts}/{customerId}");
+
+            Then.Response
+                .ShouldBe
+                .Ok<BankAccount>()
+                .CustomerName
+                .ShouldBe("Fergus");
         }
     }
 }

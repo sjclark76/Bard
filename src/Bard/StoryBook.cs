@@ -4,7 +4,7 @@ using Bard.Internal.Given;
 
 namespace Bard
 {
-    public abstract class StoryBook : ChapterBase
+    public abstract class StoryBook 
     {
         internal ScenarioContext? Context { get; set; }
         

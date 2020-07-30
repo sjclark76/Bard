@@ -19,7 +19,7 @@ namespace Bard.Internal.Given
             where TNextStep : Chapter<TOutput>, new()
         {
             var nextContext = new ScenarioContext<TInput>(_context);
-            
+
             _context.AddPipelineStep(memberName, input =>
             {
                 nextContext.SetStoryInput(input as TInput);
@@ -27,6 +27,21 @@ namespace Bard.Internal.Given
             });
 
             var nextStep = new TNextStep {Context = new ScenarioContext<TOutput>(_context)};
+
+            return nextStep;
+        }
+
+        public EndChapter<TOutput> End(string memberName = "")
+        {
+            var nextContext = new ScenarioContext<TInput>(_context);
+
+            _context.AddPipelineStep(memberName, input =>
+            {
+                nextContext.SetStoryInput(input as TInput);
+                return _execute(nextContext);
+            });
+
+            var nextStep = new EndChapter<TOutput> {Context = new ScenarioContext<TOutput>(_context)};
 
             return nextStep;
         }

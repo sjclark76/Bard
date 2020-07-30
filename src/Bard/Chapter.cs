@@ -3,7 +3,7 @@ using Bard.Internal.Given;
 
 namespace Bard
 {
-    public abstract class Chapter<TChapterInput> : ChapterBase where TChapterInput : class, new()
+    public abstract class Chapter<TChapterInput> where TChapterInput : class, new()
     {
         internal ScenarioContext<TChapterInput>? Context { get; set; }
         

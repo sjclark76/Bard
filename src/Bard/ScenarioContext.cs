@@ -70,7 +70,7 @@ namespace Bard
             }
         }
 
-        public void SetStoryInput(TStoryInput? input)
+        internal void SetStoryInput(TStoryInput? input)
         {
             _storyInput = input;
         }

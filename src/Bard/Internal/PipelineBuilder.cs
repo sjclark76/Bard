@@ -35,17 +35,12 @@ namespace Bard.Internal
             _apiCalled = true;
         }
 
-        public void AddStep(string stepName)
-        {
-            _pipelineSteps.Add(new PipelineStep(stepName));
-        }
-
         public void AddStep(string stepName, Func<object?, object?> stepFunc)
         {
             _pipelineSteps.Add(new PipelineStep(stepName, stepFunc));
         }
 
-        public object? Input { get; set; }
+        private object? Input { get; set; }
         
         public object? Execute()
         {
@@ -92,7 +87,6 @@ namespace Bard.Internal
 
         public void Reset()
         {
-            //_hasBeenExecuted = false;
             _pipelineSteps.Clear();
         }
 

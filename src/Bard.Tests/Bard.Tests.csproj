@@ -18,6 +18,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Google.Protobuf" Version="3.12.4" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.30.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.30.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.5" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
         <PackageReference Include="Shouldly" Version="3.0.2" />
@@ -29,6 +35,18 @@
     <ItemGroup>
       <ProjectReference Include="..\Bard\Bard.csproj" />
       <ProjectReference Include="..\Sample.Api\Sample.Api.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Protobuf Include="Protos\credit-rating-service.proto">
+        <GrpcServices>Client</GrpcServices>
+        <Access>Public</Access>
+        <ProtoCompile>True</ProtoCompile>
+        <ProtoRoot></ProtoRoot>
+        <CompileOutputs>True</CompileOutputs>
+        <OutputDir>obj\Debug\netcoreapp3.1\</OutputDir>
+        <Generator>MSBuild:Compile</Generator>
+      </Protobuf>
     </ItemGroup>
 
 </Project>

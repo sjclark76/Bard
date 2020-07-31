@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bard.Tests", "Bard.Tests\Ba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bard", "Bard\Bard.csproj", "{6097C8C5-FEA0-4E5C-AF27-4D9DDA2F2D67}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bard.gRPCService", "Bard.gRPCService\Bard.gRPCService.csproj", "{CCADC441-A881-4C31-BB30-F4F10644A723}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{6097C8C5-FEA0-4E5C-AF27-4D9DDA2F2D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6097C8C5-FEA0-4E5C-AF27-4D9DDA2F2D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6097C8C5-FEA0-4E5C-AF27-4D9DDA2F2D67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCADC441-A881-4C31-BB30-F4F10644A723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCADC441-A881-4C31-BB30-F4F10644A723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCADC441-A881-4C31-BB30-F4F10644A723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCADC441-A881-4C31-BB30-F4F10644A723}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

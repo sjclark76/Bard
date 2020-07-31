@@ -21,13 +21,13 @@ Now uses:
 
 * Removed CommonExtensions so now cannot use .And .A etc between test arrangements.
 * 
-## 1.2.0- 28-07-2020
+## 1.2.0 - 28-07-2020
 
 ### Added
 
 * Added better logging when building a chapter and not calling the Context's API. Previously nothing was logged to the console. Now Bard tracks if the API has been called or not and if it hasn't it defaults to outputing the response from the story.
 
-## 1.1.1- 26-07-2020
+## 1.1.1 - 26-07-2020
 
 ### Fixed
 
@@ -37,7 +37,7 @@ Now uses:
 
 * Removed dependency on [Shouldly ](https://shouldly.readthedocs.io/en/latest/)library.
 
-## 1.1.1- 26-07-2020
+## 1.1.1 - 26-07-2020
 
 ### Fixed
 

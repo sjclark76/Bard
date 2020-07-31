@@ -1,4 +1,5 @@
-﻿using Fluent.Testing.Sample.Api.Model;
+﻿using Bard;
+using Fluent.Testing.Sample.Api.Model;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -13,14 +14,12 @@ namespace Fluent.Testing.Library.Tests.PUT
         [Fact]
         public void When_updating_a_bank_account_the_response_should_be_no_content()
         {
-            BankAccount bankAccount = new BankAccount();
-            
             Given.That
                 .BankAccount_has_been_created()
-                .UseResult(account => bankAccount = account);
+                 .GetResult(out BankAccount? bankAccount);
             
             When
-                .Put($"api/bankaccounts/{bankAccount.Id}", new BankAccount
+                .Put($"api/bankaccounts/{bankAccount?.Id}", new BankAccount
                 {
                     CustomerName = "New Name"
                 });

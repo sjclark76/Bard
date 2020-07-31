@@ -9,5 +9,6 @@ namespace Bard
         object? Execute();
         void Reset();
         bool HasSteps { get; }
+        object? Input { get; set; }
     }
 }

@@ -72,6 +72,7 @@ namespace Bard
 
         internal void SetStoryInput(TStoryInput? input)
         {
+            Builder.Input = input;
             _storyInput = input;
         }
     }

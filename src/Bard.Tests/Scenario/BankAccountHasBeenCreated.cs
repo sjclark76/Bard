@@ -6,6 +6,24 @@ namespace Fluent.Testing.Library.Tests.Scenario
 {
     public class BankAccountHasBeenCreated : Chapter<BankAccount>
     {
+        public BankAccountHasBeenCreated BankAccount_has_been_created(Action<BankAccount>? configureBankAccount = null)
+        {
+            return When(context =>
+                {
+                    var bankAccount = new BankAccount
+                    {
+                        CustomerName = "Ranulph Fiennes"
+                    };
+
+                    configureBankAccount?.Invoke(bankAccount);
+
+                    var response = context.Api.Post("api/bankaccounts", bankAccount);
+
+                    return response.Content<BankAccount>();
+                })
+                .Then<BankAccountHasBeenCreated>();
+        }
+        
         public EndChapter<BankAccount> BankAccount_has_been_updated(Action<BankAccount>? updateBankAccount = null)
         {
             return When(context =>
@@ -21,10 +39,10 @@ namespace Fluent.Testing.Library.Tests.Scenario
                 .End();
         }
         
-        public DepositMade Deposit_has_been_made(decimal amount)
+        public DepositMade Deposit_has_been_made(Func<Deposit> configureDeposit)
         {
             return
-                Given(() => new Deposit {Amount = amount})
+                Given(configureDeposit)
                     .When(BankingScenarioFunctions.MakeADeposit)
                     .Then<DepositMade>();
         }

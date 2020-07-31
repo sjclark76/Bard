@@ -1,4 +1,5 @@
-﻿using Fluent.Testing.Sample.Api.Model;
+﻿using Bard;
+using Fluent.Testing.Sample.Api.Model;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -26,16 +27,14 @@ namespace Fluent.Testing.Library.Tests.POST
         public void
             If_a_withdrawal_is_requested_but_there_are_insufficient_funds_then_a_bad_request_should_be_returned()
         {
-            var bankAccount = new BankAccount();
-
             Given
                 .That
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made(100)
-                .UseResult(account => bankAccount = account);
+                .Deposit_has_been_made(() => new Deposit {Amount = 100})
+                .GetResult(out BankAccount? bankAccount);
 
             When
-                .Post($"api/bankaccounts/{bankAccount.Id}/withdrawals", new Withdrawal {Amount = 1000});
+                .Post($"api/bankaccounts/{bankAccount?.Id}/withdrawals", new Withdrawal {Amount = 1000});
 
             Then
                 .Response
@@ -47,25 +46,48 @@ namespace Fluent.Testing.Library.Tests.POST
         [Fact]
         public void If_the_the_transfer_is_successful_then_an_ok_response_should_be_returned()
         {
-            var richBankAccount = new BankAccount();
-            var poorBankAccount = new BankAccount();
-
             Given
                 .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Rich Person")
-                .Deposit_has_been_made(100)
-                .UseResult(account => richBankAccount = account);
+                .Deposit_has_been_made(() => new Deposit {Amount = 100})
+                .GetResult(out BankAccount? richBankAccount);
 
             Given
                 .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Poor Person Person")
-                .UseResult(account => poorBankAccount = account);
+                .GetResult(out BankAccount? poorBankAccount);
 
             When
                 .Post("api/transfers", new Transfer
                 {
-                    FromBankAccountId = richBankAccount.Id,
-                    ToBankAccountId = poorBankAccount.Id,
+                    FromBankAccountId = richBankAccount?.Id,
+                    ToBankAccountId = poorBankAccount?.Id,
+                    Amount = 100
+                });
+
+            Then.Response.ShouldBe.Created();
+        }
+
+        [Fact]
+        public void Transfer_extracting_result_multiple_times()
+        {
+            Given
+                .That
+                .BankAccount_has_been_created(account => account.CustomerName = "Rich Person")
+                .GetResult(out BankAccount? richBankAccount)
+                .Deposit_has_been_made(() => new Deposit
+                {
+                    Id = richBankAccount?.Id,
+                    Amount = 100
+                })
+                .BankAccount_has_been_created(account => account.CustomerName = "Poor Person Person")
+                .GetResult(out BankAccount? poorBankAccount);
+
+            When
+                .Post("api/transfers", new Transfer
+                {
+                    FromBankAccountId = richBankAccount?.Id,
+                    ToBankAccountId = poorBankAccount?.Id,
                     Amount = 100
                 });
 

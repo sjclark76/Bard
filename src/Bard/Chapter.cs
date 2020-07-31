@@ -3,32 +3,11 @@ using Bard.Internal.Given;
 
 namespace Bard
 {
-    public interface IFoo<TChapterInput> where TChapterInput : class, new()
-    {
-        internal object? ExecutePipeline();
-
-        void SetStoryInput(TChapterInput? input);
-    }
-
-    public static class ChapterExtensions
-    {
-        public static TChapter GetResult<TChapter, TChapterInput>(this TChapter chapter, out TChapterInput? useResult)
-            where TChapter
-            : IFoo<TChapterInput>
-            where TChapterInput : class, new()
-        {
-            useResult = chapter.ExecutePipeline() as TChapterInput;
-            
-            chapter.SetStoryInput(useResult);
-            return chapter;
-        }
-    }
-
-    public abstract class Chapter<TChapterInput> : IFoo<TChapterInput> where TChapterInput : class, new()
+    public abstract class Chapter<TChapterInput> : ISimpleChapter<TChapterInput> where TChapterInput : class, new()
     {
         internal ScenarioContext<TChapterInput>? Context { get; set; }
 
-        object? IFoo<TChapterInput>.ExecutePipeline()
+        object? ISimpleChapter<TChapterInput>.ExecutePipeline()
         {
             return Context?.ExecutePipeline();
         }

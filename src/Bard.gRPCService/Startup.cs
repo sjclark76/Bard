@@ -26,7 +26,7 @@ namespace Bard.gRPCService
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            // AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

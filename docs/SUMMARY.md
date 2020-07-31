@@ -20,3 +20,7 @@
 
 * [Dependency Injection](advanced/dependency-injection.md)
 
+---
+
+* [Change Log](change-log.md)
+

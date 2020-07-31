@@ -1,4 +1,5 @@
-﻿using Fluent.Testing.Sample.Api.Model;
+﻿using Bard;
+using Fluent.Testing.Sample.Api.Model;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -13,9 +14,6 @@ namespace Fluent.Testing.Library.Tests.POST
         [Fact]
         public void If_the_the_transfer_is_successful_then_an_ok_response_should_be_returned()
         {
-            var richBankAccount = new BankAccount();
-            var poorBankAccount = new BankAccount();
-
             Given
                 .That
                 .BankAccount_has_been_created_from_db(account =>
@@ -23,18 +21,18 @@ namespace Fluent.Testing.Library.Tests.POST
                     account.CustomerName = "Rich Person";
                     account.Balance = 1000;
                 })
-                .UseResult(account => richBankAccount = account);
+                .GetResult(out BankAccount? richBankAccount);
 
             Given
                 .That
                 .BankAccount_has_been_created_from_db(account => account.CustomerName = "Poor Person Person")
-                .UseResult(account => poorBankAccount = account);
+                .GetResult(out BankAccount? poorBankAccount);
 
             When
                 .Post("api/transfers", new Transfer
                 {
-                    FromBankAccountId = richBankAccount.Id,
-                    ToBankAccountId = poorBankAccount.Id,
+                    FromBankAccountId = richBankAccount?.Id,
+                    ToBankAccountId = poorBankAccount?.Id,
                     Amount = 100
                 });
 

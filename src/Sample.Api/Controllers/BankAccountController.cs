@@ -26,6 +26,22 @@ namespace Fluent.Testing.Sample.Api.Controllers
 
             return Ok(bankAccount);
         }
+        
+        [HttpPut("{id}")]
+        public async Task<ActionResult<BankAccount>> Update([FromRoute] int id, [FromBody] BankAccount update, CancellationToken cancellationToken = default)
+        {
+            var bankAccount = await _bankDbContext.BankAccounts.FindAsync(id);
+
+            if (bankAccount == null)
+                return NotFound();
+
+            bankAccount.Balance = update.Balance;
+            bankAccount.CustomerName = update.CustomerName;
+
+            await _bankDbContext.SaveChangesAsync(cancellationToken);
+            
+            return NoContent();
+        }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete([FromRoute] int id, CancellationToken cancellationToken = default)

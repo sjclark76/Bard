@@ -2,9 +2,9 @@
 
 namespace Bard
 {
-    public interface IChapterGiven<out TInput, out TRequest> where TInput : new() where TRequest : new()
+    public interface IChapterGiven<TChapterInput, out TRequest> where TChapterInput : class, new() where TRequest : new()
     {
-        IChapterGivenWhen<TOutput> When<TOutput>(Func<IScenarioContext, TInput, TRequest, TOutput> execute)
+        IChapterGivenWhen<TOutput> When<TOutput>(Func<ScenarioContext<TChapterInput>, TRequest, TOutput> execute)
             where TOutput : class, new();
     }
 }

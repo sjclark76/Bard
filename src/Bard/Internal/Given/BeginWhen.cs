@@ -3,23 +3,24 @@ using System.Runtime.CompilerServices;
 
 namespace Bard.Internal.Given
 {
-    internal class BeginWhen<TOutput> : IBeginWhen<TOutput> where TOutput : class, new()
+    internal class BeginWhen<TStoryInput> : IBeginWhen<TStoryInput> where TStoryInput : class, new()
     {
         private readonly ScenarioContext _context;
-        private readonly Func<ScenarioContext, TOutput> _execute;
+        private readonly Func<ScenarioContext, TStoryInput> _execute;
 
-        internal BeginWhen(ScenarioContext context, Func<ScenarioContext, TOutput> execute)
+        internal BeginWhen(ScenarioContext<TStoryInput> context, Func<ScenarioContext, TStoryInput> execute)
         {
             _context = context;
             _execute = execute;
         }
 
         public TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
-            where TNextStep : Chapter<TOutput>, new()
+            where TNextStep : Chapter<TStoryInput>, new()
         {
             _context.AddPipelineStep(memberName, input => _execute(_context));
 
-            var nextStep = new TNextStep {Context = _context};
+            var nextContext = new ScenarioContext<TStoryInput>(_context);
+            var nextStep = new TNextStep {Context = nextContext};
 
             return nextStep;
         }

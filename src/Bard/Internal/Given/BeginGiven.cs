@@ -2,21 +2,23 @@
 
 namespace Bard.Internal.Given
 {
-    internal class BeginGiven<TRequest> : IBeginGiven<TRequest>
+    internal class BeginGiven<TStoryParams> : IBeginGiven<TStoryParams>
     {
         private readonly ScenarioContext _context;
-        private readonly Func<TRequest> _createRequest;
+        private readonly Func<TStoryParams> _createRequest;
 
-        internal BeginGiven(ScenarioContext context, Func<TRequest> createRequest)
+        internal BeginGiven(ScenarioContext context, Func<TStoryParams> createRequest)
         {
             _context = context;
             _createRequest = createRequest;
         }
 
-        public IBeginGivenWhen<TOutput> When<TOutput>(Func<IScenarioContext, TRequest, TOutput> execute)
+        public IBeginGivenWhen<TOutput> When<TOutput>(Func<ScenarioContext, TStoryParams, TOutput> execute)
             where TOutput : class, new()
         {
-            return new BeginGivenWhen<TRequest, TOutput>(_context, _createRequest, execute);
+            var nextContext = new ScenarioContext<TOutput>(_context);
+            
+            return new BeginGivenWhen<TStoryParams, TOutput>(nextContext, _createRequest, execute);
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using Fluent.Testing.Sample.Api.Model;
+﻿using Bard;
+using Fluent.Testing.Sample.Api.Model;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Fluent.Testing.Library.Tests.POST
+namespace Fluent.Testing.Library.Tests.DELETE
 {
     public class ClosingABankAccount : BankingTestBase
     {
@@ -25,15 +26,13 @@ namespace Fluent.Testing.Library.Tests.POST
         [Fact]
         public void If_the_request_is_successful_then_an_ok_no_content_response_should_be_returned()
         {
-            var bankAccount = new BankAccount();
-
             Given
                 .That
                 .BankAccount_has_been_created()
-                .UseResult(account => bankAccount = account);
+                .GetResult(out BankAccount? bankAccount);
 
             When
-                .Delete($"api/bankaccounts/{bankAccount.Id}");
+                .Delete($"api/bankaccounts/{bankAccount?.Id}");
 
             Then.Response.ShouldBe.NoContent();
         }

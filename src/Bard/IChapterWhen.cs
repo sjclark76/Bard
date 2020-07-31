@@ -6,5 +6,7 @@ namespace Bard
     {
         TNextChapter Then<TNextChapter>([CallerMemberName] string memberName = "")
             where TNextChapter : Chapter<TOutput>, new();
+
+        EndChapter<TOutput> End([CallerMemberName] string memberName = "");
     }
 }

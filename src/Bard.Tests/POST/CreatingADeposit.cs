@@ -1,4 +1,5 @@
-﻿using Fluent.Testing.Sample.Api.Model;
+﻿using Bard;
+using Fluent.Testing.Sample.Api.Model;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -25,15 +26,13 @@ namespace Fluent.Testing.Library.Tests.POST
         [Fact]
         public void If_the_deposit_is_successful_then_an_ok_response_should_be_returned()
         {
-            var bankAccount = new BankAccount();
-
             Given
                 .That
                 .BankAccount_has_been_created()
-                .UseResult(account => bankAccount = account);
+                .GetResult(out BankAccount? bankAccount);
 
             When
-                .Post($"api/bankaccounts/{bankAccount.Id}/deposits", new Deposit {Amount = 100});
+                .Post($"api/bankaccounts/{bankAccount?.Id}/deposits", new Deposit {Amount = 100});
 
             Then.Response.ShouldBe.Ok();
         }

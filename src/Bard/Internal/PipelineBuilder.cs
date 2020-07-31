@@ -35,23 +35,16 @@ namespace Bard.Internal
             _apiCalled = true;
         }
 
-        public void AddStep(string stepName)
-        {
-            _pipelineSteps.Add(new PipelineStep(stepName));
-        }
-
         public void AddStep(string stepName, Func<object?, object?> stepFunc)
         {
             _pipelineSteps.Add(new PipelineStep(stepName, stepFunc));
         }
 
+        private object? Input { get; set; }
+        
         public object? Execute()
         {
             if (HasSteps == false) return Result;
-
-            //_hasBeenExecuted = true;
-
-            object? input = null;
 
             var initialMessage = _executionCount > 0 ? "* AND" : "* GIVEN THAT";
             StringBuilder stringBuilder = new StringBuilder(initialMessage);
@@ -70,13 +63,13 @@ namespace Bard.Internal
 
                 try
                 {
-                    var output = pipelineStep.StepFunc(input);
+                    var output = pipelineStep.StepFunc(Input);
                     if (_apiCalled == false)
                         // The API was not called through the context so log
                         // the output instead.
                         _logWriter.WriteObjectToConsole(output);
 
-                    input = output;
+                    Input = output;
                 }
                 catch (Exception exception)
                 {
@@ -87,14 +80,13 @@ namespace Bard.Internal
             
             _executionCount++;
 
-            Result = input;
+            Result = Input;
 
             return Result;
         }
 
         public void Reset()
         {
-            //_hasBeenExecuted = false;
             _pipelineSteps.Clear();
         }
 

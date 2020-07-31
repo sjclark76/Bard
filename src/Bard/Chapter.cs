@@ -3,29 +3,29 @@ using Bard.Internal.Given;
 
 namespace Bard
 {
-    public abstract class Chapter<TChapterInput> : ChapterBase where TChapterInput : class, new()
+    public abstract class Chapter<TChapterInput> : ISimpleChapter<TChapterInput> where TChapterInput : class, new()
     {
-        public void UseResult(Action<TChapterInput> useResult)
+        internal ScenarioContext<TChapterInput>? Context { get; set; }
+
+        object? ISimpleChapter<TChapterInput>.ExecutePipeline()
         {
-            if (Context == null)
-                throw new ApplicationException($"{nameof(Context)} has not been set.");
-
-            var pipelineResult = Context.ExecutePipeline();
-
-            if (pipelineResult == null) return;
-
-            var input = (TChapterInput) pipelineResult;
-
-            useResult(input);
+            return Context?.ExecutePipeline();
         }
 
-        protected IChapterWhen<TOutput> When<TOutput>(Func<IScenarioContext, TChapterInput, TOutput> execute)
-            where TOutput : class, new()
+        public void SetStoryInput(TChapterInput? input) 
+        {
+            Context?.SetStoryInput(input);
+        }
+
+        protected IChapterWhen<TStoryOutput> When<TStoryOutput>(Func<ScenarioContext<TChapterInput>, TStoryOutput> execute)
+            where TStoryOutput : class, new()
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            return new ChapterWhen<TChapterInput, TOutput>(Context, execute);
+            var context = new ScenarioContext<TStoryOutput>(Context);
+
+            return new ChapterWhen<TChapterInput, TStoryOutput>(context, execute);
         }
 
         protected IChapterGiven<TChapterInput, TRequest> Given<TRequest>(Func<TRequest> createRequest)

@@ -3,26 +3,45 @@ using System.Runtime.CompilerServices;
 
 namespace Bard.Internal.Given
 {
-    internal class ChapterWhen<TInput, TOutput> : IChapterWhen<TOutput>
-        where TOutput : class, new() where TInput : class, new()
+    internal class ChapterWhen<TStoryInput, TStoryOutput> : IChapterWhen<TStoryOutput>
+        where TStoryOutput : class, new() where TStoryInput : class, new()
     {
         private readonly ScenarioContext _context;
-        private readonly Func<ScenarioContext, TInput, TOutput> _execute;
+        private readonly Func<ScenarioContext<TStoryInput>, TStoryOutput> _execute;
 
-        internal ChapterWhen(ScenarioContext context, Func<ScenarioContext, TInput, TOutput> execute)
+        internal ChapterWhen(ScenarioContext<TStoryOutput> context, Func<ScenarioContext<TStoryInput>, TStoryOutput> execute)
         {
             _context = context;
             _execute = execute;
         }
 
         public TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
-            where TNextStep : Chapter<TOutput>, new()
+            where TNextStep : Chapter<TStoryOutput>, new()
         {
-            _context.AddPipelineStep(memberName, input => input == null
-                ? _execute(_context, new TInput())
-                : _execute(_context, (TInput) input));
+            var nextContext = new ScenarioContext<TStoryInput>(_context);
 
-            var nextStep = new TNextStep {Context = _context};
+            _context.AddPipelineStep(memberName, input =>
+            {
+                nextContext.SetStoryInput(input as TStoryInput);
+                return _execute(nextContext);
+            });
+
+            var nextStep = new TNextStep {Context = new ScenarioContext<TStoryOutput>(_context)};
+
+            return nextStep;
+        }
+
+        public EndChapter<TStoryOutput> End(string memberName = "")
+        {
+            var nextContext = new ScenarioContext<TStoryInput>(_context);
+
+            _context.AddPipelineStep(memberName, input =>
+            {
+                nextContext.SetStoryInput(input as TStoryInput);
+                return _execute(nextContext);
+            });
+
+            var nextStep = new EndChapter<TStoryOutput> {Context = new ScenarioContext<TStoryOutput>(_context)};
 
             return nextStep;
         }

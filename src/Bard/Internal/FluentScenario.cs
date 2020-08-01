@@ -23,7 +23,9 @@ namespace Bard.Internal
                 throw new Exception("client not set.");
 
             var logWriter = new LogWriter(logMessage);
-            var api = new Api(client, logWriter, badRequestProvider);
+
+            var bardClient = HttpClientBuilder.GenerateBardClient(client, logWriter);
+            var api = new Api(bardClient, badRequestProvider);
             var pipeline = new PipelineBuilder(logWriter);
 
             Context = new ScenarioContext(pipeline, api, logWriter, services);

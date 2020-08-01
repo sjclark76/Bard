@@ -17,7 +17,7 @@ namespace Bard.Internal.When
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            _logWriter.WriteObjectToConsole(request);
+            _logWriter.WriteHttpRequestToConsole(request);
             var response = await base.SendAsync(request, cancellationToken);
             
             _logWriter.WriteHttpResponseToConsole(response);

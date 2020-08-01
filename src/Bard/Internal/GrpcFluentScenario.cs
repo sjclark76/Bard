@@ -66,7 +66,7 @@ namespace Bard.Internal
             
             var grpcClient = options.GrpcClient.Invoke(channel);
 
-            var api = new Api(bardClient, logWriter, options.BadRequestProvider);
+            var api = new Api(bardClient, options.BadRequestProvider);
             var pipeline = new PipelineBuilder(logWriter);
 
             Context = new GrpcScenarioContext<TGrpcClient>(grpcClient, pipeline, api, logWriter, options.Services);

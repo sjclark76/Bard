@@ -1,36 +1,22 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
+using Bard.Configuration;
 using Bard.gRPCService;
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 using Shouldly;
 using Xunit;
-using Startup = Bard.gRPCService.Startup;
+using Xunit.Abstractions;
+using static Bard.gRPCService.CreditRatingCheck;
 
 namespace Fluent.Testing.Library.Tests.gRPC
 {
-   
-    public class ResponseVersionHandler : DelegatingHandler
-    {
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var response = await base.SendAsync(request, cancellationToken);
-            response.Version = request.Version;
-
-            return response;
-        }
-    }
-    
     public class gRPCTests
     {
-        private HttpClient _httpClient;
-
-        public gRPCTests()
+        public gRPCTests(ITestOutputHelper output)
         {
+            _output = output;
             var hostBuilder = new HostBuilder()
                 .ConfigureWebHost(builder =>
                     builder
@@ -39,34 +25,29 @@ namespace Fluent.Testing.Library.Tests.gRPC
                         .UseEnvironment("development"));
 
             var host = hostBuilder.Start();
-            var server = host.GetTestServer();
-            // Need to set the response version to 2.0.
-            // Required because of this TestServer issue - https://github.com/aspnet/AspNetCore/issues/16940
-            var responseVersionHandler = new ResponseVersionHandler();
-            responseVersionHandler.InnerHandler = server.CreateHandler();
-
-            var client = new HttpClient(responseVersionHandler);
-            client.BaseAddress = new Uri("http://localhost");
-
-            _httpClient = client; //host.GetTestClient();
+            var testClient = host.GetTestClient();
+            _httpClient = testClient;
         }
+
+        private readonly ITestOutputHelper _output;
+
+        private readonly HttpClient _httpClient;
 
         [Fact]
         public async Task Foo()
         {
-           // Bard.Configuration.ScenarioConfiguration.Configure()
-            GrpcChannelOptions options = new GrpcChannelOptions()
+            var scenario = ScenarioConfiguration.ConfigureGrpc<CreditRatingCheckClient>(scenarioOptions =>
             {
-                HttpClient = _httpClient
-            };
-            var channel = GrpcChannel.ForAddress(_httpClient.BaseAddress, options);
-            
-            var client = new CreditRatingCheck.CreditRatingCheckClient(channel);
-            var creditRequest = new CreditRequest { CustomerId = "id0201", Credit = 7000};
-            var reply = await client.CheckCreditRequestAsync(creditRequest);
-            
+                scenarioOptions.LogMessage = s => _output.WriteLine(s);
+                scenarioOptions.GrpcClient = c => new CreditRatingCheckClient(c);
+                scenarioOptions.Client = _httpClient;
+            });
+
+            var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
+
+            var reply = scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+
             reply.IsAccepted.ShouldBe(true);
-            
         }
     }
 }

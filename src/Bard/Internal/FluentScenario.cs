@@ -7,7 +7,7 @@ using Bard.Internal.When;
 
 namespace Bard.Internal
 {
-   internal class FluentScenario : IFluentScenario
+    internal class FluentScenario : IFluentScenario
     {
         private readonly Then.Then _then;
 
@@ -20,7 +20,7 @@ namespace Bard.Internal
             IServiceProvider? services)
         {
             if (client == null)
-                throw new Exception("Use method must be called first.");
+                throw new Exception("client not set.");
 
             var logWriter = new LogWriter(logMessage);
             var api = new Api(client, logWriter, badRequestProvider);
@@ -59,4 +59,6 @@ namespace Bard.Internal
 
         public IGiven<T> Given { get; }
     }
+    
+    
 }

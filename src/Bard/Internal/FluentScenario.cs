@@ -24,7 +24,7 @@ namespace Bard.Internal
 
             var logWriter = new LogWriter(logMessage);
 
-            var bardClient = HttpClientBuilder.GenerateBardClient(client, logWriter);
+            var bardClient = HttpClientBuilder.GenerateBardClient(client, logWriter, badRequestProvider);
             var api = new Api(bardClient, badRequestProvider);
             var pipeline = new PipelineBuilder(logWriter);
 

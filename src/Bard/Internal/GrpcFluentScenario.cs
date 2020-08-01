@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Net.Http;
-using System.Reflection;
 using Bard.Configuration;
 using Bard.gRPC;
 using Bard.Infrastructure;
@@ -10,41 +8,14 @@ using Grpc.Net.Client;
 
 namespace Bard.Internal
 {
-    public class HttpClientBuilder
-    {
-        internal static HttpMessageHandler GetInstanceField(object instance)
-        {
-            BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                                     | BindingFlags.Static;
-            
-            FieldInfo? field = (typeof(HttpMessageInvoker)).GetField("_handler", bindFlags);
-            
-            return (HttpMessageHandler) field?.GetValue(instance);
-        }
-        public static HttpClient GenerateBardClient(HttpClient client, LogWriter logWriter)
-        {
-            var httpMessageHandler = GetInstanceField(client);
-
-            var bardApiMessageHandler = new BardApiMessageHandler(logWriter) {InnerHandler = httpMessageHandler};
-
-
-            var bardHttpClient = new HttpClient(bardApiMessageHandler)
-            {
-                BaseAddress = client.BaseAddress,
-                Timeout = client.Timeout,
-                MaxResponseContentBufferSize = client.MaxResponseContentBufferSize
-            }; 
-
-            return bardHttpClient;
-
-        }
-    }
     /// <summary>
     /// TODO: Public for now..
     /// </summary>
     /// <typeparam name="TGrpcClient"></typeparam>
     public class GrpcFluentScenario<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
     {
+        private Then.Then _then;
+
         public GrpcFluentScenario(GrpcScenarioOptions<TGrpcClient> options)
         {
             if (options.Client == null)
@@ -53,7 +24,7 @@ namespace Bard.Internal
             var logWriter = new LogWriter(options.LogMessage);
             
             var originalClient = options.Client;
-            var bardClient = HttpClientBuilder.GenerateBardClient(originalClient, logWriter);
+            var bardClient = HttpClientBuilder.GenerateBardClient(originalClient, logWriter, options.BadRequestProvider);
             
             GrpcChannelOptions channelOptions = new GrpcChannelOptions()
             {
@@ -76,14 +47,15 @@ namespace Bard.Internal
             
             When = when;
             
-            // _then = new Then.Then();
+             _then = new Then.Then();
             
-            // _then.Subscribe(api);
-            pipeline.Subscribe(api);
+            _then.Subscribe(bardClient);
+            pipeline.Subscribe(bardClient);
         }
 
         public IGrpcWhen<TGrpcClient> When { get; set; }
 
+        public IThen Then => _then;
         public GrpcScenarioContext<TGrpcClient> Context { get; set; }
     }
 }

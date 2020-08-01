@@ -34,7 +34,7 @@ namespace Fluent.Testing.Library.Tests.gRPC
         private readonly HttpClient _httpClient;
 
         [Fact]
-        public async Task Foo()
+        public  void Foo()
         {
             var scenario = ScenarioConfiguration.ConfigureGrpc<CreditRatingCheckClient>(scenarioOptions =>
             {
@@ -47,7 +47,9 @@ namespace Fluent.Testing.Library.Tests.gRPC
 
             var reply = scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
 
-            reply.IsAccepted.ShouldBe(true);
+            scenario.Then.Response.ShouldBe.Ok();
+            
+            //reply.IsAccepted.ShouldBe(true);
         }
     }
 }

@@ -3,7 +3,7 @@
 
 Bard is a .NET library for API testing.
 
-***gRPC Support coming soon!!***
+> ***gRPC Support coming soon!!***
 
 ## Documentation
 

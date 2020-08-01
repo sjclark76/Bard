@@ -12,13 +12,12 @@ namespace Bard
             return Context?.ExecutePipeline();
         }
 
-        public void SetStoryInput(TChapterInput? input)
+        public void SetStoryInput(TChapterInput? input) 
         {
             Context?.SetStoryInput(input);
         }
 
-        protected IChapterWhen<TStoryOutput> When<TStoryOutput>(
-            Func<ScenarioContext<TChapterInput>, TStoryOutput> execute)
+        protected IChapterWhen<TStoryOutput> When<TStoryOutput>(Func<ScenarioContext<TChapterInput>, TStoryOutput> execute)
             where TStoryOutput : class, new()
         {
             if (Context == null)

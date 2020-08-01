@@ -23,22 +23,22 @@ namespace Fluent.Testing.Library.Tests.Scenario
                 })
                 .Then<BankAccountHasBeenCreated>();
         }
-
+        
         public EndChapter<BankAccount> BankAccount_has_been_updated(Action<BankAccount>? updateBankAccount = null)
         {
             return When(context =>
-                {
-                    var update = context.StoryInput;
+            {
+                var update = context.StoryInput;
+                
+                updateBankAccount?.Invoke(update);
 
-                    updateBankAccount?.Invoke(update);
-
-                    context.Api.Put($"api/bankaccounts/{context.StoryInput.Id}", update);
-
-                    return update;
-                })
+                context.Api.Put($"api/bankaccounts/{context.StoryInput.Id}", update);
+                
+                return update;
+            })
                 .End();
         }
-
+        
         public DepositMade Deposit_has_been_made(Func<Deposit> configureDeposit)
         {
             return

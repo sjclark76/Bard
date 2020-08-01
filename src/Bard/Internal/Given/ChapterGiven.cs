@@ -14,11 +14,11 @@ namespace Bard.Internal.Given
             _createRequest = createRequest;
         }
 
-        public IChapterGivenWhen<TOutput> When<TOutput>(Func<ScenarioContext<TInput>, TRequest, TOutput> execute)
-            where TOutput : class, new()
+     public IChapterGivenWhen<TOutput> When<TOutput>(Func<ScenarioContext<TInput>, TRequest, TOutput> execute) where TOutput : class, new()
         {
             var nextContext = new ScenarioContext<TInput>(_context);
             return new ChapterGivenWhen<TInput, TRequest, TOutput>(nextContext, _createRequest, execute);
+            
         }
     }
 }

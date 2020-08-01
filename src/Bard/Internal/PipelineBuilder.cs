@@ -22,10 +22,6 @@ namespace Bard.Internal
 
         public object? Result { get; set; }
 
-        private object? Input { get; set; }
-
-        public bool HasSteps => _pipelineSteps.Any();
-
         public void OnCompleted()
         {
         }
@@ -44,6 +40,8 @@ namespace Bard.Internal
             _pipelineSteps.Add(new PipelineStep(stepName, stepFunc));
         }
 
+        private object? Input { get; set; }
+        
         public object? Execute()
         {
             if (HasSteps == false) return Result;
@@ -78,9 +76,8 @@ namespace Bard.Internal
                     throw new ChapterException($"Error executing story {pipelineStep.StepName}", exception);
                 }
             }
-
             Reset();
-
+            
             _executionCount++;
 
             Result = Input;
@@ -92,6 +89,8 @@ namespace Bard.Internal
         {
             _pipelineSteps.Clear();
         }
+
+        public bool HasSteps => _pipelineSteps.Any();
 
         private void WriteHeader(StringBuilder stringBuilder)
         {

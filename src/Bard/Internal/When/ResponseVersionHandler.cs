@@ -5,7 +5,7 @@ using Bard.Infrastructure;
 
 namespace Bard.Internal.When
 {
-    public class BardApiMessageHandler : DelegatingHandler
+    public class BardApiMessageHandler : DelegatingHandler 
     {
         private readonly LogWriter _logWriter;
 
@@ -17,9 +17,9 @@ namespace Bard.Internal.When
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            _logWriter.WriteHttpRequestToConsole(request);
+            _logWriter.WriteObjectToConsole(request);
             var response = await base.SendAsync(request, cancellationToken);
-
+            
             _logWriter.WriteHttpResponseToConsole(response);
             response.Version = request.Version;
 

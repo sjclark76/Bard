@@ -25,9 +25,8 @@ namespace Fluent.Testing.Library.Tests.Scenario
                 })
                 .Then<BankAccountHasBeenCreated>();
         }
-
-        public BankAccountHasBeenCreated BankAccount_has_been_created_from_db(
-            Action<BankAccount>? configureBankAccount = null)
+        
+        public BankAccountHasBeenCreated BankAccount_has_been_created_from_db(Action<BankAccount>? configureBankAccount = null)
         {
             return When(context =>
                 {

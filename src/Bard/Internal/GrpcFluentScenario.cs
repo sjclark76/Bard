@@ -49,9 +49,7 @@ namespace Bard.Internal
         {
             if (options.Client == null)
                 throw new Exception("Client not set");
-        
-            
-            
+
             var logWriter = new LogWriter(options.LogMessage);
             
             var originalClient = options.Client;
@@ -63,8 +61,11 @@ namespace Bard.Internal
             };
             var channel = GrpcChannel.ForAddress(bardClient.BaseAddress, channelOptions);
 
-            var grpcClient = options.GrpcClient(channel);
+            if (options.GrpcClient == null)
+                throw new BardConfigurationException($"{nameof(options.GrpcClient)} has not been configured.");
             
+            var grpcClient = options.GrpcClient.Invoke(channel);
+
             var api = new Api(bardClient, logWriter, options.BadRequestProvider);
             var pipeline = new PipelineBuilder(logWriter);
 

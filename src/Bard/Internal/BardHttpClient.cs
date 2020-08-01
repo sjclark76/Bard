@@ -8,14 +8,12 @@ namespace Bard.Internal
 {
     internal class BardHttpClient : HttpClient, IObservable<Response>
     {
-        private readonly BardApiMessageHandler _messageHandler;
         private readonly IBadRequestProvider _badRequestProvider;
         private readonly List<IObserver<Response>> _observers;
 
         internal BardHttpClient(BardApiMessageHandler messageHandler, IBadRequestProvider badRequestProvider) : base(messageHandler)
         {
-            _messageHandler = messageHandler;
-            _messageHandler.PublishApiResult = NotifyObservers;
+            messageHandler.PublishApiResult = NotifyObservers;
             _observers = new List<IObserver<Response>>();
 
             _badRequestProvider = badRequestProvider;

@@ -37,8 +37,8 @@ namespace Bard.Internal
             
             _then = new Then.Then();
             
-            _then.Subscribe(api);
-            pipeline.Subscribe(api);
+            _then.Subscribe(bardClient);
+            pipeline.Subscribe(bardClient);
         }
 
         protected ScenarioContext Context { get; }

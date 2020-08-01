@@ -34,7 +34,7 @@ namespace Fluent.Testing.Library.Tests.gRPC
         private readonly HttpClient _httpClient;
 
         [Fact]
-        public void Foo()
+        public  void Foo()
         {
             var scenario = ScenarioConfiguration.ConfigureGrpc<CreditRatingCheckClient>(scenarioOptions =>
             {
@@ -42,10 +42,10 @@ namespace Fluent.Testing.Library.Tests.gRPC
                 scenarioOptions.GrpcClient = c => new CreditRatingCheckClient(c);
                 scenarioOptions.Client = _httpClient;
             });
-            
+
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 
-            scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+            var reply = scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Response.ShouldBe.Ok();
             

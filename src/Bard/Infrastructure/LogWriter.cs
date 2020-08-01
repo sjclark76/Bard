@@ -66,7 +66,7 @@ namespace Bard.Infrastructure
                     var jsonFormatted = JToken.Parse(content).ToString(Formatting.Indented);
                     _logMessage(jsonFormatted);
                 }
-                catch (JsonReaderException)
+                catch (JsonReaderException e)
                 {
                     WriteObjectToConsole(request);
                     _logMessage(content);

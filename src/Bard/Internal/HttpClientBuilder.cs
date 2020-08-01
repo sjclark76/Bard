@@ -7,14 +7,14 @@ namespace Bard.Internal
 {
     internal class HttpClientBuilder
     {
-        internal static HttpMessageHandler? GetInstanceField(object instance)
+        internal static HttpMessageHandler GetInstanceField(object instance)
         {
-            const BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                                           | BindingFlags.Static;
+            BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                                     | BindingFlags.Static;
             
-            var field = typeof(HttpMessageInvoker).GetField("_handler", bindFlags);
+            FieldInfo? field = (typeof(HttpMessageInvoker)).GetField("_handler", bindFlags);
             
-            return field?.GetValue(instance) as HttpMessageHandler;
+            return (HttpMessageHandler) field?.GetValue(instance);
         }
         
         internal static BardHttpClient GenerateBardClient(HttpClient client, LogWriter logWriter, IBadRequestProvider badRequestProvider)

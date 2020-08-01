@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ namespace Bard.gRPCService
     public class CreditRatingCheckService: CreditRatingCheck.CreditRatingCheckBase
     {
         private readonly ILogger<CreditRatingCheckService> _logger;
-        private static readonly Dictionary<string, int> CustomerTrustedCredit = new Dictionary<string, int>
+        private static readonly Dictionary<string, Int32> customerTrustedCredit = new Dictionary<string, Int32>() 
         {
             {"id0201", 10000},
             {"id0417", 5000},
@@ -31,7 +32,7 @@ namespace Bard.gRPCService
         private bool IsEligibleForCredit(string customerId, Int32 credit) {
             bool isEligible = false;
 
-            if (CustomerTrustedCredit.TryGetValue(customerId, out Int32 maxCredit))
+            if (customerTrustedCredit.TryGetValue(customerId, out Int32 maxCredit))
             {
                 isEligible = credit <= maxCredit;
             }

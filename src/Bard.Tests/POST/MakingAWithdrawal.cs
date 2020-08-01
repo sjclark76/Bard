@@ -30,7 +30,7 @@ namespace Fluent.Testing.Library.Tests.POST
             Given
                 .That
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made(() => new Deposit{Amount = 100})
+                .Deposit_has_been_made(() => new Deposit {Amount = 100})
                 .GetResult(out BankAccount? bankAccount);
 
             When
@@ -49,7 +49,7 @@ namespace Fluent.Testing.Library.Tests.POST
             Given
                 .That
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made(() => new Deposit{Amount = 100})
+                .Deposit_has_been_made(() => new Deposit {Amount = 100})
                 .GetResult(out BankAccount? bankAccount);
 
             When

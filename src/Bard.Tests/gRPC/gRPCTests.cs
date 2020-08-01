@@ -12,9 +12,9 @@ using static Bard.gRPCService.CreditRatingCheck;
 
 namespace Fluent.Testing.Library.Tests.gRPC
 {
-    public class gRPCTests
+    public class GRpcTests
     {
-        public gRPCTests(ITestOutputHelper output)
+        public GRpcTests(ITestOutputHelper output)
         {
             _output = output;
             var hostBuilder = new HostBuilder()
@@ -34,7 +34,7 @@ namespace Fluent.Testing.Library.Tests.gRPC
         private readonly HttpClient _httpClient;
 
         [Fact]
-        public async Task Foo()
+        public void Foo()
         {
             var scenario = ScenarioConfiguration.ConfigureGrpc<CreditRatingCheckClient>(scenarioOptions =>
             {

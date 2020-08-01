@@ -7,8 +7,8 @@ namespace Bard.Internal.When
     internal class When : IWhen
     {
         private readonly Api _api;
-        protected readonly LogWriter LogWriter;
         private readonly Action _preApiCall;
+        protected readonly LogWriter LogWriter;
 
         internal When(Api api, LogWriter logWriter,
             Action preApiCall)
@@ -53,7 +53,7 @@ namespace Bard.Internal.When
             _preApiCall();
 
             WriteHeader();
-            
+
             var response = callApi();
 
             return response;

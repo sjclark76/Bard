@@ -5,8 +5,7 @@ namespace Bard.gRPC
 {
     public interface IGrpcWhen<out TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
     {
-        TResponse Grpc<TResponse>(Func<TGrpcClient, TResponse> grpcCall);
-        
         TGrpcClient GrpcClient { get; }
+        TResponse Grpc<TResponse>(Func<TGrpcClient, TResponse> grpcCall);
     }
 }

@@ -19,7 +19,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
             {
                 context.Api.Post($"api/bankaccounts/{context.StoryInput.Id}/withdrawals",
                     request);
-                
+
                 context.StoryInput.Balance -= request.Amount.GetValueOrDefault();
 
                 return context.StoryInput;

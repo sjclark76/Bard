@@ -4,12 +4,12 @@ using Bard.Internal.Given;
 
 namespace Bard
 {
-    public abstract class StoryBook 
+    public abstract class StoryBook
     {
         internal ScenarioContext? Context { get; set; }
-        
+
         /// <summary>
-        /// Define the action of your story.
+        ///     Define the action of your story.
         /// </summary>
         /// <param name="story"></param>
         /// <typeparam name="TStoryOutput"></typeparam>
@@ -22,12 +22,12 @@ namespace Bard
                 throw new BardConfigurationException($"{nameof(Context)} has not been set.");
 
             var context = new ScenarioContext<TStoryOutput>(Context);
-            
+
             return new BeginWhen<TStoryOutput>(context, story);
         }
 
         /// <summary>
-        /// Define the parameters of your story.
+        ///     Define the parameters of your story.
         /// </summary>
         /// <param name="storyParameter"></param>
         /// <typeparam name="TRequest"></typeparam>

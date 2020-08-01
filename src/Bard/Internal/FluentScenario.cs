@@ -23,18 +23,20 @@ namespace Bard.Internal
                 throw new Exception("client not set.");
 
             var logWriter = new LogWriter(logMessage);
-            var api = new Api(client, logWriter, badRequestProvider);
+            var bardClient = HttpClientBuilder.GenerateBardClient(client, logWriter);
+
+            var api = new Api(bardClient, badRequestProvider);
             var pipeline = new PipelineBuilder(logWriter);
 
             Context = new ScenarioContext(pipeline, api, logWriter, services);
 
-            var when = new When.When(api, logWriter, 
+            var when = new When.When(api, logWriter,
                 () => Context.ExecutePipeline());
-            
+
             When = when;
-            
+
             _then = new Then.Then();
-            
+
             _then.Subscribe(api);
             pipeline.Subscribe(api);
         }
@@ -59,6 +61,4 @@ namespace Bard.Internal
 
         public IGiven<T> Given { get; }
     }
-    
-    
 }

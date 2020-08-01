@@ -32,7 +32,7 @@ namespace Bard
 
             if (content.StartsWith(message) == false)
                 throw new BardException($"The received response did not start with the message:{message}");
-                
+
             return this;
         }
 
@@ -45,12 +45,11 @@ namespace Bard
 
             return this;
         }
+
         private void ShouldContain(string value)
         {
             if (StringContent.Contains(value, StringComparison.InvariantCultureIgnoreCase) == false)
-            {
                 throw new BardException($"The received response did not contain the message:{value}");
-            }
         }
     }
 }

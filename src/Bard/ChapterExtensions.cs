@@ -3,7 +3,7 @@
     public static class ChapterExtensions
     {
         /// <summary>
-        /// Get the latest result from the test pipeline and continue on with the test.
+        ///     Get the latest result from the test pipeline and continue on with the test.
         /// </summary>
         /// <param name="chapter"></param>
         /// <param name="useResult">an out parameter to set the result to.</param>
@@ -16,9 +16,9 @@
             where TChapterInput : class, new()
         {
             useResult = chapter.ExecutePipeline() as TChapterInput;
-            
+
             chapter.SetStoryInput(useResult);
-            
+
             return chapter;
         }
     }

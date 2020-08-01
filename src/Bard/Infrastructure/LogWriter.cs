@@ -52,5 +52,18 @@ namespace Bard.Infrastructure
                 _logMessage(content);
             }
         }
+
+        public void WriteHttpRequestToConsole(HttpRequestMessage request)
+        {
+            WriteStringToConsole($"REQUEST: {request.Method.Method} {request.RequestUri}");
+
+            if (request.Content != null)
+            {
+                var content = AsyncHelper.RunSync(() => request.Content.ReadAsStringAsync());
+
+                var jsonFormatted = JToken.Parse(content).ToString(Formatting.Indented);
+                _logMessage(jsonFormatted);
+            }
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace Bard.Internal.Given
             where TOutput : class, new()
         {
             var nextContext = new ScenarioContext<TOutput>(_context);
-            
+
             return new BeginGivenWhen<TStoryParams, TOutput>(nextContext, _createRequest, execute);
         }
     }

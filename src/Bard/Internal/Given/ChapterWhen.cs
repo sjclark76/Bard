@@ -9,7 +9,8 @@ namespace Bard.Internal.Given
         private readonly ScenarioContext _context;
         private readonly Func<ScenarioContext<TStoryInput>, TStoryOutput> _execute;
 
-        internal ChapterWhen(ScenarioContext<TStoryOutput> context, Func<ScenarioContext<TStoryInput>, TStoryOutput> execute)
+        internal ChapterWhen(ScenarioContext<TStoryOutput> context,
+            Func<ScenarioContext<TStoryInput>, TStoryOutput> execute)
         {
             _context = context;
             _execute = execute;

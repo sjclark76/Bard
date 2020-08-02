@@ -1,17 +1,18 @@
 using System;
+using Bard.Internal.Exception;
 
 namespace Bard.Internal.Then
 {
     internal class Then : IThen, IObserver<Response>
     {
         private IResponse? _response;
-        private IDisposable? _unsubscriber;
+        private IDisposable? _unSubscriber;
 
         public void OnCompleted()
         {
         }
 
-        public void OnError(Exception error)
+        public void OnError(System.Exception error)
         {
         }
 
@@ -35,12 +36,12 @@ namespace Bard.Internal.Then
         public void Subscribe(IObservable<Response> provider)
         {
             if (provider != null)
-                _unsubscriber = provider.Subscribe(this);
+                _unSubscriber = provider.Subscribe(this);
         }
 
-        public void Unsubscribe()
+        public void UnSubscribe()
         {
-            _unsubscriber?.Dispose();
+            _unSubscriber?.Dispose();
         }
     }
 }

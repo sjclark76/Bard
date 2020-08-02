@@ -1,7 +1,7 @@
-using System;
 using System.Net;
 using System.Net.Http;
 using Bard.Infrastructure;
+using Bard.Internal.Exception;
 using Bard.Internal.When;
 using Newtonsoft.Json;
 
@@ -72,7 +72,7 @@ namespace Bard.Internal.Then
         public void StatusCodeShouldBe(HttpStatusCode httpStatusCode)
         {
             if (_httpResponse == null)
-                throw new Exception($"{nameof(_httpResponse)} property has not been set.");
+                throw new BardException($"{nameof(_httpResponse)} property has not been set.");
 
             var statusCode = _httpResponse.StatusCode;
 
@@ -100,7 +100,7 @@ namespace Bard.Internal.Then
                         ContractResolver = new ResolvePrivateSetters()
                     });
             }
-            catch (Exception)
+            catch (System.Exception)
             {
                 // ok..
             }

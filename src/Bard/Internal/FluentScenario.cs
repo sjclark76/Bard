@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using Bard.Configuration;
 using Bard.Infrastructure;
+using Bard.Internal.Exception;
 using Bard.Internal.Given;
 using Bard.Internal.When;
 
@@ -20,7 +21,7 @@ namespace Bard.Internal
             IServiceProvider? services)
         {
             if (client == null)
-                throw new Exception("client not set.");
+                throw new BardConfigurationException("client not set.");
 
             var logWriter = new LogWriter(logMessage);
 
@@ -38,6 +39,7 @@ namespace Bard.Internal
             _then = new Then.Then();
             
             _then.Subscribe(bardClient);
+            
             pipeline.Subscribe(bardClient);
         }
 

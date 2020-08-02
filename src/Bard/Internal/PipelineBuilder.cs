@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Bard.Infrastructure;
+using Bard.Internal.Exception;
 using Bard.Internal.Then;
 
 namespace Bard.Internal
@@ -26,7 +27,7 @@ namespace Bard.Internal
         {
         }
 
-        public void OnError(Exception error)
+        public void OnError(System.Exception error)
         {
         }
 
@@ -71,7 +72,7 @@ namespace Bard.Internal
 
                     Input = output;
                 }
-                catch (Exception exception)
+                catch (BardException exception)
                 {
                     throw new ChapterException($"Error executing story {pipelineStep.StepName}", exception);
                 }

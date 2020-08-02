@@ -1,7 +1,7 @@
 ﻿using System;
 using Bard.Configuration;
 using Bard.Infrastructure;
-using Bard.Internal;
+using Bard.Internal.Exception;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bard

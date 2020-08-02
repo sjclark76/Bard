@@ -11,12 +11,20 @@ namespace Bard.Internal
         private readonly IBadRequestProvider _badRequestProvider;
         private readonly List<IObserver<Response>> _observers;
 
-        internal BardHttpClient(BardApiMessageHandler messageHandler, IBadRequestProvider badRequestProvider) : base(messageHandler)
+        internal BardHttpClient(BardApiMessageHandler messageHandler, IBadRequestProvider badRequestProvider) : base(
+            messageHandler)
         {
             messageHandler.PublishApiResult = NotifyObservers;
             _observers = new List<IObserver<Response>>();
 
             _badRequestProvider = badRequestProvider;
+        }
+
+        public IDisposable Subscribe(IObserver<Response> observer)
+        {
+            // Check whether observer is already registered. If not, add it
+            if (!_observers.Contains(observer)) _observers.Add(observer);
+            return new UnSubscriber(_observers, observer);
         }
 
         private void NotifyObservers(ApiResult apiResult)
@@ -34,19 +42,12 @@ namespace Bard.Internal
                 }
         }
 
-        public IDisposable Subscribe(IObserver<Response> observer)
-        {
-            // Check whether observer is already registered. If not, add it
-            if (!_observers.Contains(observer)) _observers.Add(observer);
-            return new Unsubscriber(_observers, observer);
-        }
-        
-        private class Unsubscriber : IDisposable
+        private class UnSubscriber : IDisposable
         {
             private readonly IObserver<Response> _observer;
             private readonly List<IObserver<Response>> _observers;
 
-            public Unsubscriber(List<IObserver<Response>> observers, IObserver<Response> observer)
+            public UnSubscriber(List<IObserver<Response>> observers, IObserver<Response> observer)
             {
                 _observers = observers;
                 _observer = observer;

@@ -24,5 +24,20 @@ namespace Bard.Internal.Given
 
             return nextStep;
         }
+        
+        public EndChapter<TStoryInput> End(string memberName = "")
+        {
+            var nextContext = new ScenarioContext<TStoryInput>(_context);
+
+            _context.AddPipelineStep(memberName, input =>
+            {
+                nextContext.SetStoryInput(input as TStoryInput);
+                return _execute(nextContext);
+            });
+
+            var nextStep = new EndChapter<TStoryInput> {Context = new ScenarioContext<TStoryInput>(_context)};
+
+            return nextStep;
+        }
     }
 }

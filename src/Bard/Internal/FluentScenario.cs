@@ -31,15 +31,15 @@ namespace Bard.Internal
 
             Context = new ScenarioContext(pipeline, api, logWriter, services);
 
-            var when = new When.When(api, logWriter, 
+            var when = new When.When(api, logWriter,
                 () => Context.ExecutePipeline());
-            
+
             When = when;
-            
+
             _then = new Then.Then();
-            
+
             _then.Subscribe(bardClient);
-            
+
             pipeline.Subscribe(bardClient);
         }
 
@@ -50,7 +50,8 @@ namespace Bard.Internal
         public IThen Then => _then;
     }
 
-    internal class FluentScenario<TStoryBook> : FluentScenario, IFluentScenario<TStoryBook> where TStoryBook : StoryBook, new()
+    internal class FluentScenario<TStoryBook> : FluentScenario, IFluentScenario<TStoryBook>
+        where TStoryBook : StoryBook, new()
     {
         internal FluentScenario(ScenarioOptions<TStoryBook> options) : base(options.Client, options.LogMessage,
             options.BadRequestProvider, options.Services)
@@ -63,6 +64,4 @@ namespace Bard.Internal
 
         public IGiven<TStoryBook> Given { get; }
     }
-    
-    
 }

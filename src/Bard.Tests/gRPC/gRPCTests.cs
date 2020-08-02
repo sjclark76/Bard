@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using Bard.Configuration;
 using Bard.gRPCService;
+using Fluent.Testing.Library.Tests.Scenario;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +11,7 @@ using static Bard.gRPCService.CreditRatingCheck;
 
 namespace Fluent.Testing.Library.Tests.gRPC
 {
+    
     public class GRpcTests
     {
         public GRpcTests(ITestOutputHelper output)
@@ -34,13 +36,19 @@ namespace Fluent.Testing.Library.Tests.gRPC
         [Fact]
         public void Foo()
         {
-            var scenario = ScenarioConfiguration.ConfigureGrpc<CreditRatingCheckClient>(scenarioOptions =>
-            {
-                scenarioOptions.LogMessage = s => _output.WriteLine(s);
-                scenarioOptions.GrpcClient = c => new CreditRatingCheckClient(c);
-                scenarioOptions.Client = _httpClient;
+            var scenario = ScenarioConfiguration
+                .UseGrpc<CreditRatingCheckClient>()
+                .WithStoryBook<CreditCheckStoryBook>()
+                .Configure(options =>
+                {
+                    options.LogMessage = s => _output.WriteLine(s);
+                    options.GrpcClient = c => new CreditRatingCheckClient(c);
+                    options.Client = _httpClient;
             });
 
+            scenario.Given.That
+                .Nothing_much_happens();
+            
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 
             scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));

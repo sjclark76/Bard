@@ -59,4 +59,18 @@ namespace Bard.Internal
         public IThen Then => _then;
         public GrpcScenarioContext<TGrpcClient> Context { get; set; }
     }
+
+    public class GrpcFluentScenario<TGrpcClient, TStoryBook> : GrpcFluentScenario<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
+        where TStoryBook : StoryBook, new()
+    {
+        internal GrpcFluentScenario(GrpcScenarioOptions<TGrpcClient, TStoryBook> options) : base(options)
+        {
+            var story = options.Story;
+            story.Context = Context;
+    
+            Given = new Given.Given<TStoryBook>(story, () => Context.ExecutePipeline());
+        }
+    
+        public IGiven<TStoryBook> Given { get; }
+    }
 }

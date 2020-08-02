@@ -18,7 +18,6 @@ namespace Bard.Internal.Given
         {
             var nextContext = new ScenarioContext<TInput>(_context);
             return new ChapterGivenWhen<TInput, TRequest, TOutput>(nextContext, _createRequest, execute);
-            
         }
     }
 }

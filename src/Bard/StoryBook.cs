@@ -4,9 +4,9 @@ using Bard.Internal.Given;
 
 namespace Bard
 {
-    public abstract class StoryBook
+    public abstract class StoryBook<TScenarioContext> where TScenarioContext : ScenarioContext
     {
-        internal ScenarioContext? Context { get; set; }
+        internal TScenarioContext? Context { get; set; }
 
         /// <summary>
         ///     Define the action of your story.
@@ -15,7 +15,7 @@ namespace Bard
         /// <typeparam name="TStoryOutput"></typeparam>
         /// <returns></returns>
         /// <exception cref="BardConfigurationException"></exception>
-        protected IBeginWhen<TStoryOutput> When<TStoryOutput>(Func<ScenarioContext, TStoryOutput> story)
+        protected IBeginWhen<TStoryOutput> When<TStoryOutput>(Func<TScenarioContext, TStoryOutput> story)
             where TStoryOutput : class, new()
         {
             if (Context == null)

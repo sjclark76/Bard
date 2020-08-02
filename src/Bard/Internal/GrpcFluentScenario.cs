@@ -57,11 +57,12 @@ namespace Bard.Internal
         public IGrpcWhen<TGrpcClient> When { get; set; }
 
         public IThen Then => _then;
+        
         public GrpcScenarioContext<TGrpcClient> Context { get; set; }
     }
 
     public class GrpcFluentScenario<TGrpcClient, TStoryBook> : GrpcFluentScenario<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
-        where TStoryBook : StoryBook, new()
+        where TStoryBook : new()
     {
         internal GrpcFluentScenario(GrpcScenarioOptions<TGrpcClient, TStoryBook> options) : base(options)
         {

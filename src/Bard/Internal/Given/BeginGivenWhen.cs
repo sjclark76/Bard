@@ -21,6 +21,7 @@ namespace Bard.Internal.Given
             where TNextStep : Chapter<TOutput>, new()
         {
             var request = _createRequest();
+            
             _context.AddPipelineStep(memberName, input => _execute(_context, request));
 
             var nextContext = new ScenarioContext<TOutput>(_context);

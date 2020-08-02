@@ -1,4 +1,5 @@
 using System;
+using Bard.gRPC;
 using Bard.Internal;
 using Grpc.Core;
 
@@ -6,7 +7,7 @@ namespace Bard.Configuration
 {
     public class ScenarioConfiguration
     {
-        public class GrpcStoryBookOptions<TGrpcClient, TStoryBook> where TStoryBook : StoryBook, new() where TGrpcClient : ClientBase<TGrpcClient>
+        public class GrpcStoryBookOptions<TGrpcClient, TStoryBook, TScenarioContext> where TStoryBook : StoryBook<TScenarioContext>, new() where TGrpcClient : ClientBase<TGrpcClient> where TScenarioContext : ScenarioContext
         {
             public GrpcFluentScenario<TGrpcClient, TStoryBook> Configure(Action<GrpcScenarioOptions<TGrpcClient, TStoryBook>> configure) 
             {
@@ -28,9 +29,9 @@ namespace Bard.Configuration
                 return new GrpcFluentScenario<TGrpcClient>(options);
             }
             
-            public GrpcStoryBookOptions<TGrpcClient, TStoryBook> WithStoryBook<TStoryBook>() where TStoryBook : StoryBook, new()
+            public GrpcStoryBookOptions<TGrpcClient, TStoryBook, TScenarioContext> WithStoryBook<TStoryBook, TScenarioContext>() where TStoryBook : StoryBook<TScenarioContext>, new() where TScenarioContext : ScenarioContext
             {
-                return new GrpcStoryBookOptions<TGrpcClient, TStoryBook>();
+                return new GrpcStoryBookOptions<TGrpcClient, TStoryBook, TScenarioContext>();
             }
         }
         
@@ -57,8 +58,8 @@ namespace Bard.Configuration
             return new FluentScenario(options);
         }
 
-        public static IFluentScenario<TStoryBook> Configure<TStoryBook>(Action<ScenarioOptions<TStoryBook>> configure)
-            where TStoryBook : StoryBook, new()
+        public static IFluentScenario<TStoryBook> Configure<TStoryBook, TScenarioContext>(Action<ScenarioOptions<TStoryBook>> configure)
+            where TStoryBook :  StoryBook<TScenarioContext>, new() where TScenarioContext : ScenarioContext
         {
             var options = new ScenarioOptions<TStoryBook>();
 

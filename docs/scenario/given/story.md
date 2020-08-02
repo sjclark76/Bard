@@ -1,6 +1,6 @@
 # Story
 
-As described in the [introduction]() the story is where the work is actually done where we can perform our test arrangement. 
+As described in the [introduction](../../) the story is where the work is actually done where we can perform our test arrangement. 
 
 We can have a few different flavors of stories depending upon where we are in the scenario and how we want to use the story.
 

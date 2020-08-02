@@ -23,4 +23,5 @@
 ---
 
 * [Change Log](change-log.md)
+* [gRPC](grpc.md)
 

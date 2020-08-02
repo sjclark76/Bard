@@ -1,16 +1,14 @@
 ---
-description: Bard is a .NET library for API testing.
+description: Bard is a .NET library for functional API testing.
 ---
 
 # Introduction
 
 ## Why Bard?
 
-Bard is a test library written by Developers for Developers. It is as much a development tool as it is a test library. Although Bard is a .NET library it can be used to test any API if you want
+Bard is a test library written by Developers for Developers. It is as much a development tool as it is a test library. Although Bard is a .NET library it can be used to test any API if you want.
 
-
-
-### First Class Test Logging
+### First Class Logging
 
 Bard generates exceptional test logging. This means you can write your tests first and then build your APIs. This gives the developer the opportunity to 'Dog Food' their API whilst writing their tests. No more using tools such as Postman to eyeball the API responses.
 
@@ -65,9 +63,9 @@ RESPONSE: Http Status Code:  OK (200)
 
 ```
 
-### Fluent Scenarios
+### Build Your Own Testing Domain Specific Language
 
-Bard has a fluent interface builder that allows the developer to build up a library of stories that can be composed via a fluent interface.
+Bard provides you with the building blocks to allow you to build your own [Domain Specific Language ](https://martinfowler.com/books/dsl.html)\(DSL\) for test arrangement. This allows the developer to build up a library of stories that can be composed via a fluent interface.
 
 The fluent interface guides the developer how to build the scenario making it easier for new tests to be written. Arguably this involves more effort up front but this eventually pays dividends when working against a complex domain that involves intricate test arrangement.
 

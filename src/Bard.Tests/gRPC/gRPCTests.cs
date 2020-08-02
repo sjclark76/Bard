@@ -11,7 +11,6 @@ using static Bard.gRPCService.CreditRatingCheck;
 
 namespace Fluent.Testing.Library.Tests.gRPC
 {
-    
     public class GRpcTests
     {
         public GRpcTests(ITestOutputHelper output)

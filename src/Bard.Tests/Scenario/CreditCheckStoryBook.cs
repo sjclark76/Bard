@@ -8,7 +8,6 @@ namespace Fluent.Testing.Library.Tests.Scenario
         {
             return When(context =>
             {
-                
                 return new object();
             }).End();
 

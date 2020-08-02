@@ -63,7 +63,7 @@ RESPONSE: Http Status Code:  OK (200)
 
 ```
 
-### Build Your Own Testing Domain Specific Language
+### Build Your Own Domain Specific Language
 
 Bard provides you with the building blocks to allow you to build your own [Domain Specific Language ](https://martinfowler.com/books/dsl.html)\(DSL\) for test arrangement. This allows the developer to build up a library of stories that can be composed via a fluent interface.
 

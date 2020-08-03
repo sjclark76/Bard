@@ -10,5 +10,6 @@ namespace Bard
         IResponse Get(string uri, IDictionary<string, string> queryParameters);
         IResponse Get(string route);
         IResponse Delete(string route);
+        IResponse Patch<TModel>(string route, TModel model);
     }
 }

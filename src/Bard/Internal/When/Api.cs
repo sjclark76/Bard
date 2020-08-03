@@ -36,6 +36,24 @@ namespace Bard.Internal.When
             return PostOrPut(route, model, (client, messageContent) => client.PostAsync(route, messageContent));
         }
 
+        public IResponse Patch<TModel>(string route, TModel model)
+        {
+            var messageContent = CreateMessageContent(model);
+            var responseMessage = AsyncHelper.RunSync(() => PatchAsync(route, messageContent));
+           
+            _logWriter.WriteStringToConsole($"REQUEST: {responseMessage.RequestMessage.Method.Method} {route}");
+            _logWriter.WriteObjectToConsole(model);
+
+            var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
+
+            _logWriter.WriteHttpResponseToConsole(responseMessage);
+
+            var apiResult = new ApiResult(responseMessage, responseString);
+            var response = new Response(apiResult, _badRequestProvider);
+            PublishApiResponse(response);
+            return response;
+        }
+        
         public IResponse Get(string uri, string name, string value)
         {
             var url = QueryHelpers.AddQueryString(uri, name, value);
@@ -155,6 +173,19 @@ namespace Bard.Internal.When
                 if (_observer != null && _observers.Contains(_observer))
                     _observers.Remove(_observer);
             }
+        }
+        
+        /// <summary>
+        ///     HttpClient does not have Patch built in so need to do it ourselves
+        /// </summary>
+        private async Task<HttpResponseMessage> PatchAsync(string route, HttpContent content)
+        {
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), route)
+            {
+                Content = content
+            };
+
+            return await _httpClient.SendAsync(request);
         }
     }
 }

@@ -33,5 +33,15 @@ public static readonly Func<ScenarioContext<StoryInput>, StoryParameters, StoryO
     };
 ```
 
+### Cannot resolve UseResult
 
+```csharp
+ .UseResult(clientRegistered => newClient = clientRegistered );
+```
+
+refactored to:
+
+```csharp
+.GetResult(out NewClientRegistered? newClient);
+```
 

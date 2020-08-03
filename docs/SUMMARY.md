@@ -25,3 +25,7 @@
 * [Change Log](miscellaneous/change-log.md)
 * [gRPC](miscellaneous/grpc.md)
 
+---
+
+* [Migration Guide](migration-guide.md)
+

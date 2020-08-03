@@ -1,4 +1,5 @@
-﻿using Bard.Configuration;
+﻿using System;
+using Bard.Configuration;
 using Bard.gRPC;
 using Bard.Infrastructure;
 using Bard.Internal.Exception;
@@ -8,6 +9,24 @@ using Grpc.Net.Client;
 
 namespace Bard.Internal
 {
+    public static class Foo
+    {
+        public static void Grpc<TGrpcClient>(this ScenarioContext context, Func<TGrpcClient, object?> execute) where TGrpcClient : ClientBase<TGrpcClient>
+        {
+            GrpcChannelOptions channelOptions = new GrpcChannelOptions
+            {
+                HttpClient = context.BardHttpClient
+            };
+
+            var channel = GrpcChannel.ForAddress(context.BardHttpClient.BaseAddress, channelOptions);
+
+            var gRpcClient = (TGrpcClient) Activator.CreateInstance(typeof(TGrpcClient), channel);
+
+            execute(gRpcClient);
+        }  
+    }
+    
+    
     /// <summary>
     ///     TODO: Public for now..
     /// </summary>
@@ -24,13 +43,14 @@ namespace Bard.Internal
             var logWriter = new LogWriter(options.LogMessage);
 
             var originalClient = options.Client;
-            var bardClient =
-                HttpClientBuilder.GenerateBardClient(originalClient, logWriter, options.BadRequestProvider);
+            var bardClient = HttpClientBuilder
+                .GenerateBardClient(originalClient, logWriter, options.BadRequestProvider);
 
             GrpcChannelOptions channelOptions = new GrpcChannelOptions
             {
                 HttpClient = bardClient
             };
+            
             var channel = GrpcChannel.ForAddress(bardClient.BaseAddress, channelOptions);
 
             if (options.GrpcClient == null)
@@ -41,7 +61,7 @@ namespace Bard.Internal
             var api = new Api(bardClient, options.BadRequestProvider);
             var pipeline = new PipelineBuilder(logWriter);
 
-            Context = new GrpcScenarioContext<TGrpcClient>(grpcClient, pipeline, api, logWriter, options.Services);
+            Context = new GrpcScenarioContext<TGrpcClient>(grpcClient, pipeline, bardClient, api, logWriter, options.Services);
 
             var when = new GrpcWhen<TGrpcClient>(grpcClient, api, logWriter,
                 () => Context.ExecutePipeline());

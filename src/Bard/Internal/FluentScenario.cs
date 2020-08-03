@@ -29,7 +29,7 @@ namespace Bard.Internal
             var api = new Api(bardClient, badRequestProvider);
             var pipeline = new PipelineBuilder(logWriter);
 
-            Context = new ScenarioContext(pipeline, api, logWriter, services);
+            Context = new ScenarioContext(pipeline, bardClient, api, logWriter, services);
 
             var when = new When.When(api, logWriter,
                 () => Context.ExecutePipeline());

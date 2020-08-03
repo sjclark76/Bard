@@ -1,6 +1,7 @@
 ﻿using System;
 using Bard.Configuration;
 using Bard.Infrastructure;
+using Bard.Internal;
 using Bard.Internal.Exception;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,10 +11,11 @@ namespace Bard
     {
         private IServiceProvider? _services;
 
-        internal ScenarioContext(IPipelineBuilder pipelineBuilder, IApi api, LogWriter logWriter,
+        internal ScenarioContext(IPipelineBuilder pipelineBuilder, BardHttpClient bardHttpClient, IApi api, LogWriter logWriter,
             IServiceProvider? services)
         {
             Builder = pipelineBuilder;
+            BardHttpClient = bardHttpClient;
             Api = api;
             Writer = logWriter;
 
@@ -22,6 +24,8 @@ namespace Bard
         }
 
         internal IPipelineBuilder Builder { get; }
+        
+        internal BardHttpClient BardHttpClient { get; }
 
         public IServiceProvider? Services
         {
@@ -54,7 +58,7 @@ namespace Bard
     {
         private TStoryInput? _storyInput;
 
-        internal ScenarioContext(ScenarioContext context) : base(context.Builder, context.Api, context.Writer,
+        internal ScenarioContext(ScenarioContext context) : base(context.Builder, context.BardHttpClient, context.Api, context.Writer,
             context.Services)
         {
         }

@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using Bard;
 using Bard.Configuration;
 using Bard.gRPCService;
 using Fluent.Testing.Library.Tests.Scenario;
@@ -24,14 +25,15 @@ namespace Fluent.Testing.Library.Tests.gRPC
                         .UseTestServer()
                         .UseEnvironment("development"));
 
-            var host = hostBuilder.Start();
-            var testClient = host.GetTestClient();
+            _host = hostBuilder.Start();
+            var testClient = _host.GetTestClient();
             _httpClient = testClient;
         }
 
         private readonly ITestOutputHelper _output;
 
         private readonly HttpClient _httpClient;
+        private IHost _host;
 
         [Fact]
         public void Foo()
@@ -41,13 +43,15 @@ namespace Fluent.Testing.Library.Tests.gRPC
                 .WithStoryBook<CreditCheckStoryBook>()
                 .Configure(options =>
                 {
+                    options.Services = _host.Services;
                     options.LogMessage = s => _output.WriteLine(s);
                     options.GrpcClient = c => new CreditRatingCheckClient(c);
                     options.Client = _httpClient;
             });
 
             scenario.Given.That
-                .Nothing_much_happens();
+                .Nothing_much_happens()
+                .GetResult(out object foo);
             
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 

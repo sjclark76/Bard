@@ -2,9 +2,8 @@ name: .NET Core
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ master ]  
+    paths-ignore: 'docs/**'
 
 jobs:
   build:

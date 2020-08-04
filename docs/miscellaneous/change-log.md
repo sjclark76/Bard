@@ -4,6 +4,7 @@
 
 ### Changed
 
+* IScenarioContext now removed. Should be replaced with ScenarioContext instead.
 * Changed method signatures on Chapters to make them simpler. The Funcs used to require the Chapter Input in the method signature. Now the Chapter input is accessible on the ScenarioContext
 * Changed UseResult method to access tests output. Used to be called UseResult but is now called GetResult. 
 

@@ -32,6 +32,24 @@ namespace Bard.Internal.When
             return PostOrPut(model, (client, messageContent) => client.PostAsync(route, messageContent));
         }
 
+        public IResponse Patch<TModel>(string route, TModel model)
+        {
+            var messageContent = CreateMessageContent(model);
+            var responseMessage = AsyncHelper.RunSync(() => PatchAsync(route, messageContent));
+           
+            _logWriter.WriteStringToConsole($"REQUEST: {responseMessage.RequestMessage.Method.Method} {route}");
+            _logWriter.WriteObjectToConsole(model);
+
+            var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
+
+            _logWriter.WriteHttpResponseToConsole(responseMessage);
+
+            var apiResult = new ApiResult(responseMessage, responseString);
+            var response = new Response(apiResult, _badRequestProvider);
+            PublishApiResponse(response);
+            return response;
+        }
+        
         public IResponse Get(string uri, string name, string value)
         {
             var url = QueryHelpers.AddQueryString(uri, name, value);
@@ -92,6 +110,62 @@ namespace Bard.Internal.When
             var apiResult = new ApiResult(responseMessage, responseString);
             var response = new Response(apiResult, _badRequestProvider);
             return response;
+        }
+
+        public IDisposable Subscribe(IObserver<Response> observer)
+        {
+            // Check whether observer is already registered. If not, add it
+            if (!_observers.Contains(observer))
+            {
+                _observers.Add(observer);
+            }
+            return new Unsubscriber(_observers, observer);
+        }
+
+        public void PublishApiResponse(Response? apiResponse)
+        {
+            foreach (var observer in _observers)
+            {
+                if (apiResponse == null)
+                {
+                    //observer.OnError(new LocationUnknownException());
+                }
+                else
+                {
+                    observer.OnNext(apiResponse);
+                }
+            }
+        }
+        
+        private class Unsubscriber : IDisposable
+        {
+            private readonly List<IObserver<Response>> _observers;
+            private readonly IObserver<Response> _observer;
+
+            public Unsubscriber(List<IObserver<Response>> observers, IObserver<Response> observer)
+            {
+                _observers = observers;
+                _observer = observer;
+            }
+
+            public void Dispose()
+            {
+                if (_observer != null && _observers.Contains(_observer))
+                    _observers.Remove(_observer);
+            }
+        }
+        
+        /// <summary>
+        ///     HttpClient does not have Patch built in so need to do it ourselves
+        /// </summary>
+        private async Task<HttpResponseMessage> PatchAsync(string route, HttpContent content)
+        {
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), route)
+            {
+                Content = content
+            };
+
+            return await _httpClient.SendAsync(request);
         }
     }
 }

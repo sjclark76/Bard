@@ -20,7 +20,9 @@
 
 * [Dependency Injection](advanced/dependency-injection.md)
 
----
+## Miscellaneous
 
-* [Change Log](change-log.md)
+* [Change Log](miscellaneous/change-log.md)
+* [gRPC](miscellaneous/grpc.md)
+* [Migration Guide](miscellaneous/migration-guide.md)
 

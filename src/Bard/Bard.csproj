@@ -11,7 +11,7 @@
         <PackageTags>BDD Testing Fluent API micro services</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageVersion />
-        <Description>A .NET BDD API Testing Framework</Description>
+        <Description>Bard is a .NET library for functional API testing.</Description>
         <PackageProjectUrl>https://docs.bard.net.nz</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sjclark76/Bard</RepositoryUrl>
     </PropertyGroup>

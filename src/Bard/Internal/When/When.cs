@@ -24,6 +24,11 @@ namespace Bard.Internal.When
             return CallApi(() => _api.Delete(route));
         }
 
+        public IResponse Patch<TModel>(string route, TModel model)
+        {
+            return CallApi(() => _api.Patch(route, model));
+        }
+
         public IResponse Put<TModel>(string route, TModel model)
         {
             return CallApi(() => _api.Put(route, model));

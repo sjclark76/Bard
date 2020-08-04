@@ -20,8 +20,6 @@ namespace Fluent.Testing.Library.Tests.Scenario
                    });
                });
                     
-                context.Writer.WriteStringToConsole("nothing much has happened..");
-                //context.
                 return new object();
             }).End();
         }

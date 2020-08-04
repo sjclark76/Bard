@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Bard.Infrastructure;
+
 [assembly: InternalsVisibleTo("Bard.Grpc")]
+
 namespace Bard.Internal.When
 {
     internal class When : IWhen
     {
         private readonly Api _api;
         protected readonly LogWriter LogWriter;
-        private readonly Action _preApiCall;
+        protected readonly Action PreApiCall;
 
         internal When(Api api, LogWriter logWriter,
             Action preApiCall)
         {
             _api = api;
             LogWriter = logWriter;
-            _preApiCall = preApiCall;
+            PreApiCall = preApiCall;
         }
 
         public IResponse Delete(string route)
@@ -56,10 +58,10 @@ namespace Bard.Internal.When
 
         private IResponse CallApi(Func<IResponse> callApi)
         {
-            _preApiCall();
+            PreApiCall();
 
             WriteHeader();
-            
+
             var response = callApi();
 
             return response;

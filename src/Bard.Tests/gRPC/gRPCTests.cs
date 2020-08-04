@@ -1,5 +1,4 @@
 ﻿using System.Net.Http;
-using Bard;
 using Bard.gRPC;
 using Bard.gRPCService;
 using Fluent.Testing.Library.Tests.Scenario;
@@ -48,8 +47,9 @@ namespace Fluent.Testing.Library.Tests.gRPC
              });
             
              scenario.Given.That
-                 .Nothing_much_happens()
-                 .GetResult(out object foo);
+                 .Nothing_much_happens();
+                 
+                 //.GetResult(out object foo);
             
              var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
             

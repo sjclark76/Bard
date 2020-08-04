@@ -17,6 +17,8 @@ namespace Bard.gRPC
 
         public TResponse Grpc<TResponse>(Func<TGrpcClient, TResponse> grpcCall)
         {
+            PreApiCall();
+            
             WriteHeader();
 
             var gRpcClient = _grpcClientFactory();

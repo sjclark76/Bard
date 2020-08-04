@@ -2,22 +2,22 @@ using System;
 
 namespace Bard.Internal.Given
 {
-    internal class ChapterGiven<TInput, TRequest> : IChapterGiven<TInput, TRequest>
-        where TRequest : new() where TInput : class, new()
+    internal class ChapterGiven<TStoryData, TStoryParams> : IChapterGiven<TStoryData, TStoryParams>
+        where TStoryParams : new() where TStoryData : class, new()
     {
         private readonly ScenarioContext _context;
-        private readonly Func<TRequest> _createRequest;
+        private readonly Func<TStoryParams> _createRequest;
 
-        internal ChapterGiven(ScenarioContext context, Func<TRequest> createRequest)
+        internal ChapterGiven(ScenarioContext context, Func<TStoryParams> createRequest)
         {
             _context = context;
             _createRequest = createRequest;
         }
 
-     public IChapterGivenWhen<TOutput> When<TOutput>(Func<ScenarioContext<TInput>, TRequest, TOutput> execute) where TOutput : class, new()
+     public IChapterGivenWhen<TStoryData> When(Func<ScenarioContext<TStoryData>, TStoryParams, TStoryData> execute)
         {
-            var nextContext = new ScenarioContext<TInput>(_context);
-            return new ChapterGivenWhen<TInput, TRequest, TOutput>(nextContext, _createRequest, execute);
+            var nextContext = new ScenarioContext<TStoryData>(_context);
+            return new ChapterGivenWhen<TStoryData, TStoryParams>(nextContext, _createRequest, execute);
             
         }
     }

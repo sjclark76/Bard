@@ -2,11 +2,11 @@
 
 namespace Bard
 {
-    public interface IChapterWhen<TOutput> where TOutput : class, new()
+    public interface IChapterWhen<TStoryData> where TStoryData : class, new()
     {
         TNextChapter Then<TNextChapter>([CallerMemberName] string memberName = "")
-            where TNextChapter : Chapter<TOutput>, new();
+            where TNextChapter : Chapter<TStoryData>, new();
 
-        EndChapter<TOutput> End([CallerMemberName] string memberName = "");
+        EndChapter<TStoryData> End([CallerMemberName] string memberName = "");
     }
 }

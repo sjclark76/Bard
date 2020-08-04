@@ -24,8 +24,6 @@ namespace Bard
 
         internal IPipelineBuilder Builder { get; }
 
-        //internal BardHttpClient BardHttpClient { get; }
-
         internal Func<object>? CreateGrpcClient { get; set; }
 
         public IServiceProvider? Services
@@ -56,27 +54,27 @@ namespace Bard
         }
     }
 
-    public class ScenarioContext<TStoryInput> : ScenarioContext where TStoryInput : class, new()
+    public class ScenarioContext<TStoryData> : ScenarioContext where TStoryData : class, new()
     {
-        private TStoryInput? _storyInput;
+        private TStoryData? _storyInput;
 
         internal ScenarioContext(ScenarioContext context) : base(context.Builder, context.Api, context.Writer,
             context.Services, context.CreateGrpcClient)
         {
         }
 
-        public TStoryInput StoryInput
+        public TStoryData StoryData
         {
             get
             {
                 if (_storyInput == null)
-                    throw new BardException($"{nameof(StoryInput)} has not been set.");
+                    throw new BardException($"{nameof(StoryData)} has not been set.");
 
                 return _storyInput;
             }
         }
 
-        internal void SetStoryInput(TStoryInput? input)
+        internal void SetStoryData(TStoryData? input)
         {
             _storyInput = input;
         }

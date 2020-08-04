@@ -2,9 +2,9 @@
 
 namespace Bard
 {
-    public interface IBeginGivenWhen<TOutput> where TOutput : class, new()
+    public interface IBeginGivenWhen<TStoryData> where TStoryData : class, new()
     {
         TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
-            where TNextStep : Chapter<TOutput>, new();
+            where TNextStep : Chapter<TStoryData>, new();
     }
 }

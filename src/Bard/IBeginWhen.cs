@@ -2,9 +2,9 @@
 
 namespace Bard
 {
-    public interface IBeginWhen<TStoryInput> where TStoryInput : class, new()
+    public interface IBeginWhen<TStoryData> where TStoryData : class, new()
     {
-        TNextStep Then<TNextStep>([CallerMemberName] string memberName = "") where TNextStep : Chapter<TStoryInput>, new();
-        EndChapter<TStoryInput> End(string memberName = "");
+        TNextStep Then<TNextStep>([CallerMemberName] string memberName = "") where TNextStep : Chapter<TStoryData>, new();
+        EndChapter<TStoryData> End(string memberName = "");
     }
 }

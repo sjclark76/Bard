@@ -11,19 +11,19 @@ namespace Bard
         /// <summary>
         ///     Define the action of your story.
         /// </summary>
-        /// <param name="story"></param>
-        /// <typeparam name="TStoryOutput"></typeparam>
+        /// <param name="storyData"></param>
+        /// <typeparam name="TStoryData"></typeparam>
         /// <returns></returns>
         /// <exception cref="BardConfigurationException"></exception>
-        protected IBeginWhen<TStoryOutput> When<TStoryOutput>(Func<ScenarioContext, TStoryOutput> story)
-            where TStoryOutput : class, new()
+        protected IBeginWhen<TStoryData> When<TStoryData>(Func<ScenarioContext, TStoryData> storyData)
+            where TStoryData : class, new()
         {
             if (Context == null)
                 throw new BardConfigurationException($"{nameof(Context)} has not been set.");
 
-            var context = new ScenarioContext<TStoryOutput>(Context);
+            var context = new ScenarioContext<TStoryData>(Context);
 
-            return new BeginWhen<TStoryOutput>(context, story);
+            return new BeginWhen<TStoryData>(context, storyData);
         }
 
         /// <summary>

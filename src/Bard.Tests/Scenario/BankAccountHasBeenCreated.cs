@@ -28,11 +28,11 @@ namespace Fluent.Testing.Library.Tests.Scenario
         {
             return When(context =>
             {
-                var update = context.StoryInput;
+                var update = context.StoryData;
                 
                 updateBankAccount?.Invoke(update);
 
-                context.Api.Put($"api/bankaccounts/{context.StoryInput.Id}", update);
+                context.Api.Put($"api/bankaccounts/{context.StoryData.Id}", update);
                 
                 return update;
             })

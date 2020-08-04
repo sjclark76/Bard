@@ -3,39 +3,38 @@ using Bard.Internal.Given;
 
 namespace Bard
 {
-    public abstract class Chapter<TChapterInput> : ISimpleChapter<TChapterInput> where TChapterInput : class, new()
+    public abstract class Chapter<TStoryData> : ISimpleChapter<TStoryData> where TStoryData : class, new()
     {
-        internal ScenarioContext<TChapterInput>? Context { get; set; }
+        internal ScenarioContext<TStoryData>? Context { get; set; }
 
-        object? ISimpleChapter<TChapterInput>.ExecutePipeline()
+        object? ISimpleChapter<TStoryData>.ExecutePipeline()
         {
             return Context?.ExecutePipeline();
         }
 
-        void ISimpleChapter<TChapterInput>.SetStoryInput(TChapterInput? input)
+        void ISimpleChapter<TStoryData>.SetStoryInput(TStoryData? input)
         {
-            Context?.SetStoryInput(input);
+            Context?.SetStoryData(input);
         }
 
-        protected IChapterWhen<TStoryOutput> When<TStoryOutput>(
-            Func<ScenarioContext<TChapterInput>, TStoryOutput> execute)
-            where TStoryOutput : class, new()
+        protected IChapterWhen<TStoryData> When(
+            Func<ScenarioContext<TStoryData>, TStoryData> execute)
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            var context = new ScenarioContext<TStoryOutput>(Context);
+            var context = new ScenarioContext<TStoryData>(Context);
 
-            return new ChapterWhen<TChapterInput, TStoryOutput>(context, execute);
+            return new ChapterWhen<TStoryData>(context, execute);
         }
 
-        protected IChapterGiven<TChapterInput, TRequest> Given<TRequest>(Func<TRequest> createRequest)
+        protected IChapterGiven<TStoryData, TRequest> Given<TRequest>(Func<TRequest> createRequest)
             where TRequest : new()
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            return new ChapterGiven<TChapterInput, TRequest>(Context, createRequest);
+            return new ChapterGiven<TStoryData, TRequest>(Context, createRequest);
         }
     }
 }

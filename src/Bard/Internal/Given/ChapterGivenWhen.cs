@@ -3,16 +3,15 @@ using System.Runtime.CompilerServices;
 
 namespace Bard.Internal.Given
 {
-    internal class ChapterGivenWhen<TInput, TRequest, TOutput> : IChapterGivenWhen<TOutput> where TRequest : new()
-        where TOutput : class, new()
-        where TInput : class, new()
+    internal class ChapterGivenWhen<TStoryData, TStoryParams> : IChapterGivenWhen<TStoryData> where TStoryParams : new()
+        where TStoryData : class, new()
     {
-        private readonly ScenarioContext<TInput> _context;
-        private readonly Func<TRequest> _createRequest;
-        private readonly Func<ScenarioContext<TInput>, TRequest, TOutput> _execute;
+        private readonly ScenarioContext<TStoryData> _context;
+        private readonly Func<TStoryParams> _createRequest;
+        private readonly Func<ScenarioContext<TStoryData>, TStoryParams, TStoryData> _execute;
 
-        internal ChapterGivenWhen(ScenarioContext<TInput> context, Func<TRequest> createRequest,
-            Func<ScenarioContext<TInput>, TRequest, TOutput> execute)
+        internal ChapterGivenWhen(ScenarioContext<TStoryData> context, Func<TStoryParams> createRequest,
+            Func<ScenarioContext<TStoryData>, TStoryParams, TStoryData> execute)
         {
             _context = context;
             _createRequest = createRequest;
@@ -20,17 +19,17 @@ namespace Bard.Internal.Given
         }
 
         public TNextChapter Then<TNextChapter>([CallerMemberName] string memberName = "")
-            where TNextChapter : Chapter<TOutput>, new()
+            where TNextChapter : Chapter<TStoryData>, new()
         {
             var request = _createRequest();
 
             _context.AddPipelineStep(memberName, input =>
             {
-                _context.SetStoryInput(input as TInput);
+                _context.SetStoryData(input as TStoryData);
                    return _execute(_context, request);
             });
 
-            var nextContext = new ScenarioContext<TOutput>(_context);
+            var nextContext = new ScenarioContext<TStoryData>(_context);
             var nextStep = new TNextChapter {Context = nextContext};
 
             return nextStep;

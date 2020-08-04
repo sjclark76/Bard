@@ -1,9 +1,9 @@
 ﻿namespace Bard
 {
-    public interface ISimpleChapter<in TChapterInput> where TChapterInput : class, new()
+    public interface ISimpleChapter<in TStoryData> where TStoryData : class, new()
     {
         internal object? ExecutePipeline();
 
-        internal void SetStoryInput(TChapterInput? input);
+        internal void SetStoryInput(TStoryData? input);
     }
 }

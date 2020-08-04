@@ -7,11 +7,12 @@ namespace Bard.gRPC
 {
     public class GrpcScenarioContext<TGrpcClient> : ScenarioContext where TGrpcClient : ClientBase<TGrpcClient>
     {
-        internal GrpcScenarioContext(ClientBase<TGrpcClient> grpcClient, IPipelineBuilder pipelineBuilder,
-            BardHttpClient bardHttpClient, IApi api, LogWriter logWriter, IServiceProvider? services) : base(
-            pipelineBuilder, bardHttpClient, api, logWriter, services)
+        internal GrpcScenarioContext(IPipelineBuilder pipelineBuilder,
+            BardHttpClient bardHttpClient, IApi api, LogWriter logWriter, IServiceProvider? services,
+            Func<TGrpcClient> createGrpcClient) : base(
+            pipelineBuilder, bardHttpClient, api, logWriter, services, createGrpcClient)
         {
-            GrpcClient = grpcClient;
+            GrpcClient = createGrpcClient();
         }
 
         public ClientBase<TGrpcClient> GrpcClient { get; }

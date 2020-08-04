@@ -4,6 +4,6 @@
     {
         internal object? ExecutePipeline();
 
-        void SetStoryInput(TChapterInput? input);
+        internal void SetStoryInput(TChapterInput? input);
     }
 }

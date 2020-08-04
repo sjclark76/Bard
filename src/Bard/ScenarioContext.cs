@@ -12,12 +12,13 @@ namespace Bard
         private IServiceProvider? _services;
 
         internal ScenarioContext(IPipelineBuilder pipelineBuilder, BardHttpClient bardHttpClient, IApi api, LogWriter logWriter,
-            IServiceProvider? services)
+            IServiceProvider? services, Func<object>? createGrpcClient = null)
         {
             Builder = pipelineBuilder;
             BardHttpClient = bardHttpClient;
             Api = api;
             Writer = logWriter;
+            CreateGrpcClient = createGrpcClient;
 
             if (services != null)
                 Services = services.CreateScope().ServiceProvider;
@@ -27,6 +28,8 @@ namespace Bard
         
         internal BardHttpClient BardHttpClient { get; }
 
+        internal Func<object>? CreateGrpcClient { get; set; }
+        
         public IServiceProvider? Services
         {
             get
@@ -59,7 +62,7 @@ namespace Bard
         private TStoryInput? _storyInput;
 
         internal ScenarioContext(ScenarioContext context) : base(context.Builder, context.BardHttpClient, context.Api, context.Writer,
-            context.Services)
+            context.Services, context.CreateGrpcClient)
         {
         }
 

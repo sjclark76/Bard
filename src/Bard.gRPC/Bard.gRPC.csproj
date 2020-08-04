@@ -22,4 +22,8 @@
         <PackageReference Include="Grpc.Core.Api" Version="2.27.0" />
         <PackageReference Include="Grpc.Net.Client" Version="2.27.0" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Internal" />
+    </ItemGroup>
 </Project>

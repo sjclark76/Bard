@@ -13,11 +13,11 @@ namespace Bard.gRPC
     ///     TODO: Public for now..
     /// </summary>
     /// <typeparam name="TGrpcClient"></typeparam>
-    public class GrpcFluentScenario<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
+    internal class Scenario<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
     {
         private readonly Then _then;
 
-        protected GrpcFluentScenario(GrpcScenarioOptions<TGrpcClient> options)
+        protected Scenario(GrpcScenarioOptions<TGrpcClient> options)
         {
             if (options.Client == null)
                 throw new BardConfigurationException("Client not set");
@@ -46,7 +46,7 @@ namespace Bard.gRPC
             var api = new Api(bardClient, options.BadRequestProvider);
             var pipeline = new PipelineBuilder(logWriter);
 
-            Context = new GrpcScenarioContext<TGrpcClient>(pipeline, bardClient, api, logWriter,
+            Context = new GrpcScenarioContext<TGrpcClient>(pipeline, api, logWriter,
                 options.Services, GRpcFactory);
 
             var when = new GrpcWhen<TGrpcClient>(GRpcFactory, api, logWriter,
@@ -67,11 +67,10 @@ namespace Bard.gRPC
         protected GrpcScenarioContext<TGrpcClient> Context { get; set; }
     }
 
-    public class GrpcFluentScenario<TGrpcClient, TStoryBook> : GrpcFluentScenario<TGrpcClient>
-        where TGrpcClient : ClientBase<TGrpcClient>
+    internal class Scenario<TGrpcClient, TStoryBook> : Scenario<TGrpcClient>, IScenario<TGrpcClient, TStoryBook> where TGrpcClient : ClientBase<TGrpcClient>
         where TStoryBook : StoryBook, new()
     {
-        internal GrpcFluentScenario(GrpcScenarioOptions<TGrpcClient, TStoryBook> options) : base(options)
+        internal Scenario(GrpcScenarioOptions<TGrpcClient, TStoryBook> options) : base(options)
         {
             var story = options.Story;
 

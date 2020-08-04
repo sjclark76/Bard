@@ -56,8 +56,6 @@ namespace Fluent.Testing.Library.Tests.gRPC
              scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
             
              scenario.Then.Response.ShouldBe.Ok();
-
-            //reply.IsAccepted.ShouldBe(true);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Fluent.Testing.Library.Tests.POST
         public IWhen When { get; }
         public IThen Then { get; }
 
-        public IFluentScenario Scenario { get; }
+        public IScenario Scenario { get; }
 
         [Fact]
         public void When_creating_a_bank_account()

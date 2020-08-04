@@ -25,7 +25,7 @@ namespace Bard.Internal.Given
             return nextStep;
         }
         
-        public EndChapter<TStoryInput> End(string memberName = "")
+        public EndChapter<TStoryInput> End([CallerMemberName] string memberName = "")
         {
             var nextContext = new ScenarioContext<TStoryInput>(_context);
 

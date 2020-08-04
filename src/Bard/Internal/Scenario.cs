@@ -8,16 +8,16 @@ using Bard.Internal.When;
 
 namespace Bard.Internal
 {
-    internal class FluentScenario : IFluentScenario
+    internal class Scenario : IScenario
     {
         private readonly Then.Then _then;
 
-        internal FluentScenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
+        internal Scenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
             options.BadRequestProvider, options.Services)
         {
         }
 
-        protected FluentScenario(HttpClient? client, Action<string> logMessage, IBadRequestProvider badRequestProvider,
+        protected Scenario(HttpClient? client, Action<string> logMessage, IBadRequestProvider badRequestProvider,
             IServiceProvider? services)
         {
             if (client == null)
@@ -29,7 +29,7 @@ namespace Bard.Internal
             var api = new Api(bardClient, badRequestProvider);
             var pipeline = new PipelineBuilder(logWriter);
 
-            Context = new ScenarioContext(pipeline, bardClient, api, logWriter, services);
+            Context = new ScenarioContext(pipeline, api, logWriter, services);
 
             var when = new When.When(api, logWriter,
                 () => Context.ExecutePipeline());
@@ -50,10 +50,10 @@ namespace Bard.Internal
         public IThen Then => _then;
     }
 
-    internal class FluentScenario<TStoryBook> : FluentScenario, IFluentScenario<TStoryBook>
+    internal class Scenario<TStoryBook> : Scenario, IScenario<TStoryBook>
         where TStoryBook : StoryBook, new()
     {
-        internal FluentScenario(ScenarioOptions<TStoryBook> options) : base(options.Client, options.LogMessage,
+        internal Scenario(ScenarioOptions<TStoryBook> options) : base(options.Client, options.LogMessage,
             options.BadRequestProvider, options.Services)
         {
             var story = options.Story;

@@ -1,7 +1,6 @@
 ﻿using Bard;
+using Bard.gRPC;
 using Bard.gRPCService;
-using Bard.Internal;
-using Grpc.Net.Client;
 
 namespace Fluent.Testing.Library.Tests.Scenario
 {
@@ -25,7 +24,6 @@ namespace Fluent.Testing.Library.Tests.Scenario
                 //context.
                 return new object();
             }).End();
-
         }
     }
 }

@@ -1,39 +1,19 @@
-﻿using System;
-using Bard.Configuration;
-using Bard.gRPC;
-using Bard.Infrastructure;
+﻿using Bard.Infrastructure;
+using Bard.Internal;
 using Bard.Internal.Exception;
 using Bard.Internal.When;
 using Grpc.Core;
 using Grpc.Net.Client;
 
-namespace Bard.Internal
+namespace Bard.gRPC
 {
-    public static class Foo
-    {
-        public static void Grpc<TGrpcClient>(this ScenarioContext context, Func<TGrpcClient, object?> execute) where TGrpcClient : ClientBase<TGrpcClient>
-        {
-            GrpcChannelOptions channelOptions = new GrpcChannelOptions
-            {
-                HttpClient = context.BardHttpClient
-            };
-
-            var channel = GrpcChannel.ForAddress(context.BardHttpClient.BaseAddress, channelOptions);
-
-            var gRpcClient = (TGrpcClient) Activator.CreateInstance(typeof(TGrpcClient), channel);
-
-            execute(gRpcClient);
-        }  
-    }
-    
-    
     /// <summary>
     ///     TODO: Public for now..
     /// </summary>
     /// <typeparam name="TGrpcClient"></typeparam>
     public class GrpcFluentScenario<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
     {
-        private readonly Then.Then _then;
+        private readonly Internal.Then.Then _then;
 
         public GrpcFluentScenario(GrpcScenarioOptions<TGrpcClient> options)
         {
@@ -68,7 +48,7 @@ namespace Bard.Internal
 
             When = when;
 
-            _then = new Then.Then();
+            _then = new Internal.Then.Then();
 
             _then.Subscribe(bardClient);
             pipeline.Subscribe(bardClient);
@@ -88,7 +68,7 @@ namespace Bard.Internal
             var story = options.Story;
             story.Context = Context;
     
-            Given = new Given.Given<TStoryBook>(story, () => Context.ExecutePipeline());
+            Given = new Internal.Given.Given<TStoryBook>(story, () => Context.ExecutePipeline());
         }
     
         public IGiven<TStoryBook> Given { get; }

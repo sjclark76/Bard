@@ -1,7 +1,8 @@
 ﻿using System;
+using Bard.Configuration;
 using Grpc.Core;
 
-namespace Bard.Configuration
+namespace Bard.gRPC
 {
     public class GrpcScenarioOptions<TGrpcClient> : ScenarioOptions where TGrpcClient : ClientBase<TGrpcClient>
     {

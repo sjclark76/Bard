@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Bard.Infrastructure;
-
+[assembly: InternalsVisibleTo("Bard.Grpc")]
 namespace Bard.Internal.When
 {
     internal class When : IWhen

@@ -1,9 +1,9 @@
 ﻿using System;
-using Bard.gRPC;
 using Bard.Infrastructure;
+using Bard.Internal.When;
 using Grpc.Core;
 
-namespace Bard.Internal.When
+namespace Bard.gRPC
 {
     internal class GrpcWhen<TGrpcClient> : When, IGrpcWhen<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
     {

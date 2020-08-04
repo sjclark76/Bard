@@ -34,6 +34,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Bard.gRPCService\Bard.gRPCService.csproj" />
+      <ProjectReference Include="..\Bard.gRPC\Bard.gRPC.csproj" />
       <ProjectReference Include="..\Bard\Bard.csproj" />
       <ProjectReference Include="..\Sample.Api\Sample.Api.csproj" />
     </ItemGroup>

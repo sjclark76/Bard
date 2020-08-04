@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 using Bard;
-using Bard.Configuration;
+using Bard.gRPC;
 using Bard.gRPCService;
 using Fluent.Testing.Library.Tests.Scenario;
 using Microsoft.AspNetCore.Hosting;
@@ -8,11 +8,9 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 using Xunit;
 using Xunit.Abstractions;
-using static Bard.gRPCService.CreditRatingCheck;
 
 namespace Fluent.Testing.Library.Tests.gRPC
 {
-    
     public class GRpcTests
     {
         public GRpcTests(ITestOutputHelper output)
@@ -33,31 +31,31 @@ namespace Fluent.Testing.Library.Tests.gRPC
         private readonly ITestOutputHelper _output;
 
         private readonly HttpClient _httpClient;
-        private IHost _host;
+        private readonly IHost _host;
 
         [Fact]
         public void Foo()
         {
-            var scenario = ScenarioConfiguration
-                .UseGrpc<CreditRatingCheckClient>()
-                .WithStoryBook<CreditCheckStoryBook>()
-                .Configure(options =>
-                {
-                    options.Services = _host.Services;
-                    options.LogMessage = s => _output.WriteLine(s);
-                    options.GrpcClient = c => new CreditRatingCheckClient(c);
-                    options.Client = _httpClient;
-            });
-
-            scenario.Given.That
-                .Nothing_much_happens()
-                .GetResult(out object foo);
+             var scenario = GrpcScenarioConfiguration
+                 .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
+                 .WithStoryBook<CreditCheckStoryBook>()
+                 .Configure(options =>
+                 {
+                     options.Services = _host.Services;
+                     options.LogMessage = s => _output.WriteLine(s);
+                     options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                     options.Client = _httpClient;
+             });
             
-            var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
-
-            scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
-
-            scenario.Then.Response.ShouldBe.Ok();
+             scenario.Given.That
+                 .Nothing_much_happens()
+                 .GetResult(out object foo);
+            
+             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
+            
+             scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+            
+             scenario.Then.Response.ShouldBe.Ok();
 
             //reply.IsAccepted.ShouldBe(true);
         }

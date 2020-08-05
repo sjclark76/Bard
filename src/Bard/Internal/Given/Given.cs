@@ -2,18 +2,18 @@ using System;
 
 namespace Bard.Internal.Given
 {
-    internal class Given<TScenario> : IGiven<TScenario> where TScenario : StoryBook
+    internal class Given<TStoryBook, TStoryData> : IGiven<TStoryBook, TStoryData> where TStoryBook : StoryBook<TStoryData> where TStoryData : class, new()
     {
         private readonly Action _resetPipeline;
-        private readonly TScenario _that;
+        private readonly TStoryBook _that;
 
-        internal Given(TScenario scenario, Action resetPipeline)
+        internal Given(TStoryBook scenario, Action resetPipeline)
         {
             _that = scenario;
             _resetPipeline = resetPipeline;
         }
 
-        public TScenario That
+        public TStoryBook That
         {
             get
             {

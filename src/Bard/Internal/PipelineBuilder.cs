@@ -36,7 +36,7 @@ namespace Bard.Internal
             _apiCalled = true;
         }
 
-        public void AddStep(string stepName, Func<object?, object?> stepFunc)
+        public void AddStep(string stepName, Action<object?> stepFunc)
         {
             _pipelineSteps.Add(new PipelineStep(stepName, stepFunc));
         }
@@ -64,13 +64,13 @@ namespace Bard.Internal
 
                 try
                 {
-                    var output = pipelineStep.StepFunc(Input);
-                    if (_apiCalled == false)
+                    pipelineStep.StepFunc(Input);
+                    //if (_apiCalled == false)
                         // The API was not called through the context so log
                         // the output instead.
-                        _logWriter.WriteObjectToConsole(output);
+                        //_logWriter.WriteObjectToConsole(output);
 
-                    Input = output;
+                    //Input = output;
                 }
                 catch (BardException exception)
                 {

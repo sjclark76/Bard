@@ -37,7 +37,7 @@ namespace Fluent.Testing.Library.Tests.gRPC
         {
             var scenario = GrpcScenarioConfiguration
                  .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
-                 .WithStoryBook<CreditCheckStoryBook>()
+                 .WithStoryBook<CreditCheckStoryBook, CreditCheckData>()
                  .Configure(options =>
                  {
                      options.Services = _host.Services;

@@ -4,7 +4,7 @@ using Fluent.Testing.Sample.Api.Model;
 
 namespace Fluent.Testing.Library.Tests.Scenario
 {
-    public class DepositMade : Chapter<BankAccount>
+    public class DepositMade : Chapter<BankingStoryData>
     {
         public DepositMade Deposit_has_been_made(decimal amount)
         {
@@ -33,8 +33,6 @@ namespace Fluent.Testing.Library.Tests.Scenario
                     configureBankAccount?.Invoke(bankAccount);
 
                     var response = context.Api.Post("api/bankaccounts", bankAccount);
-
-                    return response.Content<BankAccount>();
                 })
                 .Then<BankAccountHasBeenCreated>();
         }

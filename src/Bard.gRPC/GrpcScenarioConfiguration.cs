@@ -5,15 +5,15 @@ namespace Bard.gRPC
 {
     public static class GrpcScenarioConfiguration
     {
-        public class GrpcStoryBookOptions<TGrpcClient, TStoryBook> where TStoryBook : StoryBook, new() where TGrpcClient : ClientBase<TGrpcClient>
+        public class GrpcStoryBookOptions<TGrpcClient, TStoryBook, TStoryData> where TStoryBook : StoryBook<TStoryData>, new() where TGrpcClient : ClientBase<TGrpcClient> where TStoryData : class, new()
         {
-            public IScenario<TGrpcClient, TStoryBook> Configure(Action<GrpcScenarioOptions<TGrpcClient, TStoryBook>> configure) 
+            public IScenario<TGrpcClient, TStoryBook, TStoryData> Configure(Action<GrpcScenarioOptions<TGrpcClient, TStoryBook>> configure) 
             {
                 var options = new GrpcScenarioOptions<TGrpcClient, TStoryBook>();
 
                 configure(options);
 
-                return new Scenario<TGrpcClient, TStoryBook>(options);
+                return new Scenario<TGrpcClient, TStoryBook, TStoryData>(options);
             }
         }
         
@@ -28,9 +28,9 @@ namespace Bard.gRPC
             //     return new GrpcFluentScenario<TGrpcClient>(options);
             // }
             
-            public GrpcStoryBookOptions<TGrpcClient, TStoryBook> WithStoryBook<TStoryBook>() where TStoryBook : StoryBook, new()
+            public GrpcStoryBookOptions<TGrpcClient, TStoryBook, TStoryData> WithStoryBook<TStoryBook, TStoryData>() where TStoryBook : StoryBook<TStoryData>, new() where TStoryData : class, new()
             {
-                return new GrpcStoryBookOptions<TGrpcClient, TStoryBook>();
+                return new GrpcStoryBookOptions<TGrpcClient, TStoryBook, TStoryData>();
             }
         }
         

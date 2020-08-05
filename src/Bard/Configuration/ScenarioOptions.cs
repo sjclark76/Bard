@@ -17,7 +17,7 @@ namespace Bard.Configuration
         public IServiceProvider? Services { get; set; }
     }
 
-    public class ScenarioOptions<TStoryBook> : ScenarioOptions where TStoryBook : StoryBook, new()
+    public class ScenarioOptions<TStoryBook, TStoryData> : ScenarioOptions where TStoryBook : StoryBook<TStoryData>, new() where TStoryData : class, new()
     {
         public ScenarioOptions()
         {

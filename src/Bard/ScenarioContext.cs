@@ -48,7 +48,7 @@ namespace Bard
             return Builder.Execute();
         }
 
-        internal void AddPipelineStep(string stepName, Func<object?, object?> func)
+        internal void AddPipelineStep(string stepName, Action<object?> func)
         {
             Builder.AddStep(stepName, func);
         }

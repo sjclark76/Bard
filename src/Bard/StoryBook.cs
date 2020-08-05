@@ -4,26 +4,27 @@ using Bard.Internal.Given;
 
 namespace Bard
 {
-    public abstract class StoryBook
+    public abstract class StoryBook<TStoryData> where TStoryData : class, new()
     {
-        internal ScenarioContext? Context { get; set; }
+        internal ScenarioContext<TStoryData>? Context { get; set; }
 
         /// <summary>
         ///     Define the action of your story.
         /// </summary>
-        /// <param name="storyData"></param>
+        /// <param name="story"></param>
         /// <typeparam name="TStoryData"></typeparam>
         /// <returns></returns>
         /// <exception cref="BardConfigurationException"></exception>
-        protected IBeginWhen<TStoryData> When<TStoryData>(Func<ScenarioContext, TStoryData> storyData)
-            where TStoryData : class, new()
+        protected IBeginWhen<TStoryData> When(Action<ScenarioContext<TStoryData>> story)
         {
             if (Context == null)
                 throw new BardConfigurationException($"{nameof(Context)} has not been set.");
 
             var context = new ScenarioContext<TStoryData>(Context);
+            
+            context.SetStoryData(new TStoryData());
 
-            return new BeginWhen<TStoryData>(context, storyData);
+            return new BeginWhen<TStoryData>(context, story);
         }
 
         /// <summary>

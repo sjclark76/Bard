@@ -14,14 +14,13 @@ namespace Bard.Configuration
             return new Scenario(options);
         }
 
-        public static IScenario<TStoryBook> Configure<TStoryBook>(Action<ScenarioOptions<TStoryBook>> configure)
-            where TStoryBook : StoryBook, new()
+        public static IScenario<TStoryBook, TStoryData> Configure<TStoryBook, TStoryData>(Action<ScenarioOptions<TStoryBook, TStoryData>> configure) where TStoryBook : StoryBook<TStoryData>, new() where TStoryData : class, new()
         {
-            var options = new ScenarioOptions<TStoryBook>();
+            var options = new ScenarioOptions<TStoryBook, TStoryData>();
 
             configure(options);
 
-            return new Scenario<TStoryBook>(options);
+            return new Scenario<TStoryBook, TStoryData>(options);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Bard.Internal.Given
 {
     internal class BeginGivenWhen<TStoryParams, TStoryData> : IBeginGivenWhen<TStoryData> where TStoryData : class, new()
     {
-        private readonly ScenarioContext _context;
+        private readonly ScenarioContext<TStoryData> _context;
         private readonly Func<TStoryParams> _createRequest;
         private readonly Func<ScenarioContext, TStoryParams, TStoryData> _execute;
 
@@ -23,8 +23,7 @@ namespace Bard.Internal.Given
             var request = _createRequest();
             _context.AddPipelineStep(memberName, input => _execute(_context, request));
 
-            var nextContext = new ScenarioContext<TStoryData>(_context);
-            var nextStep = new TNextStep {Context = nextContext};
+            var nextStep = new TNextStep {Context = _context};
 
             return nextStep;
         }

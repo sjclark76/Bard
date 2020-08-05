@@ -1,7 +1,7 @@
 namespace Bard
 {
-    public interface IGiven<out TScenario> where TScenario : StoryBook
+    public interface IGiven<out TStoryBook, TStoryData> where TStoryBook : StoryBook<TStoryData> where TStoryData : class, new()
     {
-        TScenario That { get; }
+        TStoryBook That { get; }
     }
 }

@@ -9,7 +9,7 @@ namespace Bard.Internal
             StepName = stepName;
         }
 
-        public PipelineStep(string stepName, Func<object?, object?> stepFunc)
+        public PipelineStep(string stepName, Action<object?> stepFunc)
         {
             StepName = stepName;
             StepFunc = stepFunc;
@@ -17,6 +17,6 @@ namespace Bard.Internal
 
         public string StepName { get; }
 
-        public Func<object?, object?>? StepFunc { get; }
+        public Action<object?>? StepFunc { get; }
     }
 }

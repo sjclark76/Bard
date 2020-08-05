@@ -67,18 +67,19 @@ namespace Bard.gRPC
         protected GrpcScenarioContext<TGrpcClient> Context { get; set; }
     }
 
-    internal class Scenario<TGrpcClient, TStoryBook> : Scenario<TGrpcClient>, IScenario<TGrpcClient, TStoryBook> where TGrpcClient : ClientBase<TGrpcClient>
-        where TStoryBook : StoryBook, new()
+    internal class Scenario<TGrpcClient, TStoryBook, TStoryData> : Scenario<TGrpcClient>, IScenario<TGrpcClient, TStoryBook, TStoryData> where TGrpcClient : ClientBase<TGrpcClient>
+        where TStoryBook : StoryBook<TStoryData>, new()
+        where TStoryData : class, new()
     {
         internal Scenario(GrpcScenarioOptions<TGrpcClient, TStoryBook> options) : base(options)
         {
             var story = options.Story;
 
-            story.Context = Context;
+            story.Context = new ScenarioContext<TStoryData>(Context);
 
-            Given = new Given<TStoryBook>(story, () => Context.ExecutePipeline());
+            Given = new Given<TStoryBook, TStoryData>(story, () => Context.ExecutePipeline());
         }
 
-        public IGiven<TStoryBook> Given { get; }
+        public IGiven<TStoryBook, TStoryData> Given { get; }
     }
 }

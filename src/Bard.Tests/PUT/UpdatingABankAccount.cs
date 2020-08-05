@@ -1,4 +1,5 @@
 ﻿using Bard;
+using Fluent.Testing.Library.Tests.Scenario;
 using Fluent.Testing.Sample.Api.Model;
 using Xunit;
 using Xunit.Abstractions;
@@ -16,10 +17,10 @@ namespace Fluent.Testing.Library.Tests.PUT
         {
             Given.That
                 .BankAccount_has_been_created()
-                 .GetResult(out BankAccount? bankAccount);
+                 .GetResult(out BankingStoryData? bankAccount);
             
             When
-                .Put($"api/bankaccounts/{bankAccount?.Id}", new BankAccount
+                .Put($"api/bankaccounts/{bankAccount?.BankAccountId}", new BankAccount
                 {
                     CustomerName = "New Name"
                 });

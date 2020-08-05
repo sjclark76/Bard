@@ -50,18 +50,18 @@ namespace Bard.Internal
         public IThen Then => _then;
     }
 
-    internal class Scenario<TStoryBook> : Scenario, IScenario<TStoryBook>
-        where TStoryBook : StoryBook, new()
+    internal class Scenario<TStoryBook, TStoryData> : Scenario, IScenario<TStoryBook, TStoryData>
+        where TStoryBook : StoryBook<TStoryData>, new() where TStoryData : class, new()
     {
-        internal Scenario(ScenarioOptions<TStoryBook> options) : base(options.Client, options.LogMessage,
+        internal Scenario(ScenarioOptions<TStoryBook, TStoryData> options) : base(options.Client, options.LogMessage,
             options.BadRequestProvider, options.Services)
         {
             var story = options.Story;
-            story.Context = Context;
+            story.Context = new ScenarioContext<TStoryData>(Context);
 
-            Given = new Given<TStoryBook>(story, () => Context.ExecutePipeline());
+            Given = new Given<TStoryBook, TStoryData>(story, () => Context.ExecutePipeline());
         }
 
-        public IGiven<TStoryBook> Given { get; }
+        public IGiven<TStoryBook, TStoryData> Given { get; }
     }
 }

@@ -12,20 +12,23 @@ namespace Bard
             return Context?.ExecutePipeline();
         }
 
-        void ISimpleChapter<TStoryData>.SetStoryInput(TStoryData? input)
+        void ISimpleChapter<TStoryData>.SetStoryData(TStoryData? input)
         {
             Context?.SetStoryData(input);
         }
 
+        TStoryData ISimpleChapter<TStoryData>.GetStoryData()
+        {
+            return Context?.StoryData;
+        }
+
         protected IChapterWhen<TStoryData> When(
-            Func<ScenarioContext<TStoryData>, TStoryData> execute)
+            Action<ScenarioContext<TStoryData>> execute)
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
 
-            var context = new ScenarioContext<TStoryData>(Context);
-
-            return new ChapterWhen<TStoryData>(context, execute);
+            return new ChapterWhen<TStoryData>(Context, execute);
         }
 
         protected IChapterGiven<TStoryData, TRequest> Given<TRequest>(Func<TRequest> createRequest)

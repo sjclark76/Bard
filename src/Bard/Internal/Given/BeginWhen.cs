@@ -5,10 +5,10 @@ namespace Bard.Internal.Given
 {
     internal class BeginWhen<TStoryData> : IBeginWhen<TStoryData> where TStoryData : class, new()
     {
-        private readonly ScenarioContext _context;
-        private readonly Func<ScenarioContext, TStoryData> _execute;
+        private readonly ScenarioContext<TStoryData> _context;
+        private readonly Action<ScenarioContext<TStoryData>> _execute;
 
-        internal BeginWhen(ScenarioContext<TStoryData> context, Func<ScenarioContext, TStoryData> execute)
+        internal BeginWhen(ScenarioContext<TStoryData> context, Action<ScenarioContext<TStoryData>> execute)
         {
             _context = context;
             _execute = execute;
@@ -19,24 +19,21 @@ namespace Bard.Internal.Given
         {
             _context.AddPipelineStep(memberName, input => _execute(_context));
 
-            var nextContext = new ScenarioContext<TStoryData>(_context);
-            var nextStep = new TNextStep {Context = nextContext};
+            var nextStep = new TNextStep {Context = _context};
 
             return nextStep;
         }
-        
+
         public EndChapter<TStoryData> End([CallerMemberName] string memberName = "")
         {
-            var nextContext = new ScenarioContext<TStoryData>(_context);
-
             _context.AddPipelineStep(memberName, input =>
             {
-                nextContext.SetStoryData(input as TStoryData);
-                
-                return _execute(nextContext);
+                _context.SetStoryData(input as TStoryData);
+
+                _execute(_context);
             });
 
-            var nextStep = new EndChapter<TStoryData> {Context = new ScenarioContext<TStoryData>(_context)};
+            var nextStep = new EndChapter<TStoryData> {Context = _context};
 
             return nextStep;
         }

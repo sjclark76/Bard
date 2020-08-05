@@ -32,7 +32,7 @@ namespace Fluent.Testing.Library.Tests.POST
                 .That
                 .BankAccount_has_been_created()
                 .Deposit_has_been_made(() => new Deposit {Amount = 100})
-                .GetResult(out BankingStoryData? bankAccount);
+                .GetResult(out BankingStoryData bankAccount);
 
             When
                 .Post($"api/bankaccounts/{bankAccount?.BankAccountId}/withdrawals", new Withdrawal {Amount = 1000});
@@ -51,12 +51,12 @@ namespace Fluent.Testing.Library.Tests.POST
                 .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Rich Person")
                 .Deposit_has_been_made(() => new Deposit {Amount = 100})
-                .GetResult(out BankingStoryData? richBankAccount);
+                .GetResult(out BankingStoryData richBankAccount);
 
             Given
                 .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Poor Person Person")
-                .GetResult(out BankingStoryData? poorBankAccount);
+                .GetResult(out BankingStoryData poorBankAccount);
 
             When
                 .Post("api/transfers", new Transfer
@@ -75,14 +75,14 @@ namespace Fluent.Testing.Library.Tests.POST
             Given
                 .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Rich Person")
-                .GetResult(out BankingStoryData? richBankAccount)
+                .GetResult(out BankingStoryData richBankAccount)
                 .Deposit_has_been_made(() => new Deposit
                 {
                     Id = richBankAccount?.BankAccountId,
                     Amount = 100
                 })
                 .BankAccount_has_been_created(account => account.CustomerName = "Poor Person Person")
-                .GetResult(out BankingStoryData? poorBankAccount);
+                .GetResult(out BankingStoryData poorBankAccount);
 
             When
                 .Post("api/transfers", new Transfer

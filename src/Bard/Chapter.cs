@@ -19,7 +19,10 @@ namespace Bard
 
         TStoryData ISimpleChapter<TStoryData>.GetStoryData()
         {
-            return Context?.StoryData;
+            if (Context == null)
+                throw new ApplicationException($"{nameof(Context)} has not been set.");
+            
+            return Context.StoryData;
         }
 
         protected IChapterWhen<TStoryData> When(

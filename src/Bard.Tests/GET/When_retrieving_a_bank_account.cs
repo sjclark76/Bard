@@ -33,7 +33,7 @@ namespace Fluent.Testing.Library.Tests.GET
             Given
                 .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Fred")
-                .GetResult(out BankingStoryData? bankAccount);
+                .GetResult(out BankingStoryData bankAccount);
 
             When
                 .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");
@@ -52,7 +52,7 @@ namespace Fluent.Testing.Library.Tests.GET
                 .Deposit_has_been_made(() => new Deposit {Amount = 100})
                 .Withdrawal_has_been_made(50)
                 .Deposit_has_been_made(25)
-                .GetResult(out BankingStoryData? bankAccount);
+                .GetResult(out BankingStoryData bankAccount);
 
             When
                 .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");
@@ -72,7 +72,7 @@ namespace Fluent.Testing.Library.Tests.GET
                 .Deposit_has_been_made(() => new Deposit {Amount = 50})
                 .Deposit_has_been_made(50)
                 .Withdrawal_has_been_made(25)
-                .GetResult(out BankingStoryData? bankAccount);
+                .GetResult(out BankingStoryData bankAccount);
 
             When
                 .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");
@@ -89,7 +89,7 @@ namespace Fluent.Testing.Library.Tests.GET
         {
             Given.That
                 .BankAccount_has_been_created(account => account.CustomerName = "Fred")
-                .GetResult(out BankingStoryData? bankAccount);
+                .GetResult(out BankingStoryData bankAccount);
 
             When
                 .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");
@@ -107,7 +107,7 @@ namespace Fluent.Testing.Library.Tests.GET
             Given.That
                 .BankAccount_has_been_created(account => account.CustomerName = "Fred")
                 .BankAccount_has_been_updated(() => new BankAccount { CustomerName = "Fergus"})
-                .GetResult(out BankingStoryData? bankAccount);
+                .GetResult(out BankingStoryData bankAccount);
 
             When
                 .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");

@@ -10,7 +10,7 @@
         /// <typeparam name="TChapter"></typeparam>
         /// <typeparam name="TStoryData"></typeparam>
         /// <returns>The next chapter to go to</returns>
-        public static TChapter GetResult<TChapter, TStoryData>(this TChapter chapter, out TStoryData? useResult)
+        public static TChapter GetResult<TChapter, TStoryData>(this TChapter chapter, out TStoryData useResult)
             where TChapter
             : ISimpleChapter<TStoryData>
             where TStoryData : class, new()

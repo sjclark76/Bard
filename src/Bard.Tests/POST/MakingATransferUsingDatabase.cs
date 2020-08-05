@@ -22,14 +22,14 @@ namespace Fluent.Testing.Library.Tests.POST
                     account.CustomerName = "Rich Person";
                     account.Balance = 1000;
                 })
-                .GetResult(out BankingStoryData? bankAccount1);
+                .GetResult(out BankingStoryData bankAccount1);
 
             var richBankAccountId = bankAccount1?.BankAccountId;
             
             Given
                 .That
                 .BankAccount_has_been_created_from_db(account => account.CustomerName = "Poor Person Person")
-                .GetResult(out BankingStoryData? bankAccount2);
+                .GetResult(out BankingStoryData bankAccount2);
 
             var poorBankAccountId = bankAccount2?.BankAccountId;
 

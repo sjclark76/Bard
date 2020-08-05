@@ -29,7 +29,7 @@ namespace Fluent.Testing.Library.Tests.DELETE
             Given
                 .That
                 .BankAccount_has_been_created()
-                .GetResult(out BankingStoryData? bankAccount);
+                .GetResult(out BankingStoryData bankAccount);
 
             When
                 .Delete($"api/bankaccounts/{bankAccount?.BankAccountId}");

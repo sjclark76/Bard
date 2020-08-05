@@ -30,7 +30,7 @@ namespace Fluent.Testing.Library.Tests.POST
             Given
                 .That
                 .BankAccount_has_been_created()
-                .GetResult(out BankingStoryData? bankAccount);
+                .GetResult(out BankingStoryData bankAccount);
 
             When
                 .Post($"api/bankaccounts/{bankAccount?.BankAccountId}/deposits", new Deposit {Amount = 100});

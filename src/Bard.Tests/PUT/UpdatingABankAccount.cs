@@ -17,7 +17,7 @@ namespace Fluent.Testing.Library.Tests.PUT
         {
             Given.That
                 .BankAccount_has_been_created()
-                 .GetResult(out BankingStoryData? bankAccount);
+                 .GetResult(out BankingStoryData bankAccount);
             
             When
                 .Put($"api/bankaccounts/{bankAccount?.BankAccountId}", new BankAccount

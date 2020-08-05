@@ -9,7 +9,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
         public static readonly Action<ScenarioContext<BankingStoryData>, Deposit> MakeADeposit =
             (context, request) =>
             {
-                var response = context.Api.Post($"api/bankaccounts/{context.StoryData?.BankAccountId}/deposits",
+                context.Api.Post($"api/bankaccounts/{context.StoryData?.BankAccountId}/deposits",
                     request);
             };
 

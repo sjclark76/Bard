@@ -32,7 +32,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
 
                     configureBankAccount?.Invoke(bankAccount);
 
-                    var response = context.Api.Post("api/bankaccounts", bankAccount);
+                    context.Api.Post("api/bankaccounts", bankAccount);
                 })
                 .Then<BankAccountHasBeenCreated>();
         }

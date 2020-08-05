@@ -43,7 +43,7 @@ namespace Bard.Internal
 
         private object? Input { get; set; }
         
-        public object? Execute()
+        public object? Execute(object? storyData)
         {
             if (HasSteps == false) return Result;
 
@@ -65,10 +65,12 @@ namespace Bard.Internal
                 try
                 {
                     pipelineStep.StepFunc(Input);
-                    //if (_apiCalled == false)
+                    if (_apiCalled == false)
+                    {
                         // The API was not called through the context so log
                         // the output instead.
-                        //_logWriter.WriteObjectToConsole(output);
+                        _logWriter.WriteObjectToConsole(storyData);
+                    }    
 
                     //Input = output;
                 }

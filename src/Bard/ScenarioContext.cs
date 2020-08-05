@@ -43,7 +43,7 @@ namespace Bard
 
         public LogWriter Writer { get; }
 
-        internal object? ExecutePipeline()
+        virtual internal object? ExecutePipeline()
         {
             return Builder.Execute();
         }
@@ -56,7 +56,7 @@ namespace Bard
 
     public class ScenarioContext<TStoryData> : ScenarioContext where TStoryData : class, new()
     {
-        private TStoryData? _storyInput;
+        private TStoryData? _storyData;
 
         internal ScenarioContext(ScenarioContext context) : base(context.Builder, context.Api, context.Writer,
             context.Services, context.CreateGrpcClient)
@@ -67,16 +67,21 @@ namespace Bard
         {
             get
             {
-                if (_storyInput == null)
+                if (_storyData == null)
                     throw new BardException($"{nameof(StoryData)} has not been set.");
 
-                return _storyInput;
+                return _storyData;
             }
         }
 
-        internal void SetStoryData(TStoryData? input)
+        internal override object? ExecutePipeline()
         {
-            _storyInput = input;
+            return Builder.Execute(_storyData);
+        }
+
+        internal void SetStoryData(TStoryData? story)
+        {
+            _storyData = story;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Bard.gRPC
     /// <summary>
     ///     Full Scenario with Given When and Then functionality
     /// </summary>
-    public interface IScenario<TGrpcClient, out TStoryBook, TStoryData> where TGrpcClient : ClientBase<TGrpcClient>
+    public interface IScenario<out TGrpcClient, out TStoryBook, TStoryData> where TGrpcClient : ClientBase<TGrpcClient>
         where TStoryBook : StoryBook<TStoryData>, new()
         where TStoryData : class, new()
     {

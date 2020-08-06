@@ -40,15 +40,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Protobuf Include="Protos\credit-rating-service.proto">
-        <GrpcServices>Client</GrpcServices>
-        <Access>Public</Access>
-        <ProtoCompile>True</ProtoCompile>
-        <ProtoRoot></ProtoRoot>
-        <CompileOutputs>True</CompileOutputs>
-        <OutputDir>obj\Debug\netcoreapp3.1\</OutputDir>
-        <Generator>MSBuild:Compile</Generator>
-      </Protobuf>
+      <Folder Include="Protos" />
     </ItemGroup>
 
 </Project>

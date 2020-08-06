@@ -4,6 +4,10 @@ using Bard.Internal.Given;
 
 namespace Bard
 {
+    /// <summary>
+    /// Abstract StoryBook class to inherit from when creating a StoryBook
+    /// </summary>
+    /// <typeparam name="TStoryData">The Story Data that will flow through the stories.</typeparam>
     public abstract class StoryBook<TStoryData> where TStoryData : class, new()
     {
         internal ScenarioContext<TStoryData>? Context { get; set; }
@@ -15,7 +19,7 @@ namespace Bard
         /// <typeparam name="TStoryData"></typeparam>
         /// <returns></returns>
         /// <exception cref="BardConfigurationException"></exception>
-        protected IBeginWhen<TStoryData> When(Action<ScenarioContext<TStoryData>> story)
+        protected IChapterWhen<TStoryData> When(Action<ScenarioContext<TStoryData>> story)
         {
             if (Context == null)
                 throw new BardConfigurationException($"{nameof(Context)} has not been set.");
@@ -24,7 +28,7 @@ namespace Bard
             
             context.SetStoryData(new TStoryData());
 
-            return new BeginWhen<TStoryData>(context, story);
+            return new ChapterWhen<TStoryData>(context, story);
         }
 
         /// <summary>

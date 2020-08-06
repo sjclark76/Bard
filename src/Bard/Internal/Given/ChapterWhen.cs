@@ -15,17 +15,14 @@ namespace Bard.Internal.Given
             _execute = execute;
         }
 
-        public TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
-            where TNextStep : Chapter<TStoryData>, new()
+        public TNextChapter Then<TNextChapter>([CallerMemberName] string memberName = "")
+            where TNextChapter : Chapter<TStoryData>, new()
         {
             _context.AddPipelineStep(memberName, () =>
-            {
-                //_context.SetStoryData(input as TStoryData);
-                _execute(_context);
-            });
+                _execute(_context)
+            );
 
-            //TODO: maybe just pass ScenarioContext
-            var nextStep = new TNextStep {Context = _context};
+            var nextStep = new TNextChapter {Context = _context};
 
             return nextStep;
         }

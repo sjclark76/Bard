@@ -6,6 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Bard
 {
+    /// <summary>
+    /// Scenario Context allows state to be passed between stories.
+    /// </summary>
     public class ScenarioContext
     {
         private IServiceProvider? _services;
@@ -26,6 +29,10 @@ namespace Bard
 
         internal Func<object>? CreateGrpcClient { get; set; }
 
+        /// <summary>
+        /// Provides access to the instance of IServiceProvider to use Dependency Injection from within a story.
+        /// </summary>
+        /// <exception cref="BardConfigurationException">Throws if the Services has not been set during configuration.</exception>
         public IServiceProvider? Services
         {
             get
@@ -39,8 +46,14 @@ namespace Bard
             set => _services = value;
         }
 
+        /// <summary>
+        /// Provides access to your API client
+        /// </summary>
         public IApi Api { get; }
 
+        /// <summary>
+        /// Provides access to the LogWriter to output to the console window.
+        /// </summary>
         public LogWriter Writer { get; }
 
         internal virtual void ExecutePipeline()
@@ -54,6 +67,9 @@ namespace Bard
         }
     }
 
+    /// <summary>
+    /// Scenario Context allows state to be passed between stories.
+    /// </summary>
     public class ScenarioContext<TStoryData> : ScenarioContext where TStoryData : class, new()
     {
         private TStoryData? _storyData;
@@ -63,6 +79,11 @@ namespace Bard
         {
         }
 
+        /// <summary>
+        /// The story data that is passed from story to story
+        /// </summary>
+        /// <exception cref="BardException">If something has gone horribly wrong internally.+
+        /// </exception>
         public TStoryData StoryData
         {
             get

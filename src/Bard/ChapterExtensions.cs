@@ -1,5 +1,8 @@
 ﻿namespace Bard
 {
+    /// <summary>
+    /// Extension class for working with Chapters. 
+    /// </summary>
     public static class ChapterExtensions
     {
         /// <summary>

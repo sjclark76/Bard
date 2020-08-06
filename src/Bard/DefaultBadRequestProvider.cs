@@ -3,8 +3,12 @@ using Bard.Internal.Exception;
 
 namespace Bard
 {
+    /// <summary>
+    /// Default Bad Request Provider. If no custom provider is supplied
+    /// </summary>
     public class DefaultBadRequestProvider : BadRequestProviderBase
     {
+        /// <inheritdoc />
         public override IBadRequestProvider ForProperty(string propertyName)
         {
             ShouldContain(propertyName);
@@ -12,6 +16,7 @@ namespace Bard
             return this;
         }
 
+        /// <inheritdoc />
         public override IBadRequestProvider WithMessage(string message)
         {
             ShouldContain(message);
@@ -19,6 +24,7 @@ namespace Bard
             return this;
         }
 
+        /// <inheritdoc />
         public override IBadRequestProvider WithErrorCode(string errorCode)
         {
             ShouldContain(errorCode);
@@ -26,6 +32,7 @@ namespace Bard
             return this;
         }
 
+        /// <inheritdoc />
         public override IBadRequestProvider StartsWithMessage(string message)
         {
             var content = StringContent;
@@ -36,6 +43,7 @@ namespace Bard
             return this;
         }
 
+        /// <inheritdoc />
         public override IBadRequestProvider EndsWithMessage(string message)
         {
             var content = StringContent;

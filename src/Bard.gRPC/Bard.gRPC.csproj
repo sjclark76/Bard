@@ -21,6 +21,7 @@
     <ItemGroup>
         <PackageReference Include="Grpc.Core.Api" Version="2.27.0" />
         <PackageReference Include="Grpc.Net.Client" Version="2.27.0" />
+        <PackageReference Include="MinVer" Version="2.3.0" />
     </ItemGroup>
 
     <ItemGroup>

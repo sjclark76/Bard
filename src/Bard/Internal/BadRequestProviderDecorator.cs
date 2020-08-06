@@ -2,9 +2,9 @@ using System;
 using System.Linq.Expressions;
 using System.Net;
 
-namespace Bard
+namespace Bard.Internal
 {
-    public class BadRequestProviderDecorator : IBadRequestProvider
+    internal class BadRequestProviderDecorator : IBadRequestProvider
     {
         private readonly IShouldBe _shouldBe;
         private readonly IBadRequestProvider _toDecorate;

@@ -53,14 +53,19 @@ namespace Bard.gRPC
         /// <typeparam name="TGrpcClient"></typeparam>
         public class UseGrpcOptions<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
         {
-            // public GrpcFluentScenario<TGrpcClient> Configure(Action<GrpcScenarioOptions<TGrpcClient>> configure) 
-            // {
-            //     var options = new GrpcScenarioOptions<TGrpcClient>();
-            //
-            //     configure(options);
-            //
-            //     return new GrpcFluentScenario<TGrpcClient>(options);
-            // }
+            /// <summary>
+            /// Configure the gRPC Scenario
+            /// </summary>
+            /// <param name="configure"></param>
+            /// <returns></returns>
+            public IScenario<TGrpcClient> Configure(Action<GrpcScenarioOptions<TGrpcClient>> configure) 
+            {
+                var options = new GrpcScenarioOptions<TGrpcClient>();
+            
+                configure(options);
+            
+                return new Scenario<TGrpcClient>(options);
+            }
 
             /// <summary>
             ///     Indicates to the configuration builder which StoryBook to use for the Scenario
@@ -69,7 +74,8 @@ namespace Bard.gRPC
             /// <typeparam name="TStoryData">The Story Data</typeparam>
             /// <returns></returns>
             public GrpcStoryBookOptions<TGrpcClient, TStoryBook, TStoryData> WithStoryBook<TStoryBook, TStoryData>()
-                where TStoryBook : StoryBook<TStoryData>, new() where TStoryData : class, new()
+                where TStoryBook : StoryBook<TStoryData>, new()
+                where TStoryData : class, new()
             {
                 return new GrpcStoryBookOptions<TGrpcClient, TStoryBook, TStoryData>();
             }

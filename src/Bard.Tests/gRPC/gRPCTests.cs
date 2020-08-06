@@ -33,7 +33,7 @@ namespace Fluent.Testing.Library.Tests.gRPC
         private readonly IHost _host;
 
         [Fact]
-        public void Foo()
+        public void Call_grpc_with_story_book()
         {
             var scenario = GrpcScenarioConfiguration
                 .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
@@ -48,6 +48,26 @@ namespace Fluent.Testing.Library.Tests.gRPC
 
             scenario.Given.That
                 .Nothing_much_happens();
+
+            var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
+
+            scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+
+            scenario.Then.Response.ShouldBe.Ok();
+        }
+
+        [Fact]
+        public void Call_grpc_without_story_book()
+        {
+            var scenario = GrpcScenarioConfiguration
+                .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
+                .Configure(options =>
+                {
+                    options.Services = _host.Services;
+                    options.LogMessage = s => _output.WriteLine(s);
+                    options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    options.Client = _httpClient;
+                });
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 

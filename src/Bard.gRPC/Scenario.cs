@@ -9,15 +9,12 @@ using Grpc.Net.Client;
 
 namespace Bard.gRPC
 {
-    /// <summary>
-    ///     TODO: Public for now..
-    /// </summary>
-    /// <typeparam name="TGrpcClient"></typeparam>
-    internal class Scenario<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
+    internal class Scenario<TGrpcClient> : IScenario<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
+
     {
         private readonly Then _then;
 
-        protected Scenario(GrpcScenarioOptions<TGrpcClient> options)
+        internal Scenario(GrpcScenarioOptions<TGrpcClient> options)
         {
             if (options.Client == null)
                 throw new BardConfigurationException("Client not set");
@@ -60,15 +57,16 @@ namespace Bard.gRPC
             pipeline.Subscribe(bardClient);
         }
 
+        protected GrpcScenarioContext<TGrpcClient> Context { get; set; }
+
         public IWhen<TGrpcClient> When { get; set; }
 
         public IThen Then => _then;
-
-        protected GrpcScenarioContext<TGrpcClient> Context { get; set; }
     }
 
     internal class Scenario<TGrpcClient, TStoryBook, TStoryData> : Scenario<TGrpcClient>,
-        IScenario<TGrpcClient, TStoryBook, TStoryData> where TGrpcClient : ClientBase<TGrpcClient>
+        IScenario<TGrpcClient, TStoryBook, TStoryData>
+        where TGrpcClient : ClientBase<TGrpcClient>
         where TStoryBook : StoryBook<TStoryData>, new()
         where TStoryData : class, new()
     {

@@ -6,23 +6,20 @@ namespace Fluent.Testing.Library.Tests.Scenario
 {
     public static class BankingScenarioFunctions
     {
-        public static readonly Func<ScenarioContext<BankAccount>, Deposit, BankAccount> MakeADeposit =
+        public static readonly Action<ScenarioContext<BankingStoryData>, Deposit> MakeADeposit =
             (context, request) =>
             {
-                var response = context.Api.Post($"api/bankaccounts/{context.StoryInput?.Id}/deposits", request);
-
-                return response.Content<BankAccount>();
+                context.Api.Post($"api/bankaccounts/{context.StoryData?.BankAccountId}/deposits",
+                    request);
             };
 
-        public static readonly Func<ScenarioContext<BankAccount>, Withdrawal, BankAccount> MakeAWithdrawal =
+        public static readonly Action<ScenarioContext<BankingStoryData>, Withdrawal> MakeAWithdrawal =
             (context, request) =>
             {
-                context.Api.Post($"api/bankaccounts/{context.StoryInput.Id}/withdrawals",
+                context.Api.Post($"api/bankaccounts/{context.StoryData.BankAccountId}/withdrawals",
                     request);
-                
-                context.StoryInput.Balance -= request.Amount.GetValueOrDefault();
 
-                return context.StoryInput;
+                context.StoryData.Balance -= request.Amount.GetValueOrDefault();
             };
     }
 }

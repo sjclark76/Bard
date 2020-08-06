@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Bard.Infrastructure;
+using Bard.Internal.Exception;
 using Bard.Internal.Then;
 
 namespace Bard.Internal
@@ -20,13 +21,13 @@ namespace Bard.Internal
             _logWriter = logWriter;
         }
 
-        public object? Result { get; set; }
+        public bool HasSteps => _pipelineSteps.Any();
 
         public void OnCompleted()
         {
         }
 
-        public void OnError(Exception error)
+        public void OnError(System.Exception error)
         {
         }
 
@@ -35,16 +36,14 @@ namespace Bard.Internal
             _apiCalled = true;
         }
 
-        public void AddStep(string stepName, Func<object?, object?> stepFunc)
+        public void AddStep(string stepName, Action stepAction)
         {
-            _pipelineSteps.Add(new PipelineStep(stepName, stepFunc));
+            _pipelineSteps.Add(new PipelineStep(stepName, stepAction));
         }
 
-        private object? Input { get; set; }
-        
-        public object? Execute()
+        public void Execute(object? storyData)
         {
-            if (HasSteps == false) return Result;
+            if (HasSteps == false) return;
 
             var initialMessage = _executionCount > 0 ? "* AND" : "* GIVEN THAT";
             StringBuilder stringBuilder = new StringBuilder(initialMessage);
@@ -57,32 +56,28 @@ namespace Bard.Internal
 
                 stringBuilder.Append(pipelineStep.StepName);
 
-                if (pipelineStep.StepFunc == null) continue;
+                if (pipelineStep.StepAction == null) continue;
 
                 WriteHeader(stringBuilder);
 
                 try
                 {
-                    var output = pipelineStep.StepFunc(Input);
+                    pipelineStep.StepAction();
                     if (_apiCalled == false)
                         // The API was not called through the context so log
                         // the output instead.
-                        _logWriter.WriteObjectToConsole(output);
-
-                    Input = output;
+                        if (storyData != null)
+                            _logWriter.LogObject(storyData);
                 }
-                catch (Exception exception)
+                catch (BardException exception)
                 {
                     throw new ChapterException($"Error executing story {pipelineStep.StepName}", exception);
                 }
             }
+
             Reset();
-            
+
             _executionCount++;
-
-            Result = Input;
-
-            return Result;
         }
 
         public void Reset()
@@ -90,16 +85,14 @@ namespace Bard.Internal
             _pipelineSteps.Clear();
         }
 
-        public bool HasSteps => _pipelineSteps.Any();
-
         private void WriteHeader(StringBuilder stringBuilder)
         {
             var astrixLine = new string('*', stringBuilder.Length + 2);
-            _logWriter.WriteStringToConsole(astrixLine);
+            _logWriter.LogMessage(astrixLine);
             stringBuilder.Append(" *");
-            _logWriter.WriteStringToConsole(stringBuilder.ToString());
-            _logWriter.WriteStringToConsole(astrixLine);
-            _logWriter.WriteStringToConsole("");
+            _logWriter.LogMessage(stringBuilder.ToString());
+            _logWriter.LogMessage(astrixLine);
+            _logWriter.LogMessage("");
             stringBuilder.Clear();
             stringBuilder.Append("* ");
         }

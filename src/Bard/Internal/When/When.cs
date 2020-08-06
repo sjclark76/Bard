@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Bard.Infrastructure;
+
+[assembly: InternalsVisibleTo("Bard.Grpc")]
 
 namespace Bard.Internal.When
 {
     internal class When : IWhen
     {
         private readonly Api _api;
-        private readonly LogWriter _logWriter;
-        private readonly Action _preApiCall;
+        protected readonly LogWriter LogWriter;
+        protected readonly Action PreApiCall;
 
         internal When(Api api, LogWriter logWriter,
             Action preApiCall)
         {
             _api = api;
-            _logWriter = logWriter;
-            _preApiCall = preApiCall;
+            LogWriter = logWriter;
+            PreApiCall = preApiCall;
         }
 
         public IResponse Delete(string route)
@@ -55,22 +58,22 @@ namespace Bard.Internal.When
 
         private IResponse CallApi(Func<IResponse> callApi)
         {
-            _preApiCall();
+            PreApiCall();
 
             WriteHeader();
-            
+
             var response = callApi();
 
             return response;
         }
 
-        private void WriteHeader()
+        protected void WriteHeader()
         {
-            _logWriter.WriteStringToConsole("");
-            _logWriter.WriteStringToConsole("****************************************");
-            _logWriter.WriteStringToConsole("*             WHEN                     *");
-            _logWriter.WriteStringToConsole("****************************************");
-            _logWriter.WriteStringToConsole("");
+            LogWriter.LogMessage("");
+            LogWriter.LogMessage("****************************************");
+            LogWriter.LogMessage("*             WHEN                     *");
+            LogWriter.LogMessage("****************************************");
+            LogWriter.LogMessage("");
         }
     }
 }

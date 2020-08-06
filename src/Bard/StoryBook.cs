@@ -1,44 +1,49 @@
 using System;
-using Bard.Internal;
+using Bard.Internal.Exception;
 using Bard.Internal.Given;
 
 namespace Bard
 {
-    public abstract class StoryBook 
+    /// <summary>
+    ///     Abstract StoryBook class to inherit from when creating a StoryBook
+    /// </summary>
+    /// <typeparam name="TStoryData">The Story Data that will flow through the stories.</typeparam>
+    public abstract class StoryBook<TStoryData> where TStoryData : class, new()
     {
-        internal ScenarioContext? Context { get; set; }
-        
+        internal ScenarioContext<TStoryData>? Context { get; set; }
+
         /// <summary>
-        /// Define the action of your story.
+        ///     Define the action of your story.
         /// </summary>
         /// <param name="story"></param>
-        /// <typeparam name="TStoryOutput"></typeparam>
         /// <returns></returns>
         /// <exception cref="BardConfigurationException"></exception>
-        protected IBeginWhen<TStoryOutput> When<TStoryOutput>(Func<ScenarioContext, TStoryOutput> story)
-            where TStoryOutput : class, new()
+        protected IChapterWhen<TStoryData> When(Action<ScenarioContext<TStoryData>> story)
         {
             if (Context == null)
                 throw new BardConfigurationException($"{nameof(Context)} has not been set.");
 
-            var context = new ScenarioContext<TStoryOutput>(Context);
-            
-            return new BeginWhen<TStoryOutput>(context, story);
+            var context = new ScenarioContext<TStoryData>(Context);
+
+            context.SetStoryData(new TStoryData());
+
+            return new ChapterWhen<TStoryData>(context, story);
         }
 
         /// <summary>
-        /// Define the parameters of your story.
+        ///     Define the parameters of your story.
         /// </summary>
         /// <param name="storyParameter"></param>
-        /// <typeparam name="TRequest"></typeparam>
+        /// <typeparam name="TStoryParams"></typeparam>
         /// <returns></returns>
         /// <exception cref="BardConfigurationException"></exception>
-        protected IBeginGiven<TRequest> Given<TRequest>(Func<TRequest> storyParameter)
+        protected IChapterGiven<TStoryData, TStoryParams> Given<TStoryParams>(Func<TStoryParams> storyParameter)
+            where TStoryParams : new()
         {
             if (Context == null)
                 throw new BardConfigurationException($"{nameof(Context)} has not been set.");
 
-            return new BeginGiven<TRequest>(Context, storyParameter);
+            return new ChapterGiven<TStoryData, TStoryParams>(Context, storyParameter);
         }
     }
 }

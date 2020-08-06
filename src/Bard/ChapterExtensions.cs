@@ -1,24 +1,27 @@
 ﻿namespace Bard
 {
+    /// <summary>
+    ///     Extension class for working with Chapters.
+    /// </summary>
     public static class ChapterExtensions
     {
         /// <summary>
-        /// Get the latest result from the test pipeline and continue on with the test.
+        ///     Get the latest result from the test pipeline and continue on with the test.
         /// </summary>
         /// <param name="chapter"></param>
         /// <param name="useResult">an out parameter to set the result to.</param>
         /// <typeparam name="TChapter"></typeparam>
-        /// <typeparam name="TChapterInput"></typeparam>
+        /// <typeparam name="TStoryData"></typeparam>
         /// <returns>The next chapter to go to</returns>
-        public static TChapter GetResult<TChapter, TChapterInput>(this TChapter chapter, out TChapterInput? useResult)
+        public static TChapter GetResult<TChapter, TStoryData>(this TChapter chapter, out TStoryData useResult)
             where TChapter
-            : ISimpleChapter<TChapterInput>
-            where TChapterInput : class, new()
+            : ISimpleChapter<TStoryData>
+            where TStoryData : class, new()
         {
-            useResult = chapter.ExecutePipeline() as TChapterInput;
-            
-            chapter.SetStoryInput(useResult);
-            
+            chapter.ExecutePipeline();
+
+            useResult = chapter.GetStoryData();
+
             return chapter;
         }
     }

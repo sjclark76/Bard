@@ -25,22 +25,23 @@ namespace Fluent.Testing.Library.Tests
             var httpClient = host.GetTestClient();
 
             var scenario = ScenarioConfiguration
-                .Configure<BankingStory>(options =>
+                .WithStoryBook<BankingStory, BankingStoryData>()
+                .Configure(options =>
                 {
                     options.Client = httpClient;
                     options.LogMessage = output.WriteLine;
                     options.Services = host.Services;
                 });
-            
+
             Given = scenario.Given;
             When = scenario.When;
             Then = scenario.Then;
         }
 
-        protected IThen Then { get; set; }
+        protected IThen Then { get; }
 
-        protected IWhen When { get; set; }
+        protected IWhen When { get; }
 
-        protected IGiven<BankingStory> Given { get; set; }
+        protected IGiven<BankingStory, BankingStoryData> Given { get; }
     }
 }

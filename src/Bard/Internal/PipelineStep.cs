@@ -4,19 +4,14 @@ namespace Bard.Internal
 {
     internal class PipelineStep
     {
-        internal PipelineStep(string stepName)
+        public PipelineStep(string stepName, Action stepAction)
         {
             StepName = stepName;
-        }
-
-        public PipelineStep(string stepName, Func<object?, object?> stepFunc)
-        {
-            StepName = stepName;
-            StepFunc = stepFunc;
+            StepAction = stepAction;
         }
 
         public string StepName { get; }
 
-        public Func<object?, object?>? StepFunc { get; }
+        public Action? StepAction { get; }
     }
 }

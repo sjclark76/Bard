@@ -1,4 +1,5 @@
 ﻿using Bard;
+using Fluent.Testing.Library.Tests.Scenario;
 using Fluent.Testing.Sample.Api.Model;
 using Xunit;
 using Xunit.Abstractions;
@@ -30,11 +31,11 @@ namespace Fluent.Testing.Library.Tests.POST
             Given
                 .That
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made(() => new Deposit{Amount = 100})
-                .GetResult(out BankAccount? bankAccount);
+                .Deposit_has_been_made(() => new Deposit {Amount = 100})
+                .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Post($"api/bankaccounts/{bankAccount?.Id}/withdrawals", new Withdrawal {Amount = 1000});
+                .Post($"api/bankaccounts/{bankAccount?.BankAccountId}/withdrawals", new Withdrawal {Amount = 1000});
 
             Then
                 .Response
@@ -49,11 +50,11 @@ namespace Fluent.Testing.Library.Tests.POST
             Given
                 .That
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made(() => new Deposit{Amount = 100})
-                .GetResult(out BankAccount? bankAccount);
+                .Deposit_has_been_made(() => new Deposit {Amount = 100})
+                .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Post($"api/bankaccounts/{bankAccount?.Id}/withdrawals", new Withdrawal {Amount = 100});
+                .Post($"api/bankaccounts/{bankAccount?.BankAccountId}/withdrawals", new Withdrawal {Amount = 100});
 
             Then.Response.ShouldBe.Ok();
         }

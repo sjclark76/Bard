@@ -4,7 +4,7 @@ using Fluent.Testing.Sample.Api.Model;
 
 namespace Fluent.Testing.Library.Tests.Scenario
 {
-    public class WithdrawalMade : Chapter<BankAccount>
+    public class WithdrawalMade : Chapter<BankingStoryData>
     {
         public DepositMade Deposit_has_been_made(decimal amount)
         {

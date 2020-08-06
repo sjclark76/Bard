@@ -2,9 +2,18 @@
 
 namespace Bard
 {
-    public interface IChapterGiven<TChapterInput, out TRequest> where TChapterInput : class, new() where TRequest : new()
+    /// <summary>
+    ///     Interface to help the fluent interface story builder
+    /// </summary>
+    /// <typeparam name="TStoryData">The StoryData</typeparam>
+    /// <typeparam name="TStoryParams">The Story Parameters</typeparam>
+    public interface IChapterGiven<TStoryData, out TStoryParams>
+        where TStoryData : class, new() where TStoryParams : new()
     {
-        IChapterGivenWhen<TOutput> When<TOutput>(Func<ScenarioContext<TChapterInput>, TRequest, TOutput> execute)
-            where TOutput : class, new();
+        /// <summary>
+        /// </summary>
+        /// <param name="execute"></param>
+        /// <returns></returns>
+        IChapterGivenWhen<TStoryData> When(Action<ScenarioContext<TStoryData>, TStoryParams> execute);
     }
 }

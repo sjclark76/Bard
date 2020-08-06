@@ -1,5 +1,5 @@
 ﻿using Bard;
-using Fluent.Testing.Sample.Api.Model;
+using Fluent.Testing.Library.Tests.Scenario;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -29,10 +29,10 @@ namespace Fluent.Testing.Library.Tests.DELETE
             Given
                 .That
                 .BankAccount_has_been_created()
-                .GetResult(out BankAccount? bankAccount);
+                .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Delete($"api/bankaccounts/{bankAccount?.Id}");
+                .Delete($"api/bankaccounts/{bankAccount?.BankAccountId}");
 
             Then.Response.ShouldBe.NoContent();
         }

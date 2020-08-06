@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Nullable>enable</Nullable>
+        <PackageId>Bard.gRPC</PackageId>
+        <Authors>Stuart Clark</Authors>
+        <Company>Stuart Clark</Company>
+        <PackageTags>BDD Testing Fluent gRPC API micro services</PackageTags>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageVersion />
+        <Description>A .NET Functional gRPC API Testing Framework</Description>
+        <PackageProjectUrl>https://docs.bard.net.nz</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/sjclark76/Bard</RepositoryUrl>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\Bard.gRPC.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\Bard.gRPC.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Bard\Bard.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.Core.Api" Version="2.27.0" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.27.0" />
+        <PackageReference Include="MinVer" Version="2.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Internal" />
+    </ItemGroup>
+</Project>

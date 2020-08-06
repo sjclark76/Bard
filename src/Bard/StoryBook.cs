@@ -35,15 +35,15 @@ namespace Bard
         ///     Define the parameters of your story.
         /// </summary>
         /// <param name="storyParameter"></param>
-        /// <typeparam name="TRequest"></typeparam>
+        /// <typeparam name="TStoryParams"></typeparam>
         /// <returns></returns>
         /// <exception cref="BardConfigurationException"></exception>
-        protected IBeginGiven<TRequest> Given<TRequest>(Func<TRequest> storyParameter)
+        protected IChapterGiven<TStoryData, TStoryParams> Given<TStoryParams>(Func<TStoryParams> storyParameter) where TStoryParams : new()
         {
             if (Context == null)
                 throw new BardConfigurationException($"{nameof(Context)} has not been set.");
 
-            return new BeginGiven<TRequest>(Context, storyParameter);
+            return new ChapterGiven<TStoryData, TStoryParams>(Context, storyParameter);
         }
     }
 }

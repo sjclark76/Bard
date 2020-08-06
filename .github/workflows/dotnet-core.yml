@@ -32,5 +32,5 @@ jobs:
     - name: Publish Bard.gRpc
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:
-          PROJECT_FILE_PATH: src/Bard/Bard.gRPC.csproj
+          PROJECT_FILE_PATH: src/Bard.gRPC/Bard.gRPC.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}  

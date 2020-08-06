@@ -23,7 +23,7 @@ namespace Bard.Internal.Given
         {
             var request = _createRequest();
 
-            _context.AddPipelineStep(memberName, input => { _execute(_context, request); });
+            _context.AddPipelineStep(memberName, () => { _execute(_context, request); });
 
             var nextStep = new TNextChapter {Context = _context};
 

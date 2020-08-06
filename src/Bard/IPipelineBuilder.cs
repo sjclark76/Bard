@@ -4,7 +4,7 @@ namespace Bard
 {
     public interface IPipelineBuilder
     {
-        void AddStep(string stepName, Action<object?> stepFunc);
-        object? Execute(object? storyData = null);
+        void AddStep(string stepName, Action stepAction);
+        void Execute(object? storyData = null);
     }
 }

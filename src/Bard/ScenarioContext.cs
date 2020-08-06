@@ -43,14 +43,14 @@ namespace Bard
 
         public LogWriter Writer { get; }
 
-        virtual internal object? ExecutePipeline()
+        internal virtual void ExecutePipeline()
         {
-            return Builder.Execute();
+            Builder.Execute();
         }
 
-        internal void AddPipelineStep(string stepName, Action<object?> func)
+        internal void AddPipelineStep(string stepName, Action stepAction)
         {
-            Builder.AddStep(stepName, func);
+            Builder.AddStep(stepName, stepAction);
         }
     }
 
@@ -74,9 +74,9 @@ namespace Bard
             }
         }
 
-        internal override object? ExecutePipeline()
+        internal override void ExecutePipeline()
         {
-            return Builder.Execute(_storyData);
+            Builder.Execute(_storyData);
         }
 
         internal void SetStoryData(TStoryData? story)

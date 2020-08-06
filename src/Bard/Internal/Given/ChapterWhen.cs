@@ -18,7 +18,7 @@ namespace Bard.Internal.Given
         public TNextStep Then<TNextStep>([CallerMemberName] string memberName = "")
             where TNextStep : Chapter<TStoryData>, new()
         {
-            _context.AddPipelineStep(memberName, input =>
+            _context.AddPipelineStep(memberName, () =>
             {
                 //_context.SetStoryData(input as TStoryData);
                 _execute(_context);
@@ -32,7 +32,7 @@ namespace Bard.Internal.Given
 
         public EndChapter<TStoryData> End(string memberName = "")
         {
-            _context.AddPipelineStep(memberName, input => _execute(_context));
+            _context.AddPipelineStep(memberName, () => _execute(_context));
 
             var nextStep = new EndChapter<TStoryData> {Context = _context};
 

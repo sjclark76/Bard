@@ -9,14 +9,14 @@ namespace Bard.Internal
             StepName = stepName;
         }
 
-        public PipelineStep(string stepName, Action<object?> stepFunc)
+        public PipelineStep(string stepName, Action stepAction)
         {
             StepName = stepName;
-            StepFunc = stepFunc;
+            StepAction = stepAction;
         }
 
         public string StepName { get; }
 
-        public Action<object?>? StepFunc { get; }
+        public Action? StepAction { get; }
     }
 }

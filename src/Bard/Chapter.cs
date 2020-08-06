@@ -7,21 +7,16 @@ namespace Bard
     {
         internal ScenarioContext<TStoryData>? Context { get; set; }
 
-        object? ISimpleChapter<TStoryData>.ExecutePipeline()
+        void ISimpleChapter<TStoryData>.ExecutePipeline()
         {
-            return Context?.ExecutePipeline();
-        }
-
-        void ISimpleChapter<TStoryData>.SetStoryData(TStoryData? input)
-        {
-            Context?.SetStoryData(input);
+            Context?.ExecutePipeline();
         }
 
         TStoryData ISimpleChapter<TStoryData>.GetStoryData()
         {
             if (Context == null)
                 throw new ApplicationException($"{nameof(Context)} has not been set.");
-            
+
             return Context.StoryData;
         }
 

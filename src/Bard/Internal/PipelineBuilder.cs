@@ -21,7 +21,7 @@ namespace Bard.Internal
             _logWriter = logWriter;
         }
 
-        public object? Result { get; set; }
+        public bool HasSteps => _pipelineSteps.Any();
 
         public void OnCompleted()
         {
@@ -36,16 +36,14 @@ namespace Bard.Internal
             _apiCalled = true;
         }
 
-        public void AddStep(string stepName, Action<object?> stepFunc)
+        public void AddStep(string stepName, Action stepAction)
         {
-            _pipelineSteps.Add(new PipelineStep(stepName, stepFunc));
+            _pipelineSteps.Add(new PipelineStep(stepName, stepAction));
         }
 
-        private object? Input { get; set; }
-        
-        public object? Execute(object? storyData)
+        public void Execute(object? storyData)
         {
-            if (HasSteps == false) return Result;
+            if (HasSteps == false) return;
 
             var initialMessage = _executionCount > 0 ? "* AND" : "* GIVEN THAT";
             StringBuilder stringBuilder = new StringBuilder(initialMessage);
@@ -58,42 +56,35 @@ namespace Bard.Internal
 
                 stringBuilder.Append(pipelineStep.StepName);
 
-                if (pipelineStep.StepFunc == null) continue;
+                if (pipelineStep.StepAction == null) continue;
 
                 WriteHeader(stringBuilder);
 
                 try
                 {
-                    pipelineStep.StepFunc(Input);
+                    pipelineStep.StepAction();
                     if (_apiCalled == false)
                     {
                         // The API was not called through the context so log
                         // the output instead.
                         _logWriter.WriteObjectToConsole(storyData);
-                    }    
-
-                    //Input = output;
+                    }
                 }
                 catch (BardException exception)
                 {
                     throw new ChapterException($"Error executing story {pipelineStep.StepName}", exception);
                 }
             }
+
             Reset();
-            
+
             _executionCount++;
-
-            Result = Input;
-
-            return Result;
         }
 
         public void Reset()
         {
             _pipelineSteps.Clear();
         }
-
-        public bool HasSteps => _pipelineSteps.Any();
 
         private void WriteHeader(StringBuilder stringBuilder)
         {

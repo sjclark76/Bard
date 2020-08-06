@@ -3,7 +3,8 @@ using System.Runtime.CompilerServices;
 
 namespace Bard.Internal.Given
 {
-    internal class BeginGivenWhen<TStoryParams, TStoryData> : IBeginGivenWhen<TStoryData> where TStoryData : class, new()
+    internal class BeginGivenWhen<TStoryParams, TStoryData> : IBeginGivenWhen<TStoryData>
+        where TStoryData : class, new()
     {
         private readonly ScenarioContext<TStoryData> _context;
         private readonly Func<TStoryParams> _createRequest;
@@ -21,7 +22,7 @@ namespace Bard.Internal.Given
             where TNextStep : Chapter<TStoryData>, new()
         {
             var request = _createRequest();
-            _context.AddPipelineStep(memberName, input => _execute(_context, request));
+            _context.AddPipelineStep(memberName, () => _execute(_context, request));
 
             var nextStep = new TNextStep {Context = _context};
 

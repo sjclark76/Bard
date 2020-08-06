@@ -67,7 +67,8 @@ namespace Bard.Internal
                     {
                         // The API was not called through the context so log
                         // the output instead.
-                        _logWriter.WriteObjectToConsole(storyData);
+                        if (storyData != null)
+                            _logWriter.WriteObjectToConsole(storyData);
                     }
                 }
                 catch (BardException exception)

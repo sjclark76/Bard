@@ -36,26 +36,24 @@ namespace Fluent.Testing.Library.Tests.gRPC
         public void Foo()
         {
             var scenario = GrpcScenarioConfiguration
-                 .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
-                 .WithStoryBook<CreditCheckStoryBook, CreditCheckData>()
-                 .Configure(options =>
-                 {
-                     options.Services = _host.Services;
-                     options.LogMessage = s => _output.WriteLine(s);
-                     options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
-                     options.Client = _httpClient;
-             });
-            
-             scenario.Given.That
-                 .Nothing_much_happens();
-                 
-                 //.GetResult(out object foo);
-            
-             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
-            
-             scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
-            
-             scenario.Then.Response.ShouldBe.Ok();
+                .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
+                .WithStoryBook<CreditCheckStoryBook, CreditCheckData>()
+                .Configure(options =>
+                {
+                    options.Services = _host.Services;
+                    options.LogMessage = s => _output.WriteLine(s);
+                    options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    options.Client = _httpClient;
+                });
+
+            scenario.Given.That
+                .Nothing_much_happens();
+
+            var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
+
+            scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+
+            scenario.Then.Response.ShouldBe.Ok();
         }
     }
 }

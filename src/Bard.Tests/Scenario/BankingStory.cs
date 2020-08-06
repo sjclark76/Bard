@@ -14,6 +14,12 @@ namespace Fluent.Testing.Library.Tests.Scenario
 
     public class BankingStory : StoryBook<BankingStoryData>
     {
+        public EndChapter<BankingStoryData> Nothing_much_happens()
+        {
+            return When(context => { })
+                .End();
+        }
+
         public BankAccountHasBeenCreated BankAccount_has_been_created(Action<BankAccount>? configureBankAccount = null)
         {
             return When(context =>

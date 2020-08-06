@@ -26,12 +26,7 @@ namespace Bard.Internal.Given
 
         public EndChapter<TStoryData> End([CallerMemberName] string memberName = "")
         {
-            _context.AddPipelineStep(memberName, () =>
-            {
-                //_context.SetStoryData(input as TStoryData);
-
-                _execute(_context);
-            });
+            _context.AddPipelineStep(memberName, () => { _execute(_context); });
 
             var nextStep = new EndChapter<TStoryData> {Context = _context};
 

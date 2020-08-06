@@ -12,7 +12,7 @@ namespace Bard.gRPC
     public class GrpcScenarioOptions<TGrpcClient> : ScenarioOptions where TGrpcClient : ClientBase<TGrpcClient>
     {
         /// <summary>
-        /// The function to create a gRPC client
+        ///     The function to create a gRPC client
         /// </summary>
         public Func<ChannelBase, TGrpcClient>? GrpcClient { get; set; }
     }

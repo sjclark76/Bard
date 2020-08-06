@@ -6,7 +6,7 @@ using Grpc.Core;
 namespace Bard.gRPC
 {
     /// <summary>
-    /// Scenario Context allows state to be passed between stories.
+    ///     Scenario Context allows state to be passed between stories.
     /// </summary>
     public class GrpcScenarioContext<TGrpcClient> : ScenarioContext where TGrpcClient : ClientBase<TGrpcClient>
     {

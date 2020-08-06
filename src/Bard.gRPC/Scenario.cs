@@ -67,7 +67,8 @@ namespace Bard.gRPC
         protected GrpcScenarioContext<TGrpcClient> Context { get; set; }
     }
 
-    internal class Scenario<TGrpcClient, TStoryBook, TStoryData> : Scenario<TGrpcClient>, IScenario<TGrpcClient, TStoryBook, TStoryData> where TGrpcClient : ClientBase<TGrpcClient>
+    internal class Scenario<TGrpcClient, TStoryBook, TStoryData> : Scenario<TGrpcClient>,
+        IScenario<TGrpcClient, TStoryBook, TStoryData> where TGrpcClient : ClientBase<TGrpcClient>
         where TStoryBook : StoryBook<TStoryData>, new()
         where TStoryData : class, new()
     {

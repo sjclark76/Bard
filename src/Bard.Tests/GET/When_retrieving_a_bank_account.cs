@@ -1,9 +1,9 @@
+using Bard;
+using Fluent.Testing.Library.Tests.Scenario;
 using Fluent.Testing.Sample.Api.Model;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
-using Bard;
-using Fluent.Testing.Library.Tests.Scenario;
 
 namespace Fluent.Testing.Library.Tests.GET
 {
@@ -42,7 +42,7 @@ namespace Fluent.Testing.Library.Tests.GET
                 .ShouldBe
                 .Ok<BankAccount>();
         }
-        
+
         [Fact]
         public void Given_that_a_mixture_of_deposits_and_withdrawals_have_been_made_then_the_balance_should_be_correct()
         {
@@ -85,6 +85,24 @@ namespace Fluent.Testing.Library.Tests.GET
         }
 
         [Fact]
+        public void If_a_bank_account_has_been_updated_then_the_customer_name_should_be_correct()
+        {
+            Given.That
+                .BankAccount_has_been_created(account => account.CustomerName = "Fred")
+                .BankAccount_has_been_updated(() => new BankAccount {CustomerName = "Fergus"})
+                .GetResult(out BankingStoryData bankAccount);
+
+            When
+                .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");
+
+            Then.Response
+                .ShouldBe
+                .Ok<BankAccount>()
+                .CustomerName
+                .ShouldBe("Fergus");
+        }
+
+        [Fact]
         public void Then_the_customer_name_should_be_correct()
         {
             Given.That
@@ -99,24 +117,6 @@ namespace Fluent.Testing.Library.Tests.GET
                 .Ok<BankAccount>()
                 .CustomerName
                 .ShouldBe("Fred");
-        }
-        
-        [Fact]
-        public void If_a_bank_account_has_been_updated_then_the_customer_name_should_be_correct()
-        {
-            Given.That
-                .BankAccount_has_been_created(account => account.CustomerName = "Fred")
-                .BankAccount_has_been_updated(() => new BankAccount { CustomerName = "Fergus"})
-                .GetResult(out BankingStoryData bankAccount);
-
-            When
-                .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");
-
-            Then.Response
-                .ShouldBe
-                .Ok<BankAccount>()
-                .CustomerName
-                .ShouldBe("Fergus");
         }
     }
 }

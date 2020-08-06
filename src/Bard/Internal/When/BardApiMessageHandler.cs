@@ -6,9 +6,11 @@ using Bard.Infrastructure;
 
 namespace Bard.Internal.When
 {
-    internal class BardApiMessageHandler : DelegatingHandler 
+    internal class BardApiMessageHandler : DelegatingHandler
     {
         private readonly LogWriter _logWriter;
+
+        public Action<ApiResult>? PublishApiResult;
 
         public BardApiMessageHandler(LogWriter logWriter)
         {
@@ -20,18 +22,16 @@ namespace Bard.Internal.When
         {
             _logWriter.WriteHttpRequestToConsole(request);
             var response = await base.SendAsync(request, cancellationToken);
-            
+
             var responseString = AsyncHelper.RunSync(() => response.Content.ReadAsStringAsync());
             var apiResult = new ApiResult(response, responseString);
 
             PublishApiResult?.Invoke(apiResult);
-            
+
             _logWriter.WriteHttpResponseToConsole(response);
             response.Version = request.Version;
 
             return response;
         }
-
-        public Action<ApiResult>? PublishApiResult;
     }
 }

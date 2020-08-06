@@ -36,15 +36,15 @@ namespace Bard.Internal.When
         {
             var messageContent = CreateMessageContent(model);
             var responseMessage = AsyncHelper.RunSync(() => PatchAsync(route, messageContent));
-           
+
             var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
 
             var apiResult = new ApiResult(responseMessage, responseString);
             var response = new Response(apiResult, _badRequestProvider);
-            
+
             return response;
         }
-        
+
         public IResponse Get(string uri, string name, string value)
         {
             var url = QueryHelpers.AddQueryString(uri, name, value);
@@ -106,7 +106,7 @@ namespace Bard.Internal.When
             var response = new Response(apiResult, _badRequestProvider);
             return response;
         }
-        
+
         /// <summary>
         ///     HttpClient does not have Patch built in so need to do it ourselves
         /// </summary>

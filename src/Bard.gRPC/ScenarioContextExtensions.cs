@@ -5,12 +5,12 @@ using Grpc.Core;
 namespace Bard.gRPC
 {
     /// <summary>
-    /// Extension methods that add functionality to the base ScenarioContext 
+    ///     Extension methods that add functionality to the base ScenarioContext
     /// </summary>
     public static class ScenarioContextExtensions
     {
         /// <summary>
-        /// Perform an action against the configured gRPC Client
+        ///     Perform an action against the configured gRPC Client
         /// </summary>
         /// <param name="context">The scenario context</param>
         /// <param name="execute">The action to be executed</param>
@@ -21,7 +21,7 @@ namespace Bard.gRPC
         {
             if (context.CreateGrpcClient == null)
                 throw new BardConfigurationException($"context {nameof(context.CreateGrpcClient)} not set.");
-            
+
             var gRpcClient = (TGrpcClient) context.CreateGrpcClient();
 
             execute(gRpcClient);

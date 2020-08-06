@@ -4,7 +4,7 @@ using Bard.Internal.Exception;
 namespace Bard
 {
     /// <summary>
-    /// Default Bad Request Provider. If no custom provider is supplied
+    ///     Default Bad Request Provider. If no custom provider is supplied
     /// </summary>
     public class DefaultBadRequestProvider : BadRequestProviderBase
     {

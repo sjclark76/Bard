@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Bard
 {
     /// <summary>
-    /// Scenario Context allows state to be passed between stories.
+    ///     Scenario Context allows state to be passed between stories.
     /// </summary>
     public class ScenarioContext
     {
@@ -31,7 +31,7 @@ namespace Bard
         internal Func<object>? CreateGrpcClient { get; set; }
 
         /// <summary>
-        /// Provides access to the instance of IServiceProvider to use Dependency Injection from within a story.
+        ///     Provides access to the instance of IServiceProvider to use Dependency Injection from within a story.
         /// </summary>
         /// <exception cref="BardConfigurationException">Throws if the Services has not been set during configuration.</exception>
         public IServiceProvider? Services
@@ -48,12 +48,12 @@ namespace Bard
         }
 
         /// <summary>
-        /// Provides access to your API client
+        ///     Provides access to your API client
         /// </summary>
         public IApi Api { get; }
 
         /// <summary>
-        /// Provides access to the LogWriter to output to the console window.
+        ///     Provides access to the LogWriter to output to the console window.
         /// </summary>
         public LogWriter Writer { get; }
 
@@ -69,7 +69,7 @@ namespace Bard
     }
 
     /// <summary>
-    /// Scenario Context allows state to be passed between stories.
+    ///     Scenario Context allows state to be passed between stories.
     /// </summary>
     public class ScenarioContext<TStoryData> : ScenarioContext where TStoryData : class, new()
     {
@@ -81,9 +81,10 @@ namespace Bard
         }
 
         /// <summary>
-        /// The story data that is passed from story to story
+        ///     The story data that is passed from story to story
         /// </summary>
-        /// <exception cref="BardException">If something has gone horribly wrong internally.+
+        /// <exception cref="BardException">
+        ///     If something has gone horribly wrong internally.+
         /// </exception>
         public TStoryData StoryData
         {

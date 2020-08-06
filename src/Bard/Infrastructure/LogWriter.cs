@@ -7,14 +7,14 @@ using Newtonsoft.Json.Serialization;
 namespace Bard.Infrastructure
 {
     /// <summary>
-    /// Helper class for logging messages
+    ///     Helper class for logging messages
     /// </summary>
     public class LogWriter
     {
         private readonly Action<string> _logMessage;
 
         /// <summary>
-        /// Public Constructor
+        ///     Public Constructor
         /// </summary>
         /// <param name="logMessage">Action to log the message</param>
         public LogWriter(Action<string> logMessage)
@@ -23,7 +23,7 @@ namespace Bard.Infrastructure
         }
 
         /// <summary>
-        /// Logs the message output.
+        ///     Logs the message output.
         /// </summary>
         /// <param name="message">The message to log</param>
         public void LogMessage(string message)
@@ -32,7 +32,7 @@ namespace Bard.Infrastructure
         }
 
         /// <summary>
-        /// Takes an object serializes it to JSON and then logs the output
+        ///     Takes an object serializes it to JSON and then logs the output
         /// </summary>
         /// <param name="obj">the object to log</param>
         public void LogObject(object? obj)

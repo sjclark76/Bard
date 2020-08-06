@@ -25,7 +25,7 @@ namespace Fluent.Testing.Library.Tests.POST
                 .GetResult(out BankingStoryData bankAccount1);
 
             var richBankAccountId = bankAccount1?.BankAccountId;
-            
+
             Given
                 .That
                 .BankAccount_has_been_created_from_db(account => account.CustomerName = "Poor Person Person")

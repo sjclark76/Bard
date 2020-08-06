@@ -2,7 +2,6 @@
 
 namespace Bard.Internal
 {
-    
     internal interface IPipelineBuilder
     {
         void AddStep(string stepName, Action stepAction);

@@ -11,13 +11,14 @@ namespace Bard.Internal
         {
             const BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
                                            | BindingFlags.Static;
-            
+
             var field = typeof(HttpMessageInvoker).GetField("_handler", bindFlags);
-            
+
             return field?.GetValue(instance) as HttpMessageHandler;
         }
-        
-        internal static BardHttpClient GenerateBardClient(HttpClient client, LogWriter logWriter, IBadRequestProvider badRequestProvider)
+
+        internal static BardHttpClient GenerateBardClient(HttpClient client, LogWriter logWriter,
+            IBadRequestProvider badRequestProvider)
         {
             var httpMessageHandler = GetInstanceField(client);
 
@@ -28,7 +29,7 @@ namespace Bard.Internal
                 BaseAddress = client.BaseAddress,
                 Timeout = client.Timeout,
                 MaxResponseContentBufferSize = client.MaxResponseContentBufferSize
-            }; 
+            };
 
             return bardHttpClient;
         }

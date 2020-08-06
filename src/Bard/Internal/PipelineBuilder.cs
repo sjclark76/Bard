@@ -64,12 +64,10 @@ namespace Bard.Internal
                 {
                     pipelineStep.StepAction();
                     if (_apiCalled == false)
-                    {
                         // The API was not called through the context so log
                         // the output instead.
                         if (storyData != null)
                             _logWriter.LogObject(storyData);
-                    }
                 }
                 catch (BardException exception)
                 {

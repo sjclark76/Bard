@@ -5,7 +5,7 @@ using Bard.Internal.Given;
 namespace Bard
 {
     /// <summary>
-    /// A Chapter defines the group of stories that can be enacted.
+    ///     A Chapter defines the group of stories that can be enacted.
     /// </summary>
     /// <typeparam name="TStoryData">The Data for the story</typeparam>
     public abstract class Chapter<TStoryData> : ISimpleChapter<TStoryData> where TStoryData : class, new()
@@ -26,7 +26,7 @@ namespace Bard
         }
 
         /// <summary>
-        /// Define what happens in your story through an Action.
+        ///     Define what happens in your story through an Action.
         /// </summary>
         /// <param name="execute">The action that will be executed when the test is run.</param>
         /// <returns>IChapterWhen</returns>
@@ -41,7 +41,7 @@ namespace Bard
         }
 
         /// <summary>
-        /// Define the parameters that the story will received through an Action.
+        ///     Define the parameters that the story will received through an Action.
         /// </summary>
         /// <param name="storyParams">The function that will create the parameters for the story.</param>
         /// <returns>IChapterGiven</returns>

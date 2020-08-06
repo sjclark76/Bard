@@ -2,7 +2,8 @@ using System;
 
 namespace Bard.Internal.Given
 {
-    internal class Given<TStoryBook, TStoryData> : IGiven<TStoryBook, TStoryData> where TStoryBook : StoryBook<TStoryData> where TStoryData : class, new()
+    internal class Given<TStoryBook, TStoryData> : IGiven<TStoryBook, TStoryData>
+        where TStoryBook : StoryBook<TStoryData> where TStoryData : class, new()
     {
         private readonly Action _resetPipeline;
         private readonly TStoryBook _that;

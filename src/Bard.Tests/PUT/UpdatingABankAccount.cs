@@ -11,14 +11,14 @@ namespace Fluent.Testing.Library.Tests.PUT
         public UpdatingABankAccount(ITestOutputHelper output) : base(output)
         {
         }
-        
+
         [Fact]
         public void When_updating_a_bank_account_the_response_should_be_no_content()
         {
             Given.That
                 .BankAccount_has_been_created()
-                 .GetResult(out BankingStoryData bankAccount);
-            
+                .GetResult(out BankingStoryData bankAccount);
+
             When
                 .Put($"api/bankaccounts/{bankAccount?.BankAccountId}", new BankAccount
                 {

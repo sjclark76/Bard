@@ -3,14 +3,14 @@
 namespace Bard
 {
     /// <summary>
-    /// Interface to help the fluent interface story builder
+    ///     Interface to help the fluent interface story builder
     /// </summary>
     /// <typeparam name="TStoryData">The StoryData</typeparam>
     /// <typeparam name="TStoryParams">The Story Parameters</typeparam>
-    public interface IChapterGiven<TStoryData, out TStoryParams> where TStoryData : class, new() where TStoryParams : new()
+    public interface IChapterGiven<TStoryData, out TStoryParams>
+        where TStoryData : class, new() where TStoryParams : new()
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="execute"></param>
         /// <returns></returns>

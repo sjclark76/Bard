@@ -1,12 +1,12 @@
 ﻿namespace Bard
 {
     /// <summary>
-    /// Extension class for working with Chapters. 
+    ///     Extension class for working with Chapters.
     /// </summary>
     public static class ChapterExtensions
     {
         /// <summary>
-        /// Get the latest result from the test pipeline and continue on with the test.
+        ///     Get the latest result from the test pipeline and continue on with the test.
         /// </summary>
         /// <param name="chapter"></param>
         /// <param name="useResult">an out parameter to set the result to.</param>
@@ -21,7 +21,7 @@
             chapter.ExecutePipeline();
 
             useResult = chapter.GetStoryData();
-            
+
             return chapter;
         }
     }

@@ -39,8 +39,4 @@
       <ProjectReference Include="..\Sample.Api\Sample.Api.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Protos" />
-    </ItemGroup>
-
 </Project>

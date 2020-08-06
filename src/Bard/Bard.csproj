@@ -14,6 +14,20 @@
         <Description>Bard is a .NET library for functional API testing.</Description>
         <PackageProjectUrl>https://docs.bard.net.nz</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sjclark76/Bard</RepositoryUrl>
+        <PackageReleaseNotes>
+            Changes in 2.0.0
+            - IScenarioContext now removed. Should be replaced with ScenarioContext instead.
+            - Changed method signatures on Chapters to make them simpler. The Funcs used to require the Chapter Input in the method signature. Now the Chapter input is accessible on the ScenarioContext
+            - Changed UseResult method to access tests output. Used to be called UseResult but is now called GetResult.
+            
+            Changes in 1.2.0
+            - Added better logging when building a chapter and not calling the Context's API. Previously nothing was logged to the console. Now Bard tracks if the API has been called or not and if it hasn't it defaults to outputing the response from the story.
+            
+            Changes in 1.1.1
+            - Bug: when asserting HTTP code returned from API due to Shouldly not working in Release build.
+            - Change: removed dependency on Shouldly library
+            Full release notes can be viewed here https://docs.bard.net.nz/miscellaneous/change-log
+        </PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

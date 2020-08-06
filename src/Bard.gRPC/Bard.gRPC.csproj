@@ -7,12 +7,15 @@
         <Authors>Stuart Clark</Authors>
         <Company>Stuart Clark</Company>
         <Version>3.0.0</Version>
-        <PackageTags>BDD Testing Fluent gRPC API micro services</PackageTags>
+        <PackageTags>BDD Integration-Testing Testing Fluent gRPC API micro-services</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageVersion />
         <Description>A .NET Functional gRPC API Testing Framework</Description>
         <PackageProjectUrl>https://docs.bard.net.nz</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sjclark76/Bard</RepositoryUrl>
+        <PackageReleaseNotes>
+            
+        </PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

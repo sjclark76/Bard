@@ -32,11 +32,11 @@ namespace Bard.gRPC
 
             var channel = GrpcChannel.ForAddress(bardClient.BaseAddress, channelOptions);
 
-            if (options.GrpcClient == null)
-                throw new BardConfigurationException($"{nameof(options.GrpcClient)} has not been configured.");
-
             TGrpcClient GRpcFactory()
             {
+                if (options.GrpcClient == null)
+                    throw new BardConfigurationException($"{nameof(options.GrpcClient)} has not been configured.");
+                
                 return options.GrpcClient.Invoke(channel);
             }
 

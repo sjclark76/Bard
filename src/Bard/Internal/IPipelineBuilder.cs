@@ -1,8 +1,9 @@
 ﻿using System;
 
-namespace Bard
+namespace Bard.Internal
 {
-    public interface IPipelineBuilder
+    
+    internal interface IPipelineBuilder
     {
         void AddStep(string stepName, Action stepAction);
         void Execute(object? storyData = null);

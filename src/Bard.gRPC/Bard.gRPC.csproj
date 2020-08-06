@@ -14,6 +14,14 @@
         <RepositoryUrl>https://github.com/sjclark76/Bard</RepositoryUrl>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\Bard.gRPC.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <DocumentationFile>bin\Release\Bard.gRPC.xml</DocumentationFile>
+    </PropertyGroup>
+
     <ItemGroup>
       <ProjectReference Include="..\Bard\Bard.csproj" />
     </ItemGroup>

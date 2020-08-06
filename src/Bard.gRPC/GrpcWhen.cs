@@ -5,11 +5,11 @@ using Grpc.Core;
 
 namespace Bard.gRPC
 {
-    internal class GrpcWhen<TGrpcClient> : When, IGrpcWhen<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
+    internal class When<TGrpcClient> : When, IWhen<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
     {
         private readonly Func<TGrpcClient> _grpcClientFactory;
 
-        internal GrpcWhen(Func<TGrpcClient> grpcClientFactory, Api api, LogWriter logWriter, Action preApiCall) : base(
+        internal When(Func<TGrpcClient> grpcClientFactory, Api api, LogWriter logWriter, Action preApiCall) : base(
             api, logWriter, preApiCall)
         {
             _grpcClientFactory = grpcClientFactory;
@@ -25,7 +25,7 @@ namespace Bard.gRPC
 
             var response = grpcCall(gRpcClient);
 
-            LogWriter.WriteObjectToConsole(response);
+            LogWriter.LogObject(response);
 
             return response;
         }

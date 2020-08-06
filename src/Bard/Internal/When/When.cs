@@ -69,11 +69,11 @@ namespace Bard.Internal.When
 
         protected void WriteHeader()
         {
-            LogWriter.WriteStringToConsole("");
-            LogWriter.WriteStringToConsole("****************************************");
-            LogWriter.WriteStringToConsole("*             WHEN                     *");
-            LogWriter.WriteStringToConsole("****************************************");
-            LogWriter.WriteStringToConsole("");
+            LogWriter.LogMessage("");
+            LogWriter.LogMessage("****************************************");
+            LogWriter.LogMessage("*             WHEN                     *");
+            LogWriter.LogMessage("****************************************");
+            LogWriter.LogMessage("");
         }
     }
 }

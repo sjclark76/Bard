@@ -68,7 +68,7 @@ namespace Bard.Internal
                         // The API was not called through the context so log
                         // the output instead.
                         if (storyData != null)
-                            _logWriter.WriteObjectToConsole(storyData);
+                            _logWriter.LogObject(storyData);
                     }
                 }
                 catch (BardException exception)
@@ -90,11 +90,11 @@ namespace Bard.Internal
         private void WriteHeader(StringBuilder stringBuilder)
         {
             var astrixLine = new string('*', stringBuilder.Length + 2);
-            _logWriter.WriteStringToConsole(astrixLine);
+            _logWriter.LogMessage(astrixLine);
             stringBuilder.Append(" *");
-            _logWriter.WriteStringToConsole(stringBuilder.ToString());
-            _logWriter.WriteStringToConsole(astrixLine);
-            _logWriter.WriteStringToConsole("");
+            _logWriter.LogMessage(stringBuilder.ToString());
+            _logWriter.LogMessage(astrixLine);
+            _logWriter.LogMessage("");
             stringBuilder.Clear();
             stringBuilder.Append("* ");
         }

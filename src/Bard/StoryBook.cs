@@ -16,7 +16,6 @@ namespace Bard
         ///     Define the action of your story.
         /// </summary>
         /// <param name="story"></param>
-        /// <typeparam name="TStoryData"></typeparam>
         /// <returns></returns>
         /// <exception cref="BardConfigurationException"></exception>
         protected IChapterWhen<TStoryData> When(Action<ScenarioContext<TStoryData>> story)

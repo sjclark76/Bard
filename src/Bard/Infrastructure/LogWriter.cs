@@ -6,21 +6,36 @@ using Newtonsoft.Json.Serialization;
 
 namespace Bard.Infrastructure
 {
+    /// <summary>
+    /// Helper class for logging messages
+    /// </summary>
     public class LogWriter
     {
         private readonly Action<string> _logMessage;
 
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
+        /// <param name="logMessage">Action to log the message</param>
         public LogWriter(Action<string> logMessage)
         {
             _logMessage = logMessage;
         }
 
-        public void WriteStringToConsole(string message)
+        /// <summary>
+        /// Logs the message output.
+        /// </summary>
+        /// <param name="message">The message to log</param>
+        public void LogMessage(string message)
         {
             _logMessage(message);
         }
 
-        public void WriteObjectToConsole(object? obj)
+        /// <summary>
+        /// Takes an object serializes it to JSON and then logs the output
+        /// </summary>
+        /// <param name="obj">the object to log</param>
+        public void LogObject(object? obj)
         {
             _logMessage(JsonConvert.SerializeObject(
                 obj,
@@ -32,13 +47,13 @@ namespace Bard.Infrastructure
                 }));
         }
 
-        public void WriteHttpResponseToConsole(HttpResponseMessage httpResponse)
+        internal void WriteHttpResponseToConsole(HttpResponseMessage httpResponse)
         {
             var content = AsyncHelper.RunSync(() => httpResponse.Content.ReadAsStringAsync());
             _logMessage(
                 $"RESPONSE: Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int) httpResponse.StatusCode})");
             if (httpResponse.Headers.Contains("Location"))
-                WriteStringToConsole($"Header::Location {httpResponse.Headers.Location.OriginalString}");
+                LogMessage($"Header::Location {httpResponse.Headers.Location.OriginalString}");
 
             if (string.IsNullOrEmpty(content)) return;
 
@@ -53,9 +68,9 @@ namespace Bard.Infrastructure
             }
         }
 
-        public void WriteHttpRequestToConsole(HttpRequestMessage request)
+        internal void WriteHttpRequestToConsole(HttpRequestMessage request)
         {
-            WriteStringToConsole($"REQUEST: {request.Method.Method} {request.RequestUri}");
+            LogMessage($"REQUEST: {request.Method.Method} {request.RequestUri}");
 
             if (request.Content != null)
             {
@@ -68,7 +83,7 @@ namespace Bard.Infrastructure
                 }
                 catch (JsonReaderException)
                 {
-                    WriteObjectToConsole(request);
+                    LogObject(request);
                     _logMessage(content);
                 }
             }

@@ -49,7 +49,7 @@ namespace Bard.gRPC
             Context = new GrpcScenarioContext<TGrpcClient>(pipeline, api, logWriter,
                 options.Services, GRpcFactory);
 
-            var when = new GrpcWhen<TGrpcClient>(GRpcFactory, api, logWriter,
+            var when = new When<TGrpcClient>(GRpcFactory, api, logWriter,
                 () => Context.ExecutePipeline());
 
             When = when;
@@ -60,7 +60,7 @@ namespace Bard.gRPC
             pipeline.Subscribe(bardClient);
         }
 
-        public IGrpcWhen<TGrpcClient> When { get; set; }
+        public IWhen<TGrpcClient> When { get; set; }
 
         public IThen Then => _then;
 

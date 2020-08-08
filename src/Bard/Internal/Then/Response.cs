@@ -7,9 +7,10 @@ namespace Bard.Internal.Then
     {
         private readonly ShouldBe _shouldBe;
 
-        internal Response(ApiResult result, IBadRequestProvider badRequestProvider)
+        internal Response(EventAggregator eventAggregator, ApiResult result, IBadRequestProvider badRequestProvider)
         {
             _shouldBe = new ShouldBe(result, badRequestProvider);
+            eventAggregator.Subscribe(_shouldBe);
         }
 
         public IShouldBe ShouldBe => _shouldBe;

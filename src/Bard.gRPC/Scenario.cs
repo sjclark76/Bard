@@ -43,13 +43,13 @@ namespace Bard.gRPC
                 return options.GrpcClient.Invoke(channel);
             }
 
-            var api = new Api(bardClient, options.BadRequestProvider);
+            var api = new Api(bardClient, options.BadRequestProvider, eventAggregator);
             var pipeline = new PipelineBuilder(logWriter);
 
             Context = new GrpcScenarioContext<TGrpcClient>(pipeline, api, logWriter,
                 options.Services, GRpcFactory);
 
-            var when = new When<TGrpcClient>(GRpcFactory, api, logWriter,
+            var when = new When<TGrpcClient>(GRpcFactory, eventAggregator, api, logWriter,
                 () => Context.ExecutePipeline());
 
             When = when;

@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Net.Http;
 using Bard.Infrastructure;
@@ -7,9 +8,10 @@ using Newtonsoft.Json;
 
 namespace Bard.Internal.Then
 {
-    internal class ShouldBe : IShouldBe
+    internal class ShouldBe : IShouldBe, IObserver<GrpcResponse>
     {
         private readonly string _httpResponseString;
+        private object? _grpcResponse;
         private HttpResponseMessage _httpResponse;
 
         internal ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider)
@@ -18,6 +20,19 @@ namespace Bard.Internal.Then
             BadRequest = new BadRequestProviderDecorator(this, badRequestProvider);
             _httpResponse = apiResult.ResponseMessage;
             _httpResponseString = apiResult.ResponseString;
+        }
+
+        public void OnCompleted()
+        {
+        }
+
+        public void OnError(System.Exception error)
+        {
+        }
+
+        public void OnNext(GrpcResponse value)
+        {
+            _grpcResponse = value.Response;
         }
 
         public IBadRequestProvider BadRequest { get; }
@@ -94,11 +109,18 @@ namespace Bard.Internal.Then
 
             try
             {
-                if (_httpResponseString != null)
-                    content = JsonConvert.DeserializeObject<T>(_httpResponseString, new JsonSerializerSettings
-                    {
-                        ContractResolver = new ResolvePrivateSetters()
-                    });
+                if (_grpcResponse != null)
+                {
+                    content = (T) _grpcResponse;
+                }
+                else
+                {
+                    if (_httpResponseString != null)
+                        content = JsonConvert.DeserializeObject<T>(_httpResponseString, new JsonSerializerSettings
+                        {
+                            ContractResolver = new ResolvePrivateSetters()
+                        });
+                }
             }
             catch (System.Exception)
             {

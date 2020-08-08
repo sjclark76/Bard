@@ -14,12 +14,14 @@ namespace Bard.Internal.When
     internal class Api : IApi
     {
         private readonly IBadRequestProvider _badRequestProvider;
+        private readonly EventAggregator _eventAggregator;
         private readonly HttpClient _httpClient;
 
-        internal Api(HttpClient httpClient, IBadRequestProvider badRequestProvider)
+        internal Api(HttpClient httpClient, IBadRequestProvider badRequestProvider, EventAggregator eventAggregator)
         {
             _httpClient = httpClient;
             _badRequestProvider = badRequestProvider;
+            _eventAggregator = eventAggregator;
         }
 
         public IResponse Put<TModel>(string route, TModel model)
@@ -40,7 +42,7 @@ namespace Bard.Internal.When
             var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
 
             var apiResult = new ApiResult(responseMessage, responseString);
-            var response = new Response(apiResult, _badRequestProvider);
+            var response = new Response(_eventAggregator, apiResult, _badRequestProvider);
 
             return response;
         }
@@ -65,7 +67,7 @@ namespace Bard.Internal.When
             var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
 
             var apiResult = new ApiResult(message, content);
-            var response = new Response(apiResult, _badRequestProvider);
+            var response = new Response(_eventAggregator, apiResult, _badRequestProvider);
 
             return response;
         }
@@ -77,7 +79,7 @@ namespace Bard.Internal.When
             var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
 
             var apiResult = new ApiResult(message, content);
-            var response = new Response(apiResult, _badRequestProvider);
+            var response = new Response(_eventAggregator, apiResult, _badRequestProvider);
 
             return response;
         }
@@ -103,7 +105,7 @@ namespace Bard.Internal.When
             var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
 
             var apiResult = new ApiResult(responseMessage, responseString);
-            var response = new Response(apiResult, _badRequestProvider);
+            var response = new Response(_eventAggregator, apiResult, _badRequestProvider);
             return response;
         }
 

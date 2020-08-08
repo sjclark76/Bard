@@ -21,7 +21,7 @@ namespace Bard.Internal
 
         private void NotifyObservers(ApiResult apiResult)
         {
-            _eventAggregator.PublishResponse(new Response(apiResult, _badRequestProvider));
+            _eventAggregator.PublishResponse(new Response(_eventAggregator, apiResult, _badRequestProvider));
         }
     }
 }

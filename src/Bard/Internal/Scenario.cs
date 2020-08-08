@@ -27,7 +27,7 @@ namespace Bard.Internal
             var eventAggregator = new EventAggregator();
             
             var bardClient = HttpClientBuilder.GenerateBardClient(client, logWriter, badRequestProvider, eventAggregator);
-            var api = new Api(bardClient, badRequestProvider);
+            var api = new Api(bardClient, badRequestProvider, eventAggregator);
             var pipeline = new PipelineBuilder(logWriter);
 
             Context = new ScenarioContext(pipeline, api, logWriter, services);

@@ -15,7 +15,7 @@ namespace Bard.Internal.Given
             _execute = execute;
         }
 
-        public TNextChapter Then<TNextChapter>([CallerMemberName] string memberName = "")
+        public TNextChapter ProceedToChapter<TNextChapter>([CallerMemberName] string memberName = "")
             where TNextChapter : Chapter<TStoryData>, new()
         {
             _context.AddPipelineStep(memberName, () =>

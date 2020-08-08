@@ -19,7 +19,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
 
                     context.Api.Post("api/bankaccounts", bankAccount);
                 })
-                .Then<BankAccountHasBeenCreated>();
+                .ProceedToChapter<BankAccountHasBeenCreated>();
         }
 
         public EndChapter<BankingStoryData> BankAccount_has_been_updated(Func<BankAccount>? updateBankAccount = null)
@@ -38,7 +38,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
             return
                 Given(configureDeposit)
                     .When(BankingScenarioFunctions.MakeADeposit)
-                    .Then<DepositMade>();
+                    .ProceedToChapter<DepositMade>();
         }
 
         public WithdrawalMade Withdrawal_has_been_made(Func<Withdrawal> modifyRequest)
@@ -46,7 +46,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
             return
                 Given(modifyRequest)
                     .When(BankingScenarioFunctions.MakeAWithdrawal)
-                    .Then<WithdrawalMade>();
+                    .ProceedToChapter<WithdrawalMade>();
         }
     }
 }

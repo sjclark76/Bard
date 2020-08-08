@@ -11,14 +11,14 @@ namespace Fluent.Testing.Library.Tests.Scenario
             return
                 Given(() => new Deposit {Amount = amount})
                     .When(BankingScenarioFunctions.MakeADeposit)
-                    .Then<DepositMade>();
+                    .ProceedToChapter<DepositMade>();
         }
 
         public WithdrawalMade Withdrawal_has_been_made(Func<Withdrawal> modifyRequest)
         {
             return Given(modifyRequest)
                 .When(BankingScenarioFunctions.MakeAWithdrawal)
-                .Then<WithdrawalMade>();
+                .ProceedToChapter<WithdrawalMade>();
         }
     }
 }

@@ -11,14 +11,14 @@ namespace Fluent.Testing.Library.Tests.Scenario
             return
                 Given(() => new Deposit {Amount = 50})
                     .When(BankingScenarioFunctions.MakeADeposit)
-                    .Then<DepositMade>();
+                    .ProceedToChapter<DepositMade>();
         }
 
         public WithdrawalMade Withdrawal_has_been_made(decimal amount)
         {
             return Given(() => new Withdrawal {Amount = amount})
                 .When(BankingScenarioFunctions.MakeAWithdrawal)
-                .Then<WithdrawalMade>();
+                .ProceedToChapter<WithdrawalMade>();
         }
 
         public BankAccountHasBeenCreated BankAccount_has_been_created(Action<BankAccount>? configureBankAccount = null)
@@ -34,7 +34,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
 
                     context.Api.Post("api/bankaccounts", bankAccount);
                 })
-                .Then<BankAccountHasBeenCreated>();
+                .ProceedToChapter<BankAccountHasBeenCreated>();
         }
     }
 }

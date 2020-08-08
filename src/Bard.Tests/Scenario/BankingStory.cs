@@ -35,7 +35,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
 
                     context.StoryData.BankAccountId = response.Content<BankAccount>().Id;
                 })
-                .Then<BankAccountHasBeenCreated>();
+                .ProceedToChapter<BankAccountHasBeenCreated>();
         }
 
         public BankAccountHasBeenCreated BankAccount_has_been_created_from_db(
@@ -57,7 +57,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
 
                     context.StoryData.BankAccountId = bankAccount.Id;
                 })
-                .Then<BankAccountHasBeenCreated>();
+                .ProceedToChapter<BankAccountHasBeenCreated>();
         }
     }
 }

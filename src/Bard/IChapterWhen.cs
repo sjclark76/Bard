@@ -17,7 +17,7 @@ namespace Bard
         /// </param>
         /// <typeparam name="TNextChapter">The next chapter we will go to after this story.</typeparam>
         /// <returns>An instance of the next chapter</returns>
-        TNextChapter Then<TNextChapter>([CallerMemberName] string memberName = "")
+        TNextChapter ProceedToChapter<TNextChapter>([CallerMemberName] string memberName = "")
             where TNextChapter : Chapter<TStoryData>, new();
 
         /// <summary>

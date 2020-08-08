@@ -61,7 +61,6 @@ namespace Bard.Internal
             story.Context = new ScenarioContext<TStoryData>(Context);
 
             _given = story;
-            //; new Given<TStoryBook, TStoryData>(story, () => Context.ExecutePipeline());
         }
 
         public TStoryBook Given

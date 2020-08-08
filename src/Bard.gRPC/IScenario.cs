@@ -14,7 +14,7 @@ namespace Bard.gRPC
         /// <summary>
         ///     Test Arrangement
         /// </summary>
-        IGiven<TStoryBook, TStoryData> Given { get; }
+        TStoryBook Given { get; }
     }
     
     /// <summary>

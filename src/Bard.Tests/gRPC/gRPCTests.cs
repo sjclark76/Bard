@@ -46,7 +46,7 @@ namespace Fluent.Testing.Library.Tests.gRPC
                     options.Client = _httpClient;
                 });
 
-            scenario.Given.That
+            scenario.Given
                 .Nothing_much_happens();
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};

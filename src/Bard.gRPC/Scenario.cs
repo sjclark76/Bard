@@ -2,7 +2,6 @@
 using Bard.Infrastructure;
 using Bard.Internal;
 using Bard.Internal.Exception;
-using Bard.Internal.Given;
 using Bard.Internal.Then;
 using Bard.Internal.When;
 using Grpc.Core;
@@ -63,7 +62,7 @@ namespace Bard.gRPC
 
         protected GrpcScenarioContext<TGrpcClient> Context { get; set; }
 
-        public IWhen<TGrpcClient> When { get; set; }
+        public IWhen<TGrpcClient> When { get; }
 
         public IThen Then => _then;
     }
@@ -74,15 +73,24 @@ namespace Bard.gRPC
         where TStoryBook : StoryBook<TStoryData>, new()
         where TStoryData : class, new()
     {
+        private readonly TStoryBook _given;
+
         internal Scenario(GrpcScenarioOptions<TGrpcClient, TStoryBook> options) : base(options)
         {
             var story = options.Story;
 
             story.Context = new ScenarioContext<TStoryData>(Context);
 
-            Given = new Given<TStoryBook, TStoryData>(story, () => Context.ExecutePipeline());
+            _given = story;
         }
 
-        public IGiven<TStoryBook, TStoryData> Given { get; }
+        public TStoryBook Given
+        {
+            get
+            {
+                Context.ExecutePipeline();
+                return _given;
+            }
+        }
     }
 }

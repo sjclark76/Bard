@@ -29,7 +29,6 @@ namespace Fluent.Testing.Library.Tests.POST
             If_a_withdrawal_is_requested_but_there_are_insufficient_funds_then_a_bad_request_should_be_returned()
         {
             Given
-                .That
                 .BankAccount_has_been_created()
                 .Deposit_has_been_made(() => new Deposit {Amount = 100})
                 .GetResult(out BankingStoryData bankAccount);
@@ -48,13 +47,11 @@ namespace Fluent.Testing.Library.Tests.POST
         public void If_the_the_transfer_is_successful_then_an_ok_response_should_be_returned()
         {
             Given
-                .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Rich Person")
                 .Deposit_has_been_made(() => new Deposit {Amount = 100})
                 .GetResult(out BankingStoryData richBankAccount);
 
             Given
-                .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Poor Person Person")
                 .GetResult(out BankingStoryData poorBankAccount);
 
@@ -73,7 +70,6 @@ namespace Fluent.Testing.Library.Tests.POST
         public void Transfer_extracting_result_multiple_times()
         {
             Given
-                .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Rich Person")
                 .GetResult(out BankingStoryData richBankAccount)
                 .Deposit_has_been_made(() => new Deposit

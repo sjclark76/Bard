@@ -27,7 +27,6 @@ namespace Fluent.Testing.Library.Tests.DELETE
         public void If_the_request_is_successful_then_an_ok_no_content_response_should_be_returned()
         {
             Given
-                .That
                 .BankAccount_has_been_created()
                 .GetResult(out BankingStoryData bankAccount);
 

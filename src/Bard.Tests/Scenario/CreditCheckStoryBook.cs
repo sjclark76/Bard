@@ -16,7 +16,7 @@ namespace Fluent.Testing.Library.Tests.Scenario
             {
                 var gRpcClient = context.Grpc<CreditRatingCheck.CreditRatingCheckClient>();
 
-                var result = gRpcClient.CheckCreditRequest(
+                gRpcClient.CheckCreditRequest(
                     new CreditRequest
                     {
                         Credit = 100000000,

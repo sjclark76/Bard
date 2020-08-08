@@ -31,7 +31,6 @@ namespace Fluent.Testing.Library.Tests.GET
         public void Given_that_a_bank_account_has_been_created()
         {
             Given
-                .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Fred")
                 .GetResult(out BankingStoryData bankAccount);
 
@@ -47,7 +46,6 @@ namespace Fluent.Testing.Library.Tests.GET
         public void Given_that_a_mixture_of_deposits_and_withdrawals_have_been_made_then_the_balance_should_be_correct()
         {
             Given
-                .That
                 .BankAccount_has_been_created(account => account.CustomerName = "Fred")
                 .Deposit_has_been_made(() => new Deposit {Amount = 100})
                 .Withdrawal_has_been_made(50)
@@ -67,7 +65,7 @@ namespace Fluent.Testing.Library.Tests.GET
         [Fact]
         public void Given_that_multiple_deposits_have_been_made_then_the_balance_should_be_correct()
         {
-            Given.That
+            Given
                 .BankAccount_has_been_created(account => account.CustomerName = "Fred")
                 .Deposit_has_been_made(() => new Deposit {Amount = 50})
                 .Deposit_has_been_made(50)
@@ -87,7 +85,7 @@ namespace Fluent.Testing.Library.Tests.GET
         [Fact]
         public void If_a_bank_account_has_been_updated_then_the_customer_name_should_be_correct()
         {
-            Given.That
+            Given
                 .BankAccount_has_been_created(account => account.CustomerName = "Fred")
                 .BankAccount_has_been_updated(() => new BankAccount {CustomerName = "Fergus"})
                 .GetResult(out BankingStoryData bankAccount);
@@ -105,7 +103,7 @@ namespace Fluent.Testing.Library.Tests.GET
         [Fact]
         public void Then_the_customer_name_should_be_correct()
         {
-            Given.That
+            Given
                 .BankAccount_has_been_created(account => account.CustomerName = "Fred")
                 .GetResult(out BankingStoryData bankAccount);
 

@@ -38,10 +38,10 @@ namespace Fluent.Testing.Library.Tests
             Then = scenario.Then;
         }
 
+        protected BankingStory Given { get; set; }
+
         protected IThen Then { get; }
 
         protected IWhen When { get; }
-
-        protected IGiven<BankingStory, BankingStoryData> Given { get; }
     }
 }

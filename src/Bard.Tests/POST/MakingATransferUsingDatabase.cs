@@ -16,7 +16,6 @@ namespace Fluent.Testing.Library.Tests.POST
         public void If_the_the_transfer_is_successful_then_an_ok_response_should_be_returned()
         {
             Given
-                .That
                 .BankAccount_has_been_created_from_db(account =>
                 {
                     account.CustomerName = "Rich Person";
@@ -27,7 +26,6 @@ namespace Fluent.Testing.Library.Tests.POST
             var richBankAccountId = bankAccount1?.BankAccountId;
 
             Given
-                .That
                 .BankAccount_has_been_created_from_db(account => account.CustomerName = "Poor Person Person")
                 .GetResult(out BankingStoryData bankAccount2);
 

@@ -15,7 +15,7 @@ namespace Fluent.Testing.Library.Tests.PUT
         [Fact]
         public void When_updating_a_bank_account_the_response_should_be_no_content()
         {
-            Given.That
+            Given
                 .BankAccount_has_been_created()
                 .GetResult(out BankingStoryData bankAccount);
 

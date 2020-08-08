@@ -3,7 +3,6 @@ using System.Net.Http;
 using Bard.Configuration;
 using Bard.Infrastructure;
 using Bard.Internal.Exception;
-using Bard.Internal.Given;
 using Bard.Internal.When;
 
 namespace Bard.Internal
@@ -53,15 +52,25 @@ namespace Bard.Internal
     internal class Scenario<TStoryBook, TStoryData> : Scenario, IScenario<TStoryBook, TStoryData>
         where TStoryBook : StoryBook<TStoryData>, new() where TStoryData : class, new()
     {
+        private readonly TStoryBook _given;
+
         internal Scenario(ScenarioOptions<TStoryBook, TStoryData> options) : base(options.Client, options.LogMessage,
             options.BadRequestProvider, options.Services)
         {
             var story = options.Story;
             story.Context = new ScenarioContext<TStoryData>(Context);
 
-            Given = new Given<TStoryBook, TStoryData>(story, () => Context.ExecutePipeline());
+            _given = story;
+            //; new Given<TStoryBook, TStoryData>(story, () => Context.ExecutePipeline());
         }
 
-        public IGiven<TStoryBook, TStoryData> Given { get; }
+        public TStoryBook Given
+        {
+            get
+            {
+                Context.ExecutePipeline();
+                return _given;
+            }
+        }
     }
 }

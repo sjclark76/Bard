@@ -3,7 +3,7 @@ using Bard.Infrastructure;
 using Bard.Internal.When;
 using Grpc.Core;
 
-namespace Bard.gRPC
+namespace Bard.gRPC.Internal
 {
     internal class When<TGrpcClient> : When, IWhen<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
     {

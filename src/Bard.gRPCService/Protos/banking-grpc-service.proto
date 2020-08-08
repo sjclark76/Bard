@@ -2,17 +2,35 @@ syntax = "proto3";
 
 option csharp_namespace = "Bard.gRPCService";
 
-package CreditRating;
+package Banking;
 
-service CreditRatingCheck {
-  rpc CheckCreditRequest (CreditRequest) returns (CreditReply);
+service BankAccountService {
+  rpc CreateBankAccount(CreateBankAccountRequest) returns (BankAccountResponse);
+  rpc GetBankAccount (BankAccountRequest) returns (BankAccountResponse);
+  rpc UpdateBankAccount (UpdateBankAccountRequest) returns (BankAccountResponse);
+
 }
 
-message CreditRequest {
-  string customerId = 1;
-  int32 credit = 2;
+message BankAccountRequest{
+  int32 id = 1; 
 }
 
-message CreditReply {
-  bool isAccepted = 1;
+message BankAccountResponse{
+  int32 id = 1;
+  string customerName = 2;
+  float balance = 3;
+  bool isActive = 4;
+}
+message CreateBankAccountRequest {
+  string customerName = 1;
+  float balance = 2;  
+}
+
+message UpdateBankAccountRequest {
+  int32 id = 1;
+  string customerName = 2;
+  float balance = 3;
+}
+message CloseBankAccountRequest {
+  int32 id = 1;
 }

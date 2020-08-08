@@ -4,17 +4,15 @@ using System.Linq;
 using System.Text;
 using Bard.Infrastructure;
 using Bard.Internal.Exception;
-using Bard.Internal.Then;
 
 namespace Bard.Internal
 {
-    internal class PipelineBuilder : IPipelineBuilder, IObserver<Response>
+    internal class PipelineBuilder : IPipelineBuilder, IObserver<IResponse>
     {
         private readonly LogWriter _logWriter;
         private readonly List<PipelineStep> _pipelineSteps = new List<PipelineStep>();
         private bool _apiCalled;
         private int _executionCount;
-        private IDisposable? _unSubscriber;
 
         internal PipelineBuilder(LogWriter logWriter)
         {
@@ -31,7 +29,7 @@ namespace Bard.Internal
         {
         }
 
-        public void OnNext(Response value)
+        public void OnNext(IResponse value)
         {
             _apiCalled = true;
         }
@@ -95,17 +93,6 @@ namespace Bard.Internal
             _logWriter.LogMessage("");
             stringBuilder.Clear();
             stringBuilder.Append("* ");
-        }
-
-        public void Subscribe(IObservable<Response> provider)
-        {
-            if (provider != null)
-                _unSubscriber = provider.Subscribe(this);
-        }
-
-        public void UnSubscribe()
-        {
-            _unSubscriber?.Dispose();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Fluent.Testing.Library.Tests.gRPC
         [Fact]
         public void Foo()
         {
-            base.Scenario.When.Grpc(client => client.GetBankAccount(new BankAccountRequest()));
+            Scenario.When.Grpc(client => client.GetBankAccount(new BankAccountRequest()));
 
             Scenario.Then.Response.ShouldBe.Ok<BankAccountResponse>();
         }

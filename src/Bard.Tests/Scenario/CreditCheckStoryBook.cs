@@ -14,12 +14,14 @@ namespace Fluent.Testing.Library.Tests.Scenario
         {
             return When(context =>
             {
-                context.Grpc<CreditRatingCheck.CreditRatingCheckClient>(checkClient => checkClient.CheckCreditRequest(
+                var gRpcClient = context.Grpc<CreditRatingCheck.CreditRatingCheckClient>();
+
+                var result = gRpcClient.CheckCreditRequest(
                     new CreditRequest
                     {
                         Credit = 100000000,
                         CustomerId = "this shouldn't be happening..."
-                    }));
+                    });
             }).End();
         }
     }

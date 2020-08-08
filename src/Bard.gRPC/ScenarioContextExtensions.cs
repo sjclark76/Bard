@@ -1,5 +1,4 @@
-﻿using System;
-using Bard.Internal.Exception;
+﻿using Bard.Internal.Exception;
 using Grpc.Core;
 
 namespace Bard.gRPC
@@ -13,10 +12,9 @@ namespace Bard.gRPC
         ///     Perform an action against the configured gRPC Client
         /// </summary>
         /// <param name="context">The scenario context</param>
-        /// <param name="execute">The action to be executed</param>
         /// <typeparam name="TGrpcClient">The gRPC Client Type</typeparam>
         /// <exception cref="BardConfigurationException">If the gRPC Client has not been configured</exception>
-        public static void Grpc<TGrpcClient>(this ScenarioContext context, Action<TGrpcClient> execute)
+        public static TGrpcClient Grpc<TGrpcClient>(this ScenarioContext context)
             where TGrpcClient : ClientBase<TGrpcClient>
         {
             if (context.CreateGrpcClient == null)
@@ -24,7 +22,7 @@ namespace Bard.gRPC
 
             var gRpcClient = (TGrpcClient) context.CreateGrpcClient();
 
-            execute(gRpcClient);
+            return gRpcClient;
         }
     }
 }

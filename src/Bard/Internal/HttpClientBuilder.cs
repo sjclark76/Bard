@@ -18,13 +18,13 @@ namespace Bard.Internal
         }
 
         internal static BardHttpClient GenerateBardClient(HttpClient client, LogWriter logWriter,
-            IBadRequestProvider badRequestProvider)
+            IBadRequestProvider badRequestProvider, EventAggregator eventAggregator)
         {
             var httpMessageHandler = GetInstanceField(client);
 
             var bardApiMessageHandler = new BardApiMessageHandler(logWriter) {InnerHandler = httpMessageHandler};
 
-            var bardHttpClient = new BardHttpClient(bardApiMessageHandler, badRequestProvider)
+            var bardHttpClient = new BardHttpClient(eventAggregator, bardApiMessageHandler, badRequestProvider)
             {
                 BaseAddress = client.BaseAddress,
                 Timeout = client.Timeout,

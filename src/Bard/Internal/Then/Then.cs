@@ -3,10 +3,9 @@ using Bard.Internal.Exception;
 
 namespace Bard.Internal.Then
 {
-    internal class Then : IThen, IObserver<Response>
+    internal class Then : IThen, IObserver<IResponse>
     {
         private IResponse? _response;
-        private IDisposable? _unSubscriber;
 
         public void OnCompleted()
         {
@@ -16,7 +15,7 @@ namespace Bard.Internal.Then
         {
         }
 
-        public void OnNext(Response value)
+        public void OnNext(IResponse value)
         {
             _response = value;
         }
@@ -30,17 +29,6 @@ namespace Bard.Internal.Then
 
                 return _response;
             }
-        }
-
-        public void Subscribe(IObservable<Response> provider)
-        {
-            if (provider != null)
-                _unSubscriber = provider.Subscribe(this);
-        }
-
-        public void UnSubscribe()
-        {
-            _unSubscriber?.Dispose();
         }
     }
 }

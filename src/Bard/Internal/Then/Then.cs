@@ -30,7 +30,6 @@ namespace Bard.Internal.Then
 
                 return _response;
             }
-            set => _response = value;
         }
 
         public void Subscribe(IObservable<Response> provider)

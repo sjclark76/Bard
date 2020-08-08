@@ -1,4 +1,5 @@
-﻿using Bard.Infrastructure;
+﻿using Bard.gRPC.Internal;
+using Bard.Infrastructure;
 using Bard.Internal;
 using Bard.Internal.Exception;
 using Bard.Internal.Given;
@@ -22,6 +23,7 @@ namespace Bard.gRPC
             var logWriter = new LogWriter(options.LogMessage);
 
             var originalClient = options.Client;
+            
             var bardClient = HttpClientBuilder
                 .GenerateBardClient(originalClient, logWriter, options.BadRequestProvider);
 

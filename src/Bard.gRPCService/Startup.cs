@@ -26,7 +26,7 @@ namespace Bard.gRPCService
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<CreditRatingCheckService>();
-
+                endpoints.MapGrpcService<BankingService>();
                 endpoints.MapGet("/",
                     async context =>
                     {

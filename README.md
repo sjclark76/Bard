@@ -94,10 +94,8 @@ This means that when employing a number of steps to set up a test the output of 
 
 ```csharp
   Given
-       .That
        .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
        .Deposit_has_been_made(100)
-       .And()
        .Withdrawal_has_been_made(50)
        .Deposit_has_been_made(25);
 ```

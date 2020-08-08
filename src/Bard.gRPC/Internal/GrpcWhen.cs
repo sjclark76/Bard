@@ -31,8 +31,6 @@ namespace Bard.gRPC.Internal
 
             _eventAggregator.PublishGrpcResponse(new GrpcResponse(response));
             
-            LogWriter.LogObject(response);
-
             return response;
         }
     }

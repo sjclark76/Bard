@@ -6,6 +6,7 @@ using Bard.Internal.Given;
 using Bard.Internal.Then;
 using Bard.Internal.When;
 using Grpc.Core;
+using Grpc.Core.Interceptors;
 using Grpc.Net.Client;
 
 namespace Bard.gRPC
@@ -34,13 +35,13 @@ namespace Bard.gRPC
             };
 
             var channel = GrpcChannel.ForAddress(bardClient.BaseAddress, channelOptions);
-
+            
             TGrpcClient GRpcFactory()
             {
                 if (options.GrpcClient == null)
                     throw new BardConfigurationException($"{nameof(options.GrpcClient)} has not been configured.");
                 
-                return options.GrpcClient.Invoke(channel);
+                return options.GrpcClient.Invoke(channel.Intercept(new BardClientInterceptor(logWriter)));
             }
 
             var api = new Api(bardClient, options.BadRequestProvider, eventAggregator);

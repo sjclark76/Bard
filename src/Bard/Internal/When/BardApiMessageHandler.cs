@@ -20,7 +20,9 @@ namespace Bard.Internal.When
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            _logWriter.WriteHttpRequestToConsole(request);
+            if (request.Content?.Headers.ContentType.MediaType != "application/grpc")
+                _logWriter.WriteHttpRequestToConsole(request);
+         
             var response = await base.SendAsync(request, cancellationToken);
 
             var responseString = AsyncHelper.RunSync(() => response.Content.ReadAsStringAsync());
@@ -28,7 +30,12 @@ namespace Bard.Internal.When
 
             PublishApiResult?.Invoke(apiResult);
 
-            _logWriter.WriteHttpResponseToConsole(response);
+            if (request.Content?.Headers.ContentType.MediaType != "application/grpc")
+            {
+                _logWriter.LogMessage(string.Empty);
+                _logWriter.WriteHttpResponseToConsole(response);
+            }
+            
             response.Version = request.Version;
 
             return response;

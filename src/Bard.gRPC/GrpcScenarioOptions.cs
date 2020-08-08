@@ -14,7 +14,7 @@ namespace Bard.gRPC
         /// <summary>
         ///     The function to create a gRPC client
         /// </summary>
-        public Func<ChannelBase, TGrpcClient>? GrpcClient { get; set; }
+        public Func<CallInvoker, TGrpcClient>? GrpcClient { get; set; }
     }
 
     /// <summary>

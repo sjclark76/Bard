@@ -2,9 +2,9 @@
 {
     internal class GrpcResponse
     {
-        public object Response { get; }
+        public object? Response { get; }
 
-        internal GrpcResponse(object response)
+        internal GrpcResponse(object? response)
         {
             Response = response;
         }

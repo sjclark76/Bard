@@ -1,13 +1,12 @@
-using Bard;
 using Bard.Configuration;
-using Fluent.Testing.Library.Tests.Scenario;
-using Fluent.Testing.Sample.Api;
+using Bard.Sample.Api;
+using Bard.Tests.Scenario;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 using Xunit.Abstractions;
 
-namespace Fluent.Testing.Library.Tests
+namespace Bard.Tests
 {
     public abstract class BankingTestBase
     {

@@ -4,10 +4,6 @@
 
         <IsPackable>false</IsPackable>
 
-        <AssemblyName>Fluent.Testing.Library.Tests</AssemblyName>
-
-        <RootNamespace>Fluent.Testing.Library.Tests</RootNamespace>
-
         <LangVersion>8</LangVersion>
 
         <Nullable>enable</Nullable>

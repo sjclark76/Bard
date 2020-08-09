@@ -1,14 +1,14 @@
 ﻿using System.Net.Http;
 using Bard.gRPC;
 using Bard.gRPCService;
-using Fluent.Testing.Library.Tests.Scenario;
+using Bard.Tests.Scenario;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Fluent.Testing.Library.Tests.gRPC
+namespace Bard.Tests.gRPC
 {
     public class GRpcTests
     {

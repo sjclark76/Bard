@@ -1,8 +1,7 @@
 using System;
-using Bard;
-using Fluent.Testing.Sample.Api.Model;
+using Bard.Sample.Api.Model;
 
-namespace Fluent.Testing.Library.Tests.Scenario
+namespace Bard.Tests.Scenario
 {
     public static class BankingScenarioFunctions
     {

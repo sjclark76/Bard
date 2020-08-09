@@ -1,11 +1,10 @@
-using Bard;
-using Fluent.Testing.Library.Tests.Scenario;
-using Fluent.Testing.Sample.Api.Model;
+using Bard.Sample.Api.Model;
+using Bard.Tests.Scenario;
 using Shouldly;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Fluent.Testing.Library.Tests.GET
+namespace Bard.Tests.GET
 {
     // ReSharper disable once InconsistentNaming
     public class When_retrieving_a_bank_account : BankingTestBase

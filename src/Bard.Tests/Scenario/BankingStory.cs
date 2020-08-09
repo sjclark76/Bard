@@ -1,10 +1,9 @@
 ﻿using System;
-using Bard;
-using Fluent.Testing.Sample.Api;
-using Fluent.Testing.Sample.Api.Model;
+using Bard.Sample.Api;
+using Bard.Sample.Api.Model;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Fluent.Testing.Library.Tests.Scenario
+namespace Bard.Tests.Scenario
 {
     public class BankingStoryData
     {

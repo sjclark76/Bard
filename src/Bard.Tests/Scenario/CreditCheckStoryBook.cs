@@ -1,8 +1,7 @@
-﻿using Bard;
-using Bard.gRPC;
+﻿using Bard.gRPC;
 using Bard.gRPCService;
 
-namespace Fluent.Testing.Library.Tests.Scenario
+namespace Bard.Tests.Scenario
 {
     public class CreditCheckData
     {

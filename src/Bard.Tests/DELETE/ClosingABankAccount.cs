@@ -1,9 +1,8 @@
-﻿using Bard;
-using Fluent.Testing.Library.Tests.Scenario;
+﻿using Bard.Tests.Scenario;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Fluent.Testing.Library.Tests.DELETE
+namespace Bard.Tests.DELETE
 {
     public class ClosingABankAccount : BankingTestBase
     {

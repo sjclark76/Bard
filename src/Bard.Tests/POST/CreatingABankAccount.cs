@@ -1,14 +1,13 @@
-﻿using Bard;
-using Bard.Configuration;
-using Fluent.Testing.Sample.Api;
-using Fluent.Testing.Sample.Api.Model;
+﻿using Bard.Configuration;
+using Bard.Sample.Api;
+using Bard.Sample.Api.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Fluent.Testing.Library.Tests.POST
+namespace Bard.Tests.POST
 {
     public class CreatingABankAccount
     {

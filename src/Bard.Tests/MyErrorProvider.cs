@@ -1,7 +1,6 @@
-using Bard;
 using Shouldly;
 
-namespace Fluent.Testing.Library.Tests
+namespace Bard.Tests
 {
     public class MyBadRequestProvider : BadRequestProvider<MyCustomErrorMessage>
     {

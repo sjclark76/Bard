@@ -1,7 +1,7 @@
-﻿using Fluent.Testing.Sample.Api.Model;
+﻿using Bard.Sample.Api.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace Fluent.Testing.Sample.Api
+namespace Bard.Sample.Api
 {
     public class BankDbContext : DbContext
     {

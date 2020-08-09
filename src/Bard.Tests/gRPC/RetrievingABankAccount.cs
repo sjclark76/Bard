@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Fluent.Testing.Library.Tests.gRPC
+namespace Bard.Tests.gRPC
 {
     public abstract class BankingTestBase
     {

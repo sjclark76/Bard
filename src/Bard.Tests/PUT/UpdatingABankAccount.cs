@@ -1,10 +1,9 @@
-﻿using Bard;
-using Fluent.Testing.Library.Tests.Scenario;
-using Fluent.Testing.Sample.Api.Model;
+﻿using Bard.Sample.Api.Model;
+using Bard.Tests.Scenario;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Fluent.Testing.Library.Tests.PUT
+namespace Bard.Tests.PUT
 {
     public class UpdatingABankAccount : BankingTestBase
     {

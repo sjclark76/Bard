@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Fluent.Testing.Sample.Api.Model;
+using Bard.Sample.Api.Model;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Fluent.Testing.Sample.Api.Controllers
+namespace Bard.Sample.Api.Controllers
 {
     [ApiController]
     [Route("api/bankaccounts")]

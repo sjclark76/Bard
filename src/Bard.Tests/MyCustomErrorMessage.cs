@@ -1,4 +1,4 @@
-namespace Fluent.Testing.Library.Tests
+namespace Bard.Tests
 {
     public class MyCustomErrorMessage
     {

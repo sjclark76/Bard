@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Fluent.Testing.Sample.Api
+namespace Bard.Sample.Api
 {
     public class Program
     {

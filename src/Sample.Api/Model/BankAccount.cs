@@ -1,4 +1,4 @@
-﻿namespace Fluent.Testing.Sample.Api.Model
+﻿namespace Bard.Sample.Api.Model
 {
     public class BankAccount
     {

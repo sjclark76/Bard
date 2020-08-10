@@ -76,8 +76,7 @@ Because Bard uses a functional approach to test arrangement and employs the [Col
 This means that when employing a number of steps to set up a test the output of the first test step is the input to the next. This makes your tests easier to write and understand.
 
 ```csharp
-  Given
-       .That
+  Given       
        .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
        .Deposit_has_been_made(100)
        .Withdrawal_has_been_made(50)

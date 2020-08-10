@@ -13,8 +13,8 @@ So before we can start we need to configure our Scenario. To do this we are goin
 var scenario = ScenarioConfiguration
                 .Configure(options =>
                 {
-                    options.UseHttpClient(httpClient);
-                    options.Log(output.WriteLine);
+                     options.Client = httpClient;
+                     options.LogMessage = output.WriteLine;
                 });
 ```
 

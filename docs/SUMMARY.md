@@ -23,6 +23,10 @@
 ## Miscellaneous
 
 * [Change Log](miscellaneous/change-log.md)
-* [gRPC](miscellaneous/grpc.md)
 * [Migration Guide](miscellaneous/migration-guide.md)
+
+## gRPC
+
+* [Installation](grpc/grpc.md)
+* [Configuration](grpc/configuration.md)
 

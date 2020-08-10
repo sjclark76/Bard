@@ -41,11 +41,10 @@ public BankAccountHasBeenCreated BankAccount_has_been_created()
 
             var serviceBus = context.Services.GetService<IServiceBus>()
             
-            serviceBus.AddMessage(message)
-
-            return bankAccountMessage; 
+            serviceBus.AddMessage(message);
+            
         })
-        .Then<BankAccountHasBeenCreated>();
+        .ProceedToChapter<BankAccountHasBeenCreated>();
 }
 ```
 

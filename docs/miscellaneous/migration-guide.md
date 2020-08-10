@@ -1,5 +1,31 @@
 # Migration Guide
 
+## Version 2 to 3
+
+### does not contain a definition for 'Then'
+
+```csharp
+// BEFORE
+.Then<TransferInstructionCreatedChapter>();
+
+// NEW
+.ProceedToChapter<TransferInstructionCreatedChapter>();
+```
+
+### does not contain a definition for 'That'
+
+```csharp
+// BEFORE
+Scenario.Given.That
+    .An_investor_has_been_created();
+
+// AFTER
+Scenario.Given
+    .An_investor_has_been_created();
+```
+
+
+
 ## Version 1 to 2
 
 ### \[CS0246\] The type or namespace name 'IScenarioContext' could not be found

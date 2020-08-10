@@ -17,14 +17,13 @@ Notice we have access to the context and the bankAccount on line 3.
 ```csharp
 public DepositMade Make_deposit(decimal amount)
 {
-    return When((context, bankAccount) =>
+    return When((context) =>
         {
             var request = new Deposit{ Amount = amount};
             var response = context.Api.Post($"api/bankaccounts/{bankAccount.Id}/deposits", request);
-           
-            return response.Content<Deposit>();
+            context.StoryData.Deposit = response;           
         })
-        .Then<DepositMade>();
+        .ProceedToChapter<DepositMade>();
 }
 ```
 
@@ -41,28 +40,19 @@ Lets demonstrate with an example:
 ```csharp
 public static class BankingScenarioFunctions
 {
-    public static readonly Func<ScenarioContext, BankAccount, DepositRequest, DepositResponse> MakeADeposit =
-        (context, input, request) =>
-        {
-            var response = context.Api.Post($"api/bankaccounts/{input.Id}/deposits", request);
-
-            return response.Content<DepositResponse>();
-        };
+    public static readonly Action<ScenarioContext<BankingStoryData>, Deposit> MakeADeposit =
+            (context, request) =>
+            {
+                context.Api.Post($"api/bankaccounts/{context.StoryData?.BankAccountId}/deposits",
+                    request);
+            };
 }
-```
-
-Ok that Func&lt;&gt; signature is a bit of a mouthful.  Functional programming can be a little cumbersome at times in C\#.
-
-```csharp
-Func<ScenarioContext, BankAccount, DepositRequest, DepositResponse>
 ```
 
 What does this mean? 
 
 * **ScenarioContext** this is our test context.
-* **BankAccount** this is the input to the Chapter and the result from the previous Story
 * **DepositRequest** this is the API parameter that is passed into the function which means we can pass it from our story rather than hard code it in this function.
-* **DepositResponse** this is the output of our Story and the input to our next Chapter.
 
 Now in our Chapter we write our Story by referencing our Function
 
@@ -72,7 +62,7 @@ public DepositMade Deposit_has_been_made(decimal amount)
     return
         Given(() => new Deposit {Amount = amount})
             .When(BankingScenarioFunctions.MakeADeposit)
-            .Then<DepositMade>();
+            .ProceedToChapter<DepositMade>();
 }
 ```
 

@@ -7,13 +7,13 @@ The simplest way to do this is to use either the NuGet package manager, or the d
 Using the NuGet package manager console within Visual Studio run the following command:
 
 ```text
-Install-Package Bard.gRPC -Version 3.0.0-alpha.0.1.7
+Install-Package Bard.gRPC 
 ```
 
 Or using the .net core CLI from a terminal window:
 
 ```text
-dotnet add package Bard.gRPC -Version 3.0.0-alpha.0.1.7
+dotnet add package Bard.gRPC 
 ```
 
 

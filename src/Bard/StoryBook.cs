@@ -22,12 +22,8 @@ namespace Bard
         {
             if (Context == null)
                 throw new BardConfigurationException($"{nameof(Context)} has not been set.");
-
-            var context = new ScenarioContext<TStoryData>(Context);
-
-            context.SetStoryData(new TStoryData());
-
-            return new ChapterWhen<TStoryData>(context, story);
+           
+            return new ChapterWhen<TStoryData>(Context, story);
         }
 
         /// <summary>

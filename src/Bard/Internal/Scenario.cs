@@ -10,6 +10,9 @@ namespace Bard.Internal
     internal class Scenario : IScenario
     {
         private readonly Then.Then _then;
+        protected Api _api;
+        protected LogWriter _logWriter;
+        protected When.When _when;
 
         internal Scenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
             options.BadRequestProvider, options.Services)
@@ -22,19 +25,19 @@ namespace Bard.Internal
             if (client == null)
                 throw new BardConfigurationException("client not set.");
 
-            var logWriter = new LogWriter(logMessage);
+            _logWriter = new LogWriter(logMessage);
             var eventAggregator = new EventAggregator();
-            
-            var bardClient = HttpClientBuilder.GenerateBardClient(client, logWriter, badRequestProvider, eventAggregator);
-            var api = new Api(bardClient, badRequestProvider, eventAggregator);
-            var pipeline = new PipelineBuilder(logWriter);
 
-            Context = new ScenarioContext(pipeline, api, logWriter, services);
+            var bardClient =
+                HttpClientBuilder.GenerateBardClient(client, _logWriter, badRequestProvider, eventAggregator);
+            _api = new Api(bardClient, badRequestProvider, eventAggregator);
+            var pipeline = new PipelineBuilder(_logWriter);
 
-            var when = new When.When(api, logWriter,
-                () => Context.ExecutePipeline());
+            Context = new ScenarioContext(pipeline, _api, _logWriter, services);
 
-            When = when;
+            var when = new When.When(_api, _logWriter, () => { });
+
+            _when = when;
 
             _then = new Then.Then();
 
@@ -44,7 +47,7 @@ namespace Bard.Internal
 
         protected ScenarioContext Context { get; }
 
-        public IWhen When { get; }
+        public IWhen When => _when;
 
         public IThen Then => _then;
     }
@@ -57,8 +60,12 @@ namespace Bard.Internal
         internal Scenario(ScenarioOptions<TStoryBook, TStoryData> options) : base(options.Client, options.LogMessage,
             options.BadRequestProvider, options.Services)
         {
-            var story = options.Story;
-            story.Context = new ScenarioContext<TStoryData>(Context);
+            var context = new ScenarioContext<TStoryData>(Context);
+
+            var story = options.StoryBook;
+            story.Context = context;
+
+            _when = new When.When(_api, _logWriter, () => context.ExecutePipeline());
 
             _given = story;
         }

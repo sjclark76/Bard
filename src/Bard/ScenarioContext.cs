@@ -73,11 +73,12 @@ namespace Bard
     /// </summary>
     public class ScenarioContext<TStoryData> : ScenarioContext where TStoryData : class, new()
     {
-        private TStoryData? _storyData;
+        private readonly TStoryData? _storyData;
 
         internal ScenarioContext(ScenarioContext context) : base(context.Builder, context.Api, context.Writer,
             context.Services, context.CreateGrpcClient)
         {
+            _storyData = new TStoryData();
         }
 
         /// <summary>
@@ -100,11 +101,6 @@ namespace Bard
         internal override void ExecutePipeline()
         {
             Builder.Execute(_storyData);
-        }
-
-        internal void SetStoryData(TStoryData? story)
-        {
-            _storyData = story;
         }
     }
 }

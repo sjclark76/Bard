@@ -10,14 +10,14 @@ namespace Bard.Internal.When
     internal class When : IWhen
     {
         private readonly Api _api;
-        protected readonly LogWriter LogWriter;
+        private readonly LogWriter _logWriter;
         protected readonly Action PreApiCall;
 
         internal When(Api api, LogWriter logWriter,
             Action preApiCall)
         {
             _api = api;
-            LogWriter = logWriter;
+            _logWriter = logWriter;
             PreApiCall = preApiCall;
         }
 
@@ -69,11 +69,11 @@ namespace Bard.Internal.When
 
         protected void WriteHeader()
         {
-            LogWriter.LogMessage("");
-            LogWriter.LogMessage("****************************************");
-            LogWriter.LogMessage("*             WHEN                     *");
-            LogWriter.LogMessage("****************************************");
-            LogWriter.LogMessage("");
+            _logWriter.LogMessage("");
+            _logWriter.LogMessage("****************************************");
+            _logWriter.LogMessage("*             WHEN                     *");
+            _logWriter.LogMessage("****************************************");
+            _logWriter.LogMessage("");
         }
     }
 }

@@ -53,9 +53,9 @@ namespace Bard.Configuration
     {
         internal ScenarioOptions()
         {
-            Story = new TStoryBook();
+            StoryBook = new TStoryBook();
         }
 
-        internal TStoryBook Story { get; }
+        internal TStoryBook StoryBook { get; }
     }
 }

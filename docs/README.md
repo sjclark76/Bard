@@ -10,7 +10,7 @@ Bard is a test library written by Developers for Developers. It is as much a dev
 
 ### First Class Logging
 
-Bard generates exceptional test logging. This means you can write your tests first and then build your APIs. This gives the developer the opportunity to 'Dog Food' their API whilst writing their tests. No more using tools such as Postman to eyeball the API responses.
+Bard generates exceptional test logging. This means you can write your tests first and then build your APIs. This gives the developer the opportunity to 'Dog Food' their API whilst writing their tests. No more eyeballing API responses in tools such as Postman.
 
 ```javascript
 *******************************************
@@ -67,13 +67,13 @@ RESPONSE: Http Status Code:  OK (200)
 
 Bard provides you with the building blocks to allow you to build your own [Domain Specific Language ](https://martinfowler.com/books/dsl.html)\(DSL\) for test arrangement. This allows the developer to build up a library of stories that can be composed via a fluent interface.
 
-The fluent interface guides the developer how to build the scenario making it easier for new tests to be written. Arguably this involves more effort up front but this eventually pays dividends when working against a complex domain that involves intricate test arrangement.
+The fluent interface guides the developer how to construct the scenario in a logical sequence making it easier for new tests to be written. This arguably involves a little more effort up front but can pay dividends in the long run when working against a complex domain that involves intricate test arrangement.
 
-Because Bard uses a functional approach to test arrangement and employs the [Collection Pipeline Pattern](https://martinfowler.com/articles/collection-pipeline/) 
+ Bard uses a functional approach to test arrangement and employs the [Collection Pipeline Pattern](https://martinfowler.com/articles/collection-pipeline/) 
 
 > Collection pipelines are a programming pattern where you organize some computation as a sequence of operations which compose by taking a collection as output of one operation and feeding it into the next. - Martin Fowler
 
-This means that when employing a number of steps to set up a test the output of the first test step is the input to the next. This makes your tests easier to write and understand.
+This means that when there are a number of sequential steps performed during the arrangement of the test data can flow from one step to the next step.
 
 ```csharp
   Given       
@@ -85,7 +85,7 @@ This means that when employing a number of steps to set up a test the output of 
 
 ### Smart HTTP Response Assertions
 
-A fluent API response helper is built directly into Bard. This hides away the boiler plate code when dealing with an HTTP Response, making the tests easier to write and easier to understand.
+A fluent API response helper is built directly into Bard. This hides away the boiler plate code needed to work with the HTTP Response and makes the intent of the test easier to comprehend.
 
 ```csharp
     Then

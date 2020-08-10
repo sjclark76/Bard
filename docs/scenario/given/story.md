@@ -21,7 +21,7 @@ public DepositMade Make_deposit(decimal amount)
         {
             var request = new Deposit{ Amount = amount};
             var response = context.Api.Post($"api/bankaccounts/{bankAccount.Id}/deposits", request);
-                       
+            context.StoryData.Deposit = response;           
         })
         .ProceedToChapter<DepositMade>();
 }

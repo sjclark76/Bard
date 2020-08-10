@@ -26,27 +26,25 @@ public BankAccountHasBeenCreated BankAccount_has_been_created()
                 };
 
                 var response = context.Api.Post("api/bankaccounts", bankAccount);
-
-                return response.Content<BankAccount>();
+                
+                context.StoryData.BankAccountId = response.Id;
             })
-            .Then<BankAccountHasBeenCreated>();
+            .ProceedToChapter<BankAccountHasBeenCreated>();
 }
 ```
 
 Lets talk about what's going on in that example. The first thing to note is we are calling the base method `When` and this is where we do the 'work' of the story is done by calling our create bank account endpoint. Notice that we are making our API call using our `TestContext` on line 10.
 
-Now on line 12  we are returning we are returning the `BankAccount` response from the API call.
+Now on line 12  we are returning we are updating our StoryData with the response from the API call, making that data available to the next story.
 
 ```csharp
-return response.Content<BankAccount>();
+context.StoryData.BankAccountId = response.Id;
 ```
 
-We could return any object we want here but convenience we are simply returning the response from the API. The `BankAccount` object we return here will be the input to the next chapter.
-
-Finally on line 14 we call the generic`Then` base method. This instructs our fluent API what the next `Chapter` is that will help us build out our Fluent Test interface.
+Finally on line 14 we call the generic `ProceedToChapter` base method. This instructs our fluent API what the next `Chapter` is that will help us build out our Fluent Test interface.
 
 ```csharp
-.Then<BankAccountHasBeenCreated>();
+.ProceedToChapter<BankAccountHasBeenCreated>();
 ```
 
 

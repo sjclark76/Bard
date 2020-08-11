@@ -11,7 +11,7 @@ namespace Bard.Internal
     {
         private readonly Then.Then _then;
         protected Api _api;
-        protected LogWriter _logWriter;
+        protected readonly LogWriter _logWriter;
         protected When.When _when;
 
         internal Scenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
@@ -74,8 +74,8 @@ namespace Bard.Internal
         {
             get
             {
-                Context.ExecutePipeline();
-                return _given;
+               Context.ExecutePipeline(); 
+               return _given;
             }
         }
     }

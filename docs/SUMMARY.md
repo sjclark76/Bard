@@ -29,4 +29,5 @@
 
 * [Installation](grpc/grpc.md)
 * [Configuration](grpc/configuration.md)
+* [Writing A Test](grpc/writing-a-test.md)
 

@@ -6,3 +6,5 @@ StoryData is a plain old C\# object \(POCO\) of your choice. An instance of this
 You can only have one instance of StoryData per configured scenario.
 {% endhint %}
 
+![Story Data flow](../../.gitbook/assets/story-data-flow.svg)
+

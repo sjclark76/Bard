@@ -24,9 +24,37 @@ var scenario = ScenarioConfiguration
 
 ## Advanced Configuration
 
-{% hint style="info" %}
+Advanced configuration of Bard means that a StoryBook is specified which allows all the features of Bard to be used within the scenario.
 
-{% endhint %}
+```csharp
+var scenario = ScenarioConfiguration
+                .WithStoryBook<BankingStory, BankingStoryData>()
+                .Configure(options =>
+                {
+                    options.Client = httpClient;
+                    options.LogMessage = output.WriteLine;
+                    options.Services = host.Services;
+                    options.BadRequestProvider = new MyBadRequestProvider();
+                });
+```
 
+The configuration of our Scenario is almost the same as the basic configuration apart from that we specify that we are going to use a `StoryBook`.
 
+Our `StoryBook` might look something like this.
+
+```csharp
+public class BankingStory : StoryBook<BankingStoryData>
+{
+    // Stories would go here.
+}        
+```
+
+And our `StoryData` is just a plain old c\# object \(POCO\) of your choice.
+
+```csharp
+ public class BankingStoryData
+ {
+    // Put whatever properties you want here 
+ }
+```
 

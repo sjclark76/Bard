@@ -48,7 +48,6 @@ namespace Bard.Internal
 
             foreach (var pipelineStep in _pipelineSteps)
             {
-                _messageLogged = false;
                 if (stringBuilder.Length > 0)
                     stringBuilder.Append(" ");
 
@@ -60,6 +59,7 @@ namespace Bard.Internal
 
                 try
                 {
+                    _messageLogged = false;
                     pipelineStep.StepAction();
                     if (_messageLogged == false)
                         // The API was not called through the context so log

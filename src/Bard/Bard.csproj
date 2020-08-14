@@ -15,6 +15,10 @@
         <PackageProjectUrl>https://docs.bard.net.nz</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sjclark76/Bard</RepositoryUrl>
         <PackageReleaseNotes>
+            Changes in 3.0.0
+            - gRPC support
+            - Pipeline StoryInput StoryOutput Model refactored to simpler StoryData implementation
+            - Given.That removed and replaced with Given
             Changes in 2.0.0
             - IScenarioContext now removed. Should be replaced with ScenarioContext instead.
             - Changed method signatures on Chapters to make them simpler. The Funcs used to require the Chapter Input in the method signature. Now the Chapter input is accessible on the ScenarioContext

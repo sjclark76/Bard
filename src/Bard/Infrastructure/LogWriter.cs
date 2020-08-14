@@ -12,13 +12,11 @@ namespace Bard.Infrastructure
     public class LogWriter
     {
         private readonly Action<string> _logMessage;
-
-        /// <summary>
-        ///     Public Constructor
-        /// </summary>
-        /// <param name="logMessage">Action to log the message</param>
-        public LogWriter(Action<string> logMessage)
+        private readonly EventAggregator _eventAggregator;
+      
+        internal LogWriter(Action<string> logMessage, EventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             _logMessage = logMessage;
         }
 
@@ -29,6 +27,7 @@ namespace Bard.Infrastructure
         public void LogMessage(string message)
         {
             _logMessage(message);
+            _eventAggregator.PublishMessageLogged(new MessageLogged(message));
         }
 
         /// <summary>
@@ -37,7 +36,7 @@ namespace Bard.Infrastructure
         /// <param name="obj">the object to log</param>
         public void LogObject(object? obj)
         {
-            _logMessage(JsonConvert.SerializeObject(
+            LogMessage(JsonConvert.SerializeObject(
                 obj,
                 Formatting.Indented,
                 new JsonSerializerSettings
@@ -50,7 +49,7 @@ namespace Bard.Infrastructure
         internal void WriteHttpResponseToConsole(HttpResponseMessage httpResponse)
         {
             var content = AsyncHelper.RunSync(() => httpResponse.Content.ReadAsStringAsync());
-            _logMessage(
+            LogMessage(
                 $"RESPONSE: Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int) httpResponse.StatusCode})");
             if (httpResponse.Headers.Contains("Location"))
                 LogMessage($"Header::Location {httpResponse.Headers.Location.OriginalString}");
@@ -60,11 +59,11 @@ namespace Bard.Infrastructure
             try
             {
                 var jsonFormatted = JToken.Parse(content).ToString(Formatting.Indented);
-                _logMessage(jsonFormatted);
+                LogMessage(jsonFormatted);
             }
             catch (Exception)
             {
-                _logMessage(content);
+                LogMessage(content);
             }
         }
 
@@ -79,12 +78,12 @@ namespace Bard.Infrastructure
                 try
                 {
                     var jsonFormatted = JToken.Parse(content).ToString(Formatting.Indented);
-                    _logMessage(jsonFormatted);
+                    LogMessage(jsonFormatted);
                 }
                 catch (JsonReaderException)
                 {
                     LogObject(request);
-                    _logMessage(content);
+                    LogMessage(content);
                 }
             }
         }

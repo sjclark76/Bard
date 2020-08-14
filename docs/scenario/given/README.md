@@ -25,6 +25,8 @@ A `StoryBook` is the entry point into a `Scenario`.
 
 A `StoryBook` is made up of `Chapters` & `Stories`.
 
+![Story Books, Chapters &amp; Stories](../../.gitbook/assets/story-book.svg)
+
 The `StoryBook` is the starting `Chapter` of our `Scenario` and from there we can select a `Story` that take us to the next `Chapter` that contains other stories.
 
 {% hint style="info" %}

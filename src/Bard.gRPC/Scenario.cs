@@ -20,10 +20,12 @@ namespace Bard.gRPC
             if (options.Client == null)
                 throw new BardConfigurationException("Client not set");
 
-            var logWriter = new LogWriter(options.LogMessage);
+            var eventAggregator = new EventAggregator();
+            
+            var logWriter = new LogWriter(options.LogMessage, eventAggregator);
 
             var originalClient = options.Client;
-            var eventAggregator = new EventAggregator();
+           
             
             var bardClient = HttpClientBuilder
                 .GenerateBardClient(originalClient, logWriter, options.BadRequestProvider, eventAggregator);

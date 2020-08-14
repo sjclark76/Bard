@@ -25,8 +25,9 @@ namespace Bard.Internal
             if (client == null)
                 throw new BardConfigurationException("client not set.");
 
-            _logWriter = new LogWriter(logMessage);
             var eventAggregator = new EventAggregator();
+            
+            _logWriter = new LogWriter(logMessage, eventAggregator);
 
             var bardClient =
                 HttpClientBuilder.GenerateBardClient(client, _logWriter, badRequestProvider, eventAggregator);

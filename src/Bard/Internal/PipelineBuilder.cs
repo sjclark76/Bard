@@ -7,11 +7,11 @@ using Bard.Internal.Exception;
 
 namespace Bard.Internal
 {
-    internal class PipelineBuilder : IPipelineBuilder, IObserver<IResponse>
+    internal class PipelineBuilder : IPipelineBuilder, IObserver<MessageLogged>
     {
         private readonly LogWriter _logWriter;
         private readonly List<PipelineStep> _pipelineSteps = new List<PipelineStep>();
-        private bool _apiCalled;
+        private bool _messageLogged;
         private int _executionCount;
 
         internal PipelineBuilder(LogWriter logWriter)
@@ -29,9 +29,9 @@ namespace Bard.Internal
         {
         }
 
-        public void OnNext(IResponse value)
+        public void OnNext(MessageLogged value)
         {
-            _apiCalled = true;
+            _messageLogged = true;
         }
 
         public void AddStep(string stepName, Action stepAction)
@@ -48,7 +48,7 @@ namespace Bard.Internal
 
             foreach (var pipelineStep in _pipelineSteps)
             {
-                _apiCalled = false;
+                _messageLogged = false;
                 if (stringBuilder.Length > 0)
                     stringBuilder.Append(" ");
 
@@ -61,7 +61,7 @@ namespace Bard.Internal
                 try
                 {
                     pipelineStep.StepAction();
-                    if (_apiCalled == false)
+                    if (_messageLogged == false)
                         // The API was not called through the context so log
                         // the output instead.
                         if (storyData != null)
@@ -78,7 +78,7 @@ namespace Bard.Internal
             _executionCount++;
         }
 
-        public void Reset()
+        private void Reset()
         {
             _pipelineSteps.Clear();
         }

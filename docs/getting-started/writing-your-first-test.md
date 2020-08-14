@@ -7,7 +7,7 @@ This section will describe how to configure Bard in order to write your first AP
 So before we can start we need to configure our Scenario. To do this we are going to need provide two things.
 
 * A `System.Net.Http.HttpClient` in order to call our API
-* A function to tell our Scenario how to log. This is optional but important because Bard provides detailed logs to the test output windows to help with writing and debugging test failures. If not supplied Bard will ouptut all log messages to the Console window which may not appear in your test ouput.
+* A function to tell our Scenario how to log. This is optional but important because Bard provides detailed logs to the test output windows to help with writing and debugging test failures. If not supplied Bard will ouput all log messages to the Console window which may not appear in your test output.
 
 ```csharp
 var scenario = ScenarioConfiguration

@@ -2,18 +2,18 @@
 
 ## Given
 
-This section how to perform test arrangement with Bard. This is the part of the test that tells the 'story' about what needs to happen in order for the test to run. 
+This section how to perform test arrangement with Bard. This is the part of the test that tells the 'story' of the state of the system for the test to run. 
 
 In my opinion this is the most important part of an integration test and probably the part that is most overlooked when writing tests.
 
-When testing a complex domain the test set up can become fairly convoluted. A framework like Bard encourages the developers to invest a bit more time upfront to build a library of stories that can be resued and composed into different scenarios. Overtime this will make your tests easier to write, easier to understand and easier to maintain.
+When testing a complex domain test arrangement can become convoluted. A framework like Bard encourages the developers to invest more time upfront to building a library of stories. However these stories be reused and composed into different scenarios. Overtime this will make your tests easier to write, easier to understand and easier to maintain.
 
 In summary the goal of Bard is to make your tests:
 
 1. Easy to read  and understand.
 2. Easy to reuse.
 3. More maintainable
-4. And ultimately easy to compose new tests.
+4. Easy to compose new tests.
 
 Bard has the concept of a `StoryBook`. The Story Book describes the way you can interact with you API/Domain in order to put it in the required state. Think of a `StoryBook`as the opening chapter of your scenario.
 
@@ -24,6 +24,8 @@ A `StoryBook` is the entry point into a `Scenario`.
 ### StoryBooks, Chapters & Stories
 
 A `StoryBook` is made up of `Chapters` & `Stories`.
+
+![Story Books, Chapters &amp; Stories](../../.gitbook/assets/story-book.svg)
 
 The `StoryBook` is the starting `Chapter` of our `Scenario` and from there we can select a `Story` that take us to the next `Chapter` that contains other stories.
 

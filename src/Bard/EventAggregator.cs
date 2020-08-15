@@ -4,15 +4,17 @@ using Bard.Internal.Then;
 
 namespace Bard
 {
-    internal class EventAggregator : IObservable<IResponse>, IObservable<GrpcResponse>
+    internal class EventAggregator : IObservable<IResponse>, IObservable<GrpcResponse>, IObservable<MessageLogged>
     {
         private readonly List<IObserver<GrpcResponse>> _grpcObservers;
+        private readonly List<IObserver<MessageLogged>> _messageLoggedObservers;
         private readonly List<IObserver<IResponse>> _observers;
 
         internal EventAggregator()
         {
             _grpcObservers = new List<IObserver<GrpcResponse>>();
             _observers = new List<IObserver<IResponse>>();
+            _messageLoggedObservers = new List<IObserver<MessageLogged>>();
         }
 
         public IDisposable Subscribe(IObserver<GrpcResponse> observer)
@@ -29,30 +31,29 @@ namespace Bard
             return new UnSubscriber<IResponse>(_observers, observer);
         }
 
+        public IDisposable Subscribe(IObserver<MessageLogged> observer)
+        {
+            // Check whether observer is already registered. If not, add it
+            if (!_messageLoggedObservers.Contains(observer)) _messageLoggedObservers.Add(observer);
+            return new UnSubscriber<MessageLogged>(_messageLoggedObservers, observer);
+        }
+
         public void PublishResponse(IResponse response)
         {
             foreach (var observer in _observers)
-                if (response == null)
-                {
-                    //observer.OnError(new LocationUnknownException());
-                }
-                else
-                {
-                    observer.OnNext(response);
-                }
+                observer.OnNext(response);
         }
 
         public void PublishGrpcResponse(GrpcResponse response)
         {
             foreach (var observer in _grpcObservers)
-                if (response == null)
-                {
-                    //observer.OnError(new LocationUnknownException());
-                }
-                else
-                {
-                    observer.OnNext(response);
-                }
+                observer.OnNext(response);
+        }
+
+        public void PublishMessageLogged(MessageLogged messageLogged)
+        {
+            foreach (var observer in _messageLoggedObservers)
+                observer.OnNext(messageLogged);
         }
 
         private class UnSubscriber<TResponse> : IDisposable
@@ -68,9 +69,19 @@ namespace Bard
 
             public void Dispose()
             {
-                if (_observer != null && _observers.Contains(_observer))
+                if (_observers .Contains(_observer))
                     _observers.Remove(_observer);
             }
         }
+    }
+
+    internal class MessageLogged
+    {
+        public MessageLogged(string message)
+        {
+            Message = message;
+        }
+
+        public string Message { get; }
     }
 }

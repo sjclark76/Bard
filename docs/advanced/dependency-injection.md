@@ -43,6 +43,8 @@ public BankAccountHasBeenCreated BankAccount_has_been_created()
             
             serviceBus.AddMessage(message);
             
+            context.StoryData.BankAccount = bankAccountMessage;
+            
         })
         .ProceedToChapter<BankAccountHasBeenCreated>();
 }

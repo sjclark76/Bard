@@ -30,6 +30,7 @@ namespace Bard.Tests
                     options.Client = httpClient;
                     options.LogMessage = output.WriteLine;
                     options.Services = host.Services;
+                    options.BadRequestProvider = new MyBadRequestProvider();
                 });
 
             Given = scenario.Given;

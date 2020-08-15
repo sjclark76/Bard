@@ -25,8 +25,7 @@ namespace Bard.gRPC
             var logWriter = new LogWriter(options.LogMessage, eventAggregator);
 
             var originalClient = options.Client;
-           
-            
+
             var bardClient = HttpClientBuilder
                 .GenerateBardClient(originalClient, logWriter, options.BadRequestProvider, eventAggregator);
 

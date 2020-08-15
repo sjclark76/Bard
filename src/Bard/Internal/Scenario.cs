@@ -10,9 +10,9 @@ namespace Bard.Internal
     internal class Scenario : IScenario
     {
         private readonly Then.Then _then;
-        protected Api _api;
-        protected readonly LogWriter _logWriter;
-        protected When.When _when;
+        protected readonly Api Api;
+        protected readonly LogWriter LogWriter;
+        protected When.When InternalWhen;
 
         internal Scenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
             options.BadRequestProvider, options.Services)
@@ -27,18 +27,18 @@ namespace Bard.Internal
 
             var eventAggregator = new EventAggregator();
             
-            _logWriter = new LogWriter(logMessage, eventAggregator);
+            LogWriter = new LogWriter(logMessage, eventAggregator);
 
             var bardClient =
-                HttpClientBuilder.GenerateBardClient(client, _logWriter, badRequestProvider, eventAggregator);
-            _api = new Api(bardClient, badRequestProvider, eventAggregator);
-            var pipeline = new PipelineBuilder(_logWriter);
+                HttpClientBuilder.GenerateBardClient(client, LogWriter, badRequestProvider, eventAggregator);
+            Api = new Api(bardClient, badRequestProvider, eventAggregator);
+            var pipeline = new PipelineBuilder(LogWriter);
 
-            Context = new ScenarioContext(pipeline, _api, _logWriter, services);
+            Context = new ScenarioContext(pipeline, Api, LogWriter, services);
 
-            var when = new When.When(_api, _logWriter, () => { });
+            var when = new When.When(Api, LogWriter, () => { });
 
-            _when = when;
+            InternalWhen = when;
 
             _then = new Then.Then();
 
@@ -48,7 +48,7 @@ namespace Bard.Internal
 
         protected ScenarioContext Context { get; }
 
-        public IWhen When => _when;
+        public IWhen When => InternalWhen;
 
         public IThen Then => _then;
     }
@@ -66,7 +66,7 @@ namespace Bard.Internal
             var story = options.StoryBook;
             story.Context = context;
 
-            _when = new When.When(_api, _logWriter, () => context.ExecutePipeline());
+            InternalWhen = new When.When(Api, LogWriter, () => context.ExecutePipeline());
 
             _given = story;
         }

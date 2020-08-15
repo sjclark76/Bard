@@ -33,13 +33,26 @@ namespace Bard.gRPC.Internal
         public override Task<TResponse> UnaryServerHandler<TRequest, TResponse>(TRequest request, ServerCallContext context,
             UnaryServerMethod<TRequest, TResponse> continuation)
         {
-            return base.UnaryServerHandler(request, context, continuation);
+            _logWriter.LogMessage($"REQUEST: {context.Method}");
+            _logWriter.LogObject(request);
+            var response = base.UnaryServerHandler(request, context, continuation);
+            _logWriter.LogMessage(string.Empty);
+            _logWriter.LogMessage("RESPONSE:");
+            _logWriter.LogObject(response);
+            return response;
         }
 
         public override AsyncUnaryCall<TResponse> AsyncUnaryCall<TRequest, TResponse>(TRequest request, ClientInterceptorContext<TRequest, TResponse> context,
             AsyncUnaryCallContinuation<TRequest, TResponse> continuation)
         {
-            return base.AsyncUnaryCall(request, context, continuation);
+            _logWriter.LogMessage($"REQUEST: {context.Method.FullName}");
+            _logWriter.LogObject(request);
+            var response = base.AsyncUnaryCall(request, context, continuation);
+            
+            _logWriter.LogMessage(string.Empty);
+            _logWriter.LogMessage("RESPONSE:");
+            _logWriter.LogObject(response);
+            return response;
         }
     }
 }

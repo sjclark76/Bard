@@ -22,17 +22,17 @@ namespace Bard
         {
             chapter.ExecutePipeline();
 
-            var original =  chapter.GetStoryData();
+            var original = chapter.GetStoryData();
             
             var inst = typeof(TStoryData).GetMethod("MemberwiseClone", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
 
             var clone = inst?.Invoke(original, null);
             
             // ReSharper disable once JoinNullCheckWithUsage
-            if(clone == null)
+            if (clone == null)
                 throw new BardException("Unable to clone Story Data");
             
-            storyData = (TStoryData)clone;
+            storyData = (TStoryData) clone;
 
             return chapter;
         }

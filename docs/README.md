@@ -1,5 +1,5 @@
 ---
-description: Bard is a .NET library for functional API testing.
+description: A .NET library for functional API testing.
 ---
 
 # Introduction

@@ -8,8 +8,10 @@ namespace Bard.Tests.Scenario
         public static readonly Action<ScenarioContext<BankingStoryData>, Deposit> MakeADeposit =
             (context, request) =>
             {
-                context.Api.Post($"api/bankaccounts/{context.StoryData?.BankAccountId}/deposits",
+                var response = context.Api.Post($"api/bankaccounts/{context.StoryData?.BankAccountId}/deposits",
                     request);
+                
+                response.ShouldBe.Ok();
             };
 
         public static readonly Action<ScenarioContext<BankingStoryData>, Withdrawal> MakeAWithdrawal =

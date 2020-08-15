@@ -6,10 +6,12 @@
 
 * [Installation](getting-started/installation.md)
 * [Writing Your First Test](getting-started/writing-your-first-test.md)
+* [Configuration](getting-started/configuration.md)
 
 ## Anatomy Of A Scenario <a id="scenario"></a>
 
 * [Given](scenario/given/README.md)
+  * [StoryData](scenario/given/storydata.md)
   * [StoryBook](scenario/given/storybook.md)
   * [Chapter](scenario/given/chapter.md)
   * [Story](scenario/given/story.md)

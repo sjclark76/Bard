@@ -54,6 +54,7 @@ namespace Bard.Tests.Scenario
                     dbContext.BankAccounts.Add(bankAccount);
                     dbContext.SaveChanges();
 
+                    context.Writer.LogObject(bankAccount);
                     context.StoryData.BankAccountId = bankAccount.Id;
                 })
                 .ProceedToChapter<BankAccountHasBeenCreated>();

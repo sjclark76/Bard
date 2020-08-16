@@ -24,9 +24,9 @@ namespace Bard.gRPC.Internal
             _logWriter.LogObject(request);
             var response = base.BlockingUnaryCall(request, context, continuation);
             
-            _logWriter.LogMessage(string.Empty);
-            _logWriter.LogMessage("RESPONSE:");
-            _logWriter.LogObject(response);
+            //_logWriter.LogMessage(string.Empty);
+            // _logWriter.LogMessage("RESPONSE:");
+            // _logWriter.LogObject(response);
             return response;
         }
 
@@ -36,9 +36,9 @@ namespace Bard.gRPC.Internal
             _logWriter.LogMessage($"REQUEST: {context.Method}");
             _logWriter.LogObject(request);
             var response = base.UnaryServerHandler(request, context, continuation);
-            _logWriter.LogMessage(string.Empty);
-            _logWriter.LogMessage("RESPONSE:");
-            _logWriter.LogObject(response);
+            // _logWriter.LogMessage(string.Empty);
+            // _logWriter.LogMessage("RESPONSE:");
+            // _logWriter.LogObject(response);
             return response;
         }
 
@@ -49,9 +49,9 @@ namespace Bard.gRPC.Internal
             _logWriter.LogObject(request);
             var response = base.AsyncUnaryCall(request, context, continuation);
             
-            _logWriter.LogMessage(string.Empty);
-            _logWriter.LogMessage("RESPONSE:");
-            _logWriter.LogObject(response);
+            // _logWriter.LogMessage(string.Empty);
+            // _logWriter.LogMessage("RESPONSE:");
+            // _logWriter.LogObject(response);
             return response;
         }
     }

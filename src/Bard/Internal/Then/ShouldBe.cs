@@ -38,11 +38,10 @@ namespace Bard.Internal.Then
         }
 
         public IBadRequestProvider BadRequest { get; }
+        public bool Log { get; set; }
 
         public void Ok()
         {
-            //_logWriter.LogHeaderMessage("THEN THE RESPONSE SHOULD BE HTTP 200 OK");
-            
             StatusCodeShouldBe(HttpStatusCode.OK);
         }
 
@@ -95,7 +94,19 @@ namespace Bard.Internal.Then
 
             var statusCode = _httpResponse.StatusCode;
 
-            //_logWriter.WriteHttpResponseToConsole(_httpResponse);
+            if (Log)
+            {
+                _logWriter.LogHeaderMessage($"THEN THE RESPONSE SHOULD BE HTTP {(int) statusCode} {statusCode}");
+
+                if (_grpcResponse != null)
+                {
+                    _logWriter.LogObject(_grpcResponse);
+                }
+                else
+                {
+                    _logWriter.WriteHttpResponseToConsole(_httpResponse);
+                }
+            }
             
             if (statusCode != httpStatusCode)
                 throw new BardException(

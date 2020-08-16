@@ -16,6 +16,12 @@ namespace Bard.Internal.Then
 
         public IShouldBe ShouldBe => _shouldBe;
 
+        bool IResponse.Log
+        {
+            get => _shouldBe.Log;
+            set => _shouldBe.Log = value;
+        }
+
         public void StatusCodeShouldBe(HttpStatusCode statusCode)
         {
             ShouldBe.StatusCodeShouldBe(statusCode);

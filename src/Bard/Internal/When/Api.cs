@@ -15,13 +15,15 @@ namespace Bard.Internal.When
     {
         private readonly IBadRequestProvider _badRequestProvider;
         private readonly EventAggregator _eventAggregator;
+        private readonly LogWriter _logWriter;
         private readonly HttpClient _httpClient;
 
-        internal Api(HttpClient httpClient, IBadRequestProvider badRequestProvider, EventAggregator eventAggregator)
+        internal Api(HttpClient httpClient, IBadRequestProvider badRequestProvider, EventAggregator eventAggregator, LogWriter logWriter)
         {
             _httpClient = httpClient;
             _badRequestProvider = badRequestProvider;
             _eventAggregator = eventAggregator;
+            _logWriter = logWriter;
         }
 
         public IResponse Put<TModel>(string route, TModel model)
@@ -42,7 +44,7 @@ namespace Bard.Internal.When
             var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
 
             var apiResult = new ApiResult(responseMessage, responseString);
-            var response = new Response(_eventAggregator, apiResult, _badRequestProvider);
+            var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
 
             return response;
         }
@@ -67,7 +69,7 @@ namespace Bard.Internal.When
             var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
 
             var apiResult = new ApiResult(message, content);
-            var response = new Response(_eventAggregator, apiResult, _badRequestProvider);
+            var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
 
             return response;
         }
@@ -79,7 +81,7 @@ namespace Bard.Internal.When
             var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
 
             var apiResult = new ApiResult(message, content);
-            var response = new Response(_eventAggregator, apiResult, _badRequestProvider);
+            var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
 
             return response;
         }
@@ -105,7 +107,7 @@ namespace Bard.Internal.When
             var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
 
             var apiResult = new ApiResult(responseMessage, responseString);
-            var response = new Response(_eventAggregator, apiResult, _badRequestProvider);
+            var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
             return response;
         }
 

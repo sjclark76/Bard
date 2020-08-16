@@ -1,4 +1,5 @@
 using System.Net;
+using Bard.Infrastructure;
 using Bard.Internal.When;
 
 namespace Bard.Internal.Then
@@ -7,9 +8,9 @@ namespace Bard.Internal.Then
     {
         private readonly ShouldBe _shouldBe;
 
-        internal Response(EventAggregator eventAggregator, ApiResult result, IBadRequestProvider badRequestProvider)
+        internal Response(EventAggregator eventAggregator, ApiResult result, IBadRequestProvider badRequestProvider, LogWriter logWriter)
         {
-            _shouldBe = new ShouldBe(result, badRequestProvider);
+            _shouldBe = new ShouldBe(result, badRequestProvider, logWriter);
             eventAggregator.Subscribe(_shouldBe);
         }
 

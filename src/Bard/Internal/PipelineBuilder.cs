@@ -43,7 +43,7 @@ namespace Bard.Internal
         {
             if (HasSteps == false) return;
 
-            var initialMessage = _executionCount > 0 ? "* AND" : "* GIVEN THAT";
+            var initialMessage = _executionCount > 0 ? "AND" : "GIVEN THAT";
             StringBuilder stringBuilder = new StringBuilder(initialMessage);
 
             foreach (var pipelineStep in _pipelineSteps)
@@ -55,7 +55,7 @@ namespace Bard.Internal
 
                 if (pipelineStep.StepAction == null) continue;
 
-                WriteHeader(stringBuilder);
+                _logWriter.LogHeaderMessage(stringBuilder.ToString());
 
                 try
                 {
@@ -66,6 +66,8 @@ namespace Bard.Internal
                         // the output instead.
                         if (storyData != null)
                             _logWriter.LogObject(storyData);
+
+                    stringBuilder.Clear();
                 }
                 catch (BardException exception)
                 {
@@ -81,18 +83,6 @@ namespace Bard.Internal
         private void Reset()
         {
             _pipelineSteps.Clear();
-        }
-
-        private void WriteHeader(StringBuilder stringBuilder)
-        {
-            var astrixLine = new string('*', stringBuilder.Length + 2);
-            _logWriter.LogMessage(astrixLine);
-            stringBuilder.Append(" *");
-            _logWriter.LogMessage(stringBuilder.ToString());
-            _logWriter.LogMessage(astrixLine);
-            _logWriter.LogMessage("");
-            stringBuilder.Clear();
-            stringBuilder.Append("* ");
         }
     }
 }

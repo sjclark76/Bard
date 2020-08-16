@@ -69,11 +69,7 @@ namespace Bard.Internal.When
 
         protected void WriteHeader()
         {
-            _logWriter.LogMessage("");
-            _logWriter.LogMessage("****************************************");
-            _logWriter.LogMessage("*             WHEN                     *");
-            _logWriter.LogMessage("****************************************");
-            _logWriter.LogMessage("");
+            _logWriter.LogHeaderMessage("WHEN");
         }
     }
 }

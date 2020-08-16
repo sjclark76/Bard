@@ -10,12 +10,14 @@ namespace Bard.Internal.Then
 {
     internal class ShouldBe : IShouldBe, IObserver<GrpcResponse>
     {
+        private readonly LogWriter _logWriter;
         private readonly string _httpResponseString;
         private object? _grpcResponse;
         private HttpResponseMessage _httpResponse;
 
-        internal ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider)
+        internal ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider, LogWriter logWriter)
         {
+            _logWriter = logWriter;
             badRequestProvider.StringContent = apiResult.ResponseString;
             BadRequest = new BadRequestProviderDecorator(this, badRequestProvider);
             _httpResponse = apiResult.ResponseMessage;
@@ -39,6 +41,8 @@ namespace Bard.Internal.Then
 
         public void Ok()
         {
+            //_logWriter.LogHeaderMessage("THEN THE RESPONSE SHOULD BE HTTP 200 OK");
+            
             StatusCodeShouldBe(HttpStatusCode.OK);
         }
 
@@ -91,6 +95,8 @@ namespace Bard.Internal.Then
 
             var statusCode = _httpResponse.StatusCode;
 
+            //_logWriter.WriteHttpResponseToConsole(_httpResponse);
+            
             if (statusCode != httpStatusCode)
                 throw new BardException(
                     $"Invalid HTTP Status Code Received \n Expected: {(int) httpStatusCode} {httpStatusCode} \n Actual: {(int) statusCode} {statusCode} \n ");

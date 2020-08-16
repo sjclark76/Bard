@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -86,6 +87,43 @@ namespace Bard.Infrastructure
                     LogMessage(content);
                 }
             }
+        }
+
+        internal void LogHeaderMessage(string message)
+        {
+            var totalLength = 100;
+            var messageLength = message.Length;
+            
+            if (messageLength > totalLength)
+            {
+                totalLength = messageLength + 2;
+            }
+            
+            var envelopeLength = totalLength - 2;
+
+            var messageBuilder = new StringBuilder();
+            if (messageLength >= envelopeLength) return;
+            
+            decimal whiteSpaceLength = envelopeLength - messageLength;
+
+            var halfWhiteSpace = whiteSpaceLength == 0 ? 0 : whiteSpaceLength / 2;
+
+            var pre = decimal.ToInt32(Math.Floor(halfWhiteSpace));
+            var post = decimal.ToInt32(Math.Ceiling(halfWhiteSpace));
+                
+            // 27 / 2 = 13.5 13 + 14
+                
+            var astrixLine = new string('*', totalLength);
+            _logMessage(astrixLine);
+            messageBuilder.Append("*");
+            messageBuilder.Append((char) 32, pre);
+            messageBuilder.Append(message);
+            messageBuilder.Append((char) 32, post);
+            messageBuilder.Append("*");
+
+            _logMessage(messageBuilder.ToString());
+            _logMessage(astrixLine);
+            _logMessage(string.Empty);
         }
     }
 }

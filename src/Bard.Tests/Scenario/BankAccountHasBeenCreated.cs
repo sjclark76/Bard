@@ -56,7 +56,7 @@ namespace Bard.Tests.Scenario
                 .End();
         }
 
-        public DepositMade Deposit_has_been_made(Func<Deposit> configureDeposit)
+        public DepositMade DepositHasBeenMade(Func<Deposit> configureDeposit)
         {
             return
                 Given(configureDeposit)

@@ -51,7 +51,7 @@ namespace Bard.Internal
                 if (stringBuilder.Length > 0)
                     stringBuilder.Append(" ");
 
-                stringBuilder.Append(pipelineStep.StepName);
+                stringBuilder.Append(Sanitize(pipelineStep.StepName));
 
                 if (pipelineStep.StepAction == null) continue;
 
@@ -78,6 +78,29 @@ namespace Bard.Internal
             Reset();
 
             _executionCount++;
+        }
+
+        private string Sanitize(string methodName)
+        {
+            StringBuilder humanizedMethodName = new StringBuilder();
+            foreach (var character in methodName)
+            {
+                if (character == '_') 
+                {
+                    humanizedMethodName.Append(" ");
+                }
+                else if (char.IsUpper(character))
+                {
+                    humanizedMethodName.Append(" ");
+                    humanizedMethodName.Append(char.ToUpper(character));
+                }
+                else
+                {
+                    humanizedMethodName.Append(char.ToUpper(character));
+                }
+            }
+
+            return humanizedMethodName.ToString();
         }
 
         private void Reset()

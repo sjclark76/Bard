@@ -29,7 +29,7 @@ namespace Bard.Tests.POST
         {
             Given
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made(() => new Deposit {Amount = 100})
+                .DepositHasBeenMade(() => new Deposit {Amount = 100})
                 .GetResult(out BankingStoryData bankAccount);
 
             When
@@ -47,7 +47,7 @@ namespace Bard.Tests.POST
         {
             Given
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made(() => new Deposit {Amount = 100})
+                .DepositHasBeenMade(() => new Deposit {Amount = 100})
                 .GetResult(out BankingStoryData bankAccount);
 
             When

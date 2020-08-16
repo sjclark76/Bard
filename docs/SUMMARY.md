@@ -33,3 +33,7 @@
 * [Configuration](grpc/configuration.md)
 * [Writing A Test](grpc/writing-a-test.md)
 
+## Tips & Tricks
+
+* [FAQ](tips-and-tricks/faq.md)
+

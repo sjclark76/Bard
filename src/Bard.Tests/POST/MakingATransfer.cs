@@ -29,11 +29,11 @@ namespace Bard.Tests.POST
         {
             Given
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made(() => new Deposit {Amount = 100})
+                .DepositHasBeenMade(() => new Deposit {Amount = 100})
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Post($"api/bankaccounts/{bankAccount?.BankAccountId}/withdrawals", new Withdrawal {Amount = 1000});
+                .Post($"api/bankaccounts/{bankAccount.BankAccountId}/withdrawals", new Withdrawal {Amount = 1000});
 
             Then
                 .Response
@@ -47,7 +47,7 @@ namespace Bard.Tests.POST
         {
             Given
                 .BankAccount_has_been_created(account => account.CustomerName = "Rich Person")
-                .Deposit_has_been_made(() => new Deposit {Amount = 100})
+                .DepositHasBeenMade(() => new Deposit {Amount = 100})
                 .GetResult(out BankingStoryData richBankAccount);
 
             Given
@@ -57,8 +57,8 @@ namespace Bard.Tests.POST
             When
                 .Post("api/transfers", new Transfer
                 {
-                    FromBankAccountId = richBankAccount?.BankAccountId,
-                    ToBankAccountId = poorBankAccount?.BankAccountId,
+                    FromBankAccountId = richBankAccount.BankAccountId,
+                    ToBankAccountId = poorBankAccount.BankAccountId,
                     Amount = 100
                 });
 
@@ -71,9 +71,9 @@ namespace Bard.Tests.POST
             Given
                 .BankAccount_has_been_created(account => account.CustomerName = "Rich Person")
                 .GetResult(out BankingStoryData richBankAccount)
-                .Deposit_has_been_made(() => new Deposit
+                .DepositHasBeenMade(() => new Deposit
                 {
-                    Id = richBankAccount?.BankAccountId,
+                    Id = richBankAccount.BankAccountId,
                     Amount = 100
                 })
                 .BankAccount_has_been_created(account => account.CustomerName = "Poor Person Person")
@@ -82,8 +82,8 @@ namespace Bard.Tests.POST
             When
                 .Post("api/transfers", new Transfer
                 {
-                    FromBankAccountId = richBankAccount?.BankAccountId,
-                    ToBankAccountId = poorBankAccount?.BankAccountId,
+                    FromBankAccountId = richBankAccount.BankAccountId,
+                    ToBankAccountId = poorBankAccount.BankAccountId,
                     Amount = 100
                 });
 

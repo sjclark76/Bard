@@ -12,6 +12,8 @@ namespace Bard
         /// </summary>
         IShouldBe ShouldBe { get; }
 
+        internal bool Log { get; set; }
+
         /// <summary>
         ///     Assert that the response Http Code is correct
         /// </summary>

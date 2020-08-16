@@ -1,3 +1,5 @@
+using System;
+using System.Net.Http;
 using Bard.Configuration;
 using Bard.Sample.Api;
 using Bard.Tests.Scenario;
@@ -8,8 +10,11 @@ using Xunit.Abstractions;
 
 namespace Bard.Tests
 {
-    public abstract class BankingTestBase
+    public abstract class BankingTestBase : IDisposable
     {
+        private readonly IHost _host;
+        private readonly HttpClient _httpClient;
+
         protected BankingTestBase(ITestOutputHelper output)
         {
             var hostBuilder = new HostBuilder()
@@ -19,17 +24,17 @@ namespace Bard.Tests
                         .UseTestServer()
                         .UseEnvironment("development"));
 
-            var host = hostBuilder.Start();
+            _host = hostBuilder.Start();
 
-            var httpClient = host.GetTestClient();
+            _httpClient = _host.GetTestClient();
 
             var scenario = ScenarioConfiguration
                 .WithStoryBook<BankingStory, BankingStoryData>()
                 .Configure(options =>
                 {
-                    options.Client = httpClient;
+                    options.Client = _httpClient;
                     options.LogMessage = output.WriteLine;
-                    options.Services = host.Services;
+                    options.Services = _host.Services;
                     options.BadRequestProvider = new MyBadRequestProvider();
                 });
 
@@ -43,5 +48,11 @@ namespace Bard.Tests
         protected IThen Then { get; }
 
         protected IWhen When { get; }
+
+        public void Dispose()
+        {
+            _host.Dispose();
+            _httpClient.Dispose();
+        }
     }
 }

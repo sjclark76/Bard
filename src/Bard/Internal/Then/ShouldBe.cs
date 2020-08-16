@@ -11,16 +11,20 @@ namespace Bard.Internal.Then
     internal class ShouldBe : IShouldBe, IObserver<GrpcResponse>
     {
         private readonly string _httpResponseString;
+        private readonly LogWriter _logWriter;
         private object? _grpcResponse;
         private HttpResponseMessage _httpResponse;
 
-        internal ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider)
+        internal ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider, LogWriter logWriter)
         {
+            _logWriter = logWriter;
             badRequestProvider.StringContent = apiResult.ResponseString;
             BadRequest = new BadRequestProviderDecorator(this, badRequestProvider);
             _httpResponse = apiResult.ResponseMessage;
             _httpResponseString = apiResult.ResponseString;
         }
+
+        public bool Log { get; set; }
 
         public void OnCompleted()
         {
@@ -91,11 +95,22 @@ namespace Bard.Internal.Then
 
             var statusCode = _httpResponse.StatusCode;
 
+            if (Log)
+            {
+                _logWriter.LogHeaderMessage($"THEN THE RESPONSE SHOULD BE HTTP {(int) statusCode} {statusCode}");
+
+                if (_grpcResponse != null)
+                    _logWriter.LogObject(_grpcResponse);
+                else
+                    _logWriter.WriteHttpResponseToConsole(_httpResponse);
+            }
+
             if (statusCode != httpStatusCode)
                 throw new BardException(
                     $"Invalid HTTP Status Code Received \n Expected: {(int) httpStatusCode} {httpStatusCode} \n Actual: {(int) statusCode} {statusCode} \n ");
         }
 
+        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
         private void AssertContentIsNotNull<T>(T content)
         {
             if (content == null)
@@ -110,17 +125,12 @@ namespace Bard.Internal.Then
             try
             {
                 if (_grpcResponse != null)
-                {
                     content = (T) _grpcResponse;
-                }
                 else
-                {
-                    if (_httpResponseString != null)
-                        content = JsonConvert.DeserializeObject<T>(_httpResponseString, new JsonSerializerSettings
-                        {
-                            ContractResolver = new ResolvePrivateSetters()
-                        });
-                }
+                    content = JsonConvert.DeserializeObject<T>(_httpResponseString, new JsonSerializerSettings
+                    {
+                        ContractResolver = new ResolvePrivateSetters()
+                    });
             }
             catch (System.Exception)
             {

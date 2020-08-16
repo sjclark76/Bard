@@ -20,12 +20,11 @@ namespace Bard
 
             try
             {
-                if (StringContent != null)
-                    content = JsonConvert.DeserializeObject<TErrorMessage>(StringContent,
-                        new JsonSerializerSettings
-                        {
-                            ContractResolver = new ResolvePrivateSetters()
-                        });
+                content = JsonConvert.DeserializeObject<TErrorMessage>(StringContent,
+                    new JsonSerializerSettings
+                    {
+                        ContractResolver = new ResolvePrivateSetters()
+                    });
             }
             catch (Exception)
             {

@@ -1,10 +1,34 @@
 ﻿using System;
+using Bard.Sample.Api;
 using Bard.Sample.Api.Model;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bard.Tests.Scenario
 {
     public class BankAccountHasBeenCreated : Chapter<BankingStoryData>
     {
+        public BankAccountHasBeenCreated BankAccount_has_been_created_from_db(
+            Action<BankAccount>? configureBankAccount = null)
+        {
+            return When(context =>
+                {
+                    var bankAccount = new BankAccount
+                    {
+                        CustomerName = "Ranulph Fiennes"
+                    };
+
+                    configureBankAccount?.Invoke(bankAccount);
+
+                    var dbContext = context.Services.GetService<BankDbContext>();
+
+                    dbContext.BankAccounts.Add(bankAccount);
+                    dbContext.SaveChanges();
+
+                    context.StoryData.BankAccountId = bankAccount.Id;
+                })
+                .ProceedToChapter<BankAccountHasBeenCreated>();
+        }
+        
         public BankAccountHasBeenCreated BankAccount_has_been_created(Action<BankAccount>? configureBankAccount = null)
         {
             return When(context =>
@@ -32,7 +56,7 @@ namespace Bard.Tests.Scenario
                 .End();
         }
 
-        public DepositMade Deposit_has_been_made(Func<Deposit> configureDeposit)
+        public DepositMade DepositHasBeenMade(Func<Deposit> configureDeposit)
         {
             return
                 Given(configureDeposit)

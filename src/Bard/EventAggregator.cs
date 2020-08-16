@@ -69,7 +69,7 @@ namespace Bard
 
             public void Dispose()
             {
-                if (_observers .Contains(_observer))
+                if (_observers.Contains(_observer))
                     _observers.Remove(_observer);
             }
         }

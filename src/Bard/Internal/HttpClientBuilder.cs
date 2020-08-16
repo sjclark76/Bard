@@ -24,7 +24,7 @@ namespace Bard.Internal
 
             var bardApiMessageHandler = new BardApiMessageHandler(logWriter) {InnerHandler = httpMessageHandler};
 
-            var bardHttpClient = new BardHttpClient(eventAggregator, bardApiMessageHandler, badRequestProvider)
+            var bardHttpClient = new BardHttpClient(eventAggregator, bardApiMessageHandler, badRequestProvider, logWriter)
             {
                 BaseAddress = client.BaseAddress,
                 Timeout = client.Timeout,

@@ -19,7 +19,7 @@ namespace Bard.Tests.PUT
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Put($"api/bankaccounts/{bankAccount?.BankAccountId}", new BankAccount
+                .Put($"api/bankaccounts/{bankAccount.BankAccountId}", new BankAccount
                 {
                     CustomerName = "New Name"
                 });

@@ -15,6 +15,14 @@
         <PackageProjectUrl>https://docs.bard.net.nz</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sjclark76/Bard</RepositoryUrl>
         <PackageReleaseNotes>
+            Changes in 3.2.0
+            - More logging improvements. Made logging message headers tidier.
+            - Made headers human readable
+            - Added in logging headers for our Test Assertions.
+            Changes in 3.1.0
+            - Improved default logging of Stories. Bard now tracks if any logging was performed in a Story
+            and will only log the StoryData as a last resort if either the API was not called or manual logging
+            was not performed.
             Changes in 3.0.0
             - gRPC support
             - Pipeline StoryInput StoryOutput Model refactored to simpler StoryData implementation

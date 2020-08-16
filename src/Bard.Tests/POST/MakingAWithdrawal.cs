@@ -29,11 +29,11 @@ namespace Bard.Tests.POST
         {
             Given
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made(() => new Deposit {Amount = 100})
+                .DepositHasBeenMade(() => new Deposit {Amount = 100})
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Post($"api/bankaccounts/{bankAccount?.BankAccountId}/withdrawals", new Withdrawal {Amount = 1000});
+                .Post($"api/bankaccounts/{bankAccount.BankAccountId}/withdrawals", new Withdrawal {Amount = 1000});
 
             Then
                 .Response
@@ -47,11 +47,11 @@ namespace Bard.Tests.POST
         {
             Given
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made(() => new Deposit {Amount = 100})
+                .DepositHasBeenMade(() => new Deposit {Amount = 100})
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Post($"api/bankaccounts/{bankAccount?.BankAccountId}/withdrawals", new Withdrawal {Amount = 100});
+                .Post($"api/bankaccounts/{bankAccount.BankAccountId}/withdrawals", new Withdrawal {Amount = 100});
 
             Then.Response.ShouldBe.Ok();
         }

@@ -27,6 +27,7 @@ namespace Bard.Internal.Then
                 if (_response == null)
                     throw new BardException("The api has not been called. Call When.Get(url))");
 
+                _response.Log = true;
                 return _response;
             }
         }

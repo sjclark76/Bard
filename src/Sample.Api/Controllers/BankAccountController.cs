@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Bard.Sample.Api.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bard.Sample.Api.Controllers
 {
@@ -16,6 +17,14 @@ namespace Bard.Sample.Api.Controllers
             _bankDbContext = bankDbContext;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<BankAccount[]>> Get()
+        {
+            var bankAccounts = await _bankDbContext.BankAccounts.ToListAsync();
+
+            return Ok(bankAccounts);
+        }
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<BankAccount>> Get([FromRoute] int id)
         {

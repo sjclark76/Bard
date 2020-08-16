@@ -48,10 +48,9 @@ namespace Bard.Internal
 
             foreach (var pipelineStep in _pipelineSteps)
             {
-                if (stringBuilder.Length > 0)
-                    stringBuilder.Append(" ");
-
-                stringBuilder.Append(Sanitize(pipelineStep.StepName));
+                var humanizedName = Humanize.MethodName(pipelineStep.StepName);
+                
+                stringBuilder.Append(humanizedName);
 
                 if (pipelineStep.StepAction == null) continue;
 
@@ -62,10 +61,12 @@ namespace Bard.Internal
                     _messageLogged = false;
                     pipelineStep.StepAction();
                     if (_messageLogged == false)
+                    {
                         // The API was not called through the context so log
                         // the output instead.
                         if (storyData != null)
                             _logWriter.LogObject(storyData);
+                    }   
 
                     stringBuilder.Clear();
                 }
@@ -78,29 +79,6 @@ namespace Bard.Internal
             Reset();
 
             _executionCount++;
-        }
-
-        private string Sanitize(string methodName)
-        {
-            StringBuilder humanizedMethodName = new StringBuilder();
-            foreach (var character in methodName)
-            {
-                if (character == '_') 
-                {
-                    humanizedMethodName.Append(" ");
-                }
-                else if (char.IsUpper(character))
-                {
-                    humanizedMethodName.Append(" ");
-                    humanizedMethodName.Append(char.ToUpper(character));
-                }
-                else
-                {
-                    humanizedMethodName.Append(char.ToUpper(character));
-                }
-            }
-
-            return humanizedMethodName.ToString();
         }
 
         private void Reset()

@@ -34,7 +34,7 @@ namespace Bard.Tests.POST
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Post($"api/bankaccounts/{bankAccount?.BankAccountId}/deposits", new Deposit {Amount = 100});
+                .Post($"api/bankaccounts/{bankAccount.BankAccountId}/deposits", new Deposit {Amount = 100});
 
             Then.Response.ShouldBe.Ok();
         }

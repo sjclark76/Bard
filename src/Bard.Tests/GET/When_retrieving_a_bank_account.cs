@@ -34,7 +34,7 @@ namespace Bard.Tests.GET
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");
+                .Get($"{ApiBankaccounts}/{bankAccount.BankAccountId}");
 
             Then.Response
                 .ShouldBe
@@ -52,7 +52,7 @@ namespace Bard.Tests.GET
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");
+                .Get($"{ApiBankaccounts}/{bankAccount.BankAccountId}");
 
             Then.Response
                 .ShouldBe
@@ -72,7 +72,7 @@ namespace Bard.Tests.GET
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");
+                .Get($"{ApiBankaccounts}/{bankAccount.BankAccountId}");
 
             Then.Response
                 .ShouldBe
@@ -90,7 +90,7 @@ namespace Bard.Tests.GET
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");
+                .Get($"{ApiBankaccounts}/{bankAccount.BankAccountId}");
 
             Then.Response
                 .ShouldBe
@@ -107,7 +107,7 @@ namespace Bard.Tests.GET
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Get($"{ApiBankaccounts}/{bankAccount?.BankAccountId}");
+                .Get($"{ApiBankaccounts}/{bankAccount.BankAccountId}");
 
             Then.Response
                 .ShouldBe

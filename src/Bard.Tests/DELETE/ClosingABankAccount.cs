@@ -30,7 +30,7 @@ namespace Bard.Tests.DELETE
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Delete($"api/bankaccounts/{bankAccount?.BankAccountId}");
+                .Delete($"api/bankaccounts/{bankAccount.BankAccountId}");
 
             Then.Response.ShouldBe.NoContent();
         }

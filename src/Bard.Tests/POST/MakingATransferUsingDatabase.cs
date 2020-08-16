@@ -22,13 +22,13 @@ namespace Bard.Tests.POST
                 })
                 .GetResult(out BankingStoryData bankAccount1);
 
-            var richBankAccountId = bankAccount1?.BankAccountId;
+            var richBankAccountId = bankAccount1.BankAccountId;
 
             Given
                 .BankAccount_has_been_created_from_db(account => account.CustomerName = "Poor Person Person")
                 .GetResult(out BankingStoryData bankAccount2);
 
-            var poorBankAccountId = bankAccount2?.BankAccountId;
+            var poorBankAccountId = bankAccount2.BankAccountId;
 
             When
                 .Post("api/transfers", new Transfer

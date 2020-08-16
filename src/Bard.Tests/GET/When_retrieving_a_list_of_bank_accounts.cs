@@ -1,7 +1,4 @@
-﻿using Bard.Sample.Api.Model;
-using Shouldly;
-using Xunit;
-using Xunit.Abstractions;
+﻿using Xunit.Abstractions;
 
 namespace Bard.Tests.GET
 {

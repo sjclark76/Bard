@@ -5,12 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Bard.Tests.Scenario
 {
-    public class BankingStoryData
-    {
-        public decimal Balance { get; set; }
-        public int BankAccountId { get; set; }
-    }
-
     public class BankingStory : StoryBook<BankingStoryData>
     {
         public EndChapter<BankingStoryData> Nothing_much_happens()

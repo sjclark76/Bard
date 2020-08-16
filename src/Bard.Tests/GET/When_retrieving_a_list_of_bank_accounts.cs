@@ -12,24 +12,24 @@ namespace Bard.Tests.GET
         {
         }
 
-        [Fact]
-        public void If_multiple_accounts_are_created_the_count_should_be_correct()
-        {
-            Given
-                .BankAccount_has_been_created_from_db(account => account.CustomerName = "Fred")
-                .BankAccount_has_been_created_from_db();
-
-            Given
-                .BankAccount_has_been_created_from_db(account => account.CustomerName = "Billy")
-                .BankAccount_has_been_created_from_db();
-
-            When
-                .Get("api/bankaccounts");
-
-            Then.Response
-                .ShouldBe
-                .Ok<BankAccount[]>()
-                .Length.ShouldBe(4);
-        }
+        // [Fact]
+        // public void If_multiple_accounts_are_created_the_count_should_be_correct()
+        // {
+        //     Given
+        //         .BankAccount_has_been_created_from_db(account => account.CustomerName = "Fred")
+        //         .BankAccount_has_been_created_from_db();
+        //
+        //     Given
+        //         .BankAccount_has_been_created_from_db(account => account.CustomerName = "Billy")
+        //         .BankAccount_has_been_created_from_db();
+        //
+        //     When
+        //         .Get("api/bankaccounts");
+        //
+        //     Then.Response
+        //         .ShouldBe
+        //         .Ok<BankAccount[]>()
+        //         .Length.ShouldBe(4);
+        // }
     }
 }

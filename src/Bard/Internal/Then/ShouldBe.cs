@@ -101,7 +101,7 @@ namespace Bard.Internal.Then
             {
                 if (statusCode != httpStatusCode)
                 {
-                    headerMessage.Append($" but was HTTP {(int) statusCode} {statusCode}");
+                    headerMessage.Append($" BUT WAS HTTP {(int) statusCode} {statusCode}");
                 }
 
                 _logWriter.LogHeaderMessage(headerMessage.ToString());

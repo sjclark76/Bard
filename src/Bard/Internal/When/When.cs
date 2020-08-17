@@ -61,7 +61,7 @@ namespace Bard.Internal.When
             PreApiCall();
 
             WriteHeader();
-
+            
             var response = callApi();
 
             return response;

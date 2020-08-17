@@ -7,7 +7,7 @@ namespace Bard.Internal
 {
     internal class HttpClientBuilder
     {
-        internal static HttpMessageHandler? GetInstanceField(object instance)
+        private static HttpMessageHandler? GetInstanceField(object instance)
         {
             const BindingFlags bindFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
                                            | BindingFlags.Static;

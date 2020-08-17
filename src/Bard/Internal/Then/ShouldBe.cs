@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using Bard.Infrastructure;
 using Bard.Internal.Exception;
 using Bard.Internal.When;
@@ -95,9 +96,15 @@ namespace Bard.Internal.Then
 
             var statusCode = _httpResponse.StatusCode;
 
+            var headerMessage = new StringBuilder($"THEN THE RESPONSE SHOULD BE HTTP {(int) httpStatusCode} {httpStatusCode}");
             if (Log)
             {
-                _logWriter.LogHeaderMessage($"THEN THE RESPONSE SHOULD BE HTTP {(int) statusCode} {statusCode}");
+                if (statusCode != httpStatusCode)
+                {
+                    headerMessage.Append($" but was HTTP {(int) statusCode} {statusCode}");
+                }
+
+                _logWriter.LogHeaderMessage(headerMessage.ToString());
 
                 if (_grpcResponse != null)
                     _logWriter.LogObject(_grpcResponse);

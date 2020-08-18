@@ -13,14 +13,15 @@ Bard is a test library written by Developers for Developers. It is as much a dev
 Bard generates exceptional test logging. This means you can write your tests first and then build your APIs. This gives the developer the opportunity to 'Dog Food' their API whilst writing their tests. No more eyeballing API responses in tools such as Postman.
 
 ```javascript
-*******************************************
-* GIVEN THAT BankAccount_has_been_created *
-*******************************************
+**********************************************************************
+*              GIVEN THAT BANK ACCOUNT HAS BEEN CREATED              *
+**********************************************************************
 
-REQUEST: POST api/bankaccounts
-{  
+REQUEST: POST http://localhost/api/bankaccounts
+{
+  "id": 0,
   "isActive": false,
-  "customerName": "Dougal",
+  "customerName": "Fred",
   "balance": 0.0
 }
 
@@ -29,35 +30,73 @@ Header::Location http://localhost/api/bankaccounts/1
 {
   "id": 1,
   "isActive": false,
-  "customerName": "Dougal",
+  "customerName": "Fred",
   "balance": 0.0
 }
-******************************
-*  And Deposit_has_been_made *
-******************************
 
-REQUEST: POST api/bankaccounts/1/deposits
+**********************************************************************
+*                        DEPOSIT HAS BEEN MADE                       *
+**********************************************************************
+
+REQUEST: POST http://localhost/api/bankaccounts/1/deposits
 {
-   "amount": 100.0
+  "id": null,
+  "amount": 100.0
 }
 
 RESPONSE: Http Status Code:  OK (200)
 {
   "id": 1,
   "isActive": false,
-  "customerName": "Dougal",
+  "customerName": "Fred",
   "balance": 100.0
 }
-****************************************
-*             WHEN                     *
-****************************************
 
-GET api/bankaccounts/1
+**********************************************************************
+*                      WITHDRAWAL HAS BEEN MADE                      *
+**********************************************************************
+
+REQUEST: POST http://localhost/api/bankaccounts/1/withdrawals
+{
+  "id": null,
+  "amount": 50.0
+}
+
+RESPONSE: Http Status Code:  OK (200)
+
+**********************************************************************
+*                        DEPOSIT HAS BEEN MADE                       *
+**********************************************************************
+
+REQUEST: POST http://localhost/api/bankaccounts/1/deposits
+{
+  "id": null,
+  "amount": 25.0
+}
+
 RESPONSE: Http Status Code:  OK (200)
 {
   "id": 1,
   "isActive": false,
-  "customerName": "Dougal",
+  "customerName": "Fred",
+  "balance": 75.0
+}
+
+**********************************************************************
+*                                WHEN                                *
+**********************************************************************
+
+REQUEST: GET http://localhost/api/bankaccounts/1
+
+**********************************************************************
+*              THEN THE RESPONSE SHOULD BE HTTP 200 OK               *
+**********************************************************************
+
+RESPONSE: Http Status Code:  OK (200)
+{
+  "id": 1,
+  "isActive": false,
+  "customerName": "Fred",
   "balance": 75.0
 }
 

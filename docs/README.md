@@ -29,7 +29,10 @@ This means that when there are a number of sequential steps performed during the
        
   When
       .Get($"api/bankaccounts/{bankAccount.BankAccountId}");
-       
+      
+  Then.Response
+      .ShouldBe
+      .Ok<BankAccount>();       
 ```
 
 ### First Class Logging

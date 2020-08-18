@@ -11,7 +11,7 @@ namespace Bard.Internal
         private readonly LogWriter _logWriter;
         private readonly EventAggregator _eventAggregator;
 
-        internal BardHttpClient(EventAggregator eventAggregator, BardApiMessageHandler messageHandler,
+        internal BardHttpClient(EventAggregator eventAggregator, BardResponsePublisher messageHandler,
             IBadRequestProvider badRequestProvider, LogWriter logWriter) : base(
             messageHandler)
         {

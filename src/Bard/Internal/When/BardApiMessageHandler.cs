@@ -6,37 +6,39 @@ using Bard.Infrastructure;
 
 namespace Bard.Internal.When
 {
-    internal class BardApiMessageHandler : DelegatingHandler
+    internal class GrpcMessageHandler : DelegatingHandler
     {
-        private readonly LogWriter _logWriter;
+        public GrpcMessageHandler(HttpMessageHandler innerHandler) : base(innerHandler)
+        {
+        }
 
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var response = await base.SendAsync(request, cancellationToken);
+            
+            response.Version = request.Version;
+
+            return response;
+        }
+    }
+
+    internal class BardResponsePublisher : DelegatingHandler
+    {
         public Action<ApiResult>? PublishApiResult;
 
-        public BardApiMessageHandler(LogWriter logWriter)
+        public BardResponsePublisher(HttpMessageHandler innerHandler) : base(innerHandler)
         {
-            _logWriter = logWriter;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            if (request.Content?.Headers.ContentType.MediaType != "application/grpc")
-                _logWriter.WriteHttpRequestToConsole(request);
-         
             var response = await base.SendAsync(request, cancellationToken);
 
-            var responseString = AsyncHelper.RunSync(() => response.Content.ReadAsStringAsync());
+            var responseString =  await response.Content.ReadAsStringAsync();
             var apiResult = new ApiResult(response, responseString);
 
             PublishApiResult?.Invoke(apiResult);
-
-            if (request.Content?.Headers.ContentType.MediaType != "application/grpc")
-            {
-                _logWriter.LogMessage(string.Empty);
-                _logWriter.WriteHttpResponseToConsole(response);
-            }
-            
-            response.Version = request.Version;
 
             return response;
         }

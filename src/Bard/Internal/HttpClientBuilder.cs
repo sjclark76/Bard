@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Reflection;
 using Bard.Infrastructure;
+using Bard.Internal.Exception;
 using Bard.Internal.When;
 
 namespace Bard.Internal
@@ -21,10 +22,16 @@ namespace Bard.Internal
             IBadRequestProvider badRequestProvider, EventAggregator eventAggregator)
         {
             var httpMessageHandler = GetInstanceField(client);
+            
+            if(httpMessageHandler == null)
+                throw new BardException("Cannot find client handler");
 
-            var bardApiMessageHandler = new BardApiMessageHandler(logWriter) {InnerHandler = httpMessageHandler};
+            var grpcMessageHandler = new GrpcMessageHandler(httpMessageHandler);
+            var responseLoggerMessageHandler = new  ResponseLoggerMessageHandler(logWriter, grpcMessageHandler);
+            var requestLoggerMessageHandler = new  RequestLoggerMessageHandler(logWriter, responseLoggerMessageHandler);
+            var bardResponsePublisher = new BardResponsePublisher(requestLoggerMessageHandler);
 
-            var bardHttpClient = new BardHttpClient(eventAggregator, bardApiMessageHandler, badRequestProvider, logWriter)
+            var bardHttpClient = new BardHttpClient(eventAggregator, bardResponsePublisher, badRequestProvider, logWriter)
             {
                 BaseAddress = client.BaseAddress,
                 Timeout = client.Timeout,

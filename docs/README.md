@@ -37,7 +37,7 @@ This means that when there are a number of sequential steps performed during the
 
 ### First Class Logging
 
-Bard generates exceptional test logging. This means you can write your tests first and then build your APIs. This gives the developer the opportunity to 'Dog Food' their API whilst writing their tests. No more eyeballing API responses in tools such as Postman.
+Bard generates exceptional automatically generated log from your tests. This means you can write your tests first and then build your APIs. This gives the developer the opportunity to 'Dog Food' their API whilst writing their tests. No more eyeballing API responses in tools such as Postman.
 
 ```javascript
 **********************************************************************

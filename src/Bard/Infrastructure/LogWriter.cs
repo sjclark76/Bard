@@ -55,16 +55,17 @@ namespace Bard.Infrastructure
             if (httpResponse.Headers.Contains("Location"))
                 LogMessage($"Header::Location {httpResponse.Headers.Location.OriginalString}");
 
-            if (string.IsNullOrEmpty(content)) return;
-
-            try
+            if (!string.IsNullOrEmpty(content))
             {
-                var jsonFormatted = JToken.Parse(content).ToString(Formatting.Indented);
-                LogMessage(jsonFormatted);
-            }
-            catch (Exception)
-            {
-                LogMessage(content);
+                try
+                {
+                    var jsonFormatted = JToken.Parse(content).ToString(Formatting.Indented);
+                    LogMessage(jsonFormatted);
+                }
+                catch (Exception)
+                {
+                    LogMessage(content);
+                }
             }
             
             LogMessage(string.Empty);

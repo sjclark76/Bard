@@ -66,6 +66,9 @@ namespace Bard.Infrastructure
             {
                 LogMessage(content);
             }
+            
+            LogMessage(string.Empty);
+
         }
 
         internal void WriteHttpRequestToConsole(HttpRequestMessage request)
@@ -85,8 +88,11 @@ namespace Bard.Infrastructure
                 {
                     LogObject(request);
                     LogMessage(content);
+                    
                 }
             }
+            
+            LogMessage(string.Empty);
         }
 
         internal void LogHeaderMessage(string message)

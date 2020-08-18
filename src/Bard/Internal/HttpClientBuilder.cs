@@ -18,7 +18,28 @@ namespace Bard.Internal
             return field?.GetValue(instance) as HttpMessageHandler;
         }
 
-        internal static BardHttpClient GenerateBardClient(HttpClient client, LogWriter logWriter,
+        internal static BardHttpClient CreateRequestLoggingClient(HttpClient client, LogWriter logWriter,
+            IBadRequestProvider badRequestProvider, EventAggregator eventAggregator)
+        {
+            var httpMessageHandler = GetInstanceField(client);
+            
+            if(httpMessageHandler == null)
+                throw new BardException("Cannot find client handler");
+
+            var grpcMessageHandler = new GrpcMessageHandler(httpMessageHandler);
+            var requestLoggerMessageHandler = new  RequestLoggerMessageHandler(logWriter, grpcMessageHandler);
+            var bardResponsePublisher = new BardResponsePublisher(requestLoggerMessageHandler);
+
+            var bardHttpClient = new BardHttpClient(eventAggregator, bardResponsePublisher, badRequestProvider, logWriter)
+            {
+                BaseAddress = client.BaseAddress,
+                Timeout = client.Timeout,
+                MaxResponseContentBufferSize = client.MaxResponseContentBufferSize
+            };
+
+            return bardHttpClient;
+        }
+        internal static BardHttpClient CreateFullLoggingClient(HttpClient client, LogWriter logWriter,
             IBadRequestProvider badRequestProvider, EventAggregator eventAggregator)
         {
             var httpMessageHandler = GetInstanceField(client);

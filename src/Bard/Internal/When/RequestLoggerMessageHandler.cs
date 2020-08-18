@@ -38,7 +38,6 @@ namespace Bard.Internal.When
 
             if (request.Content?.Headers.ContentType.MediaType != "application/grpc")
             {
-                _logWriter.LogMessage(string.Empty);
                 _logWriter.WriteHttpResponseToConsole(response);
             }
 

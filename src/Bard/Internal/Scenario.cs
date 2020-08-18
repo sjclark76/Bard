@@ -9,10 +9,13 @@ namespace Bard.Internal
 {
     internal class Scenario : IScenario
     {
+        private readonly HttpClient _client;
+        private readonly IBadRequestProvider _badRequestProvider;
+
         private readonly Then.Then _then;
-        protected readonly Api Api;
         protected readonly LogWriter LogWriter;
         protected When.When InternalWhen;
+        private readonly EventAggregator _eventAggregator;
 
         internal Scenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
             options.BadRequestProvider, options.Services)
@@ -22,30 +25,38 @@ namespace Bard.Internal
         protected Scenario(HttpClient? client, Action<string> logMessage, IBadRequestProvider badRequestProvider,
             IServiceProvider? services)
         {
-            if (client == null)
-                throw new BardConfigurationException("client not set.");
+            _client = client ?? throw new BardConfigurationException("client not set.");
+            _badRequestProvider = badRequestProvider;
+            _eventAggregator = new EventAggregator();
+            
+            LogWriter = new LogWriter(logMessage, _eventAggregator);
 
-            var eventAggregator = new EventAggregator();
-            
-            LogWriter = new LogWriter(logMessage, eventAggregator);
-
-            var bardClient =
-                HttpClientBuilder.GenerateBardClient(client, LogWriter, badRequestProvider, eventAggregator);
-            
-            Api = new Api(bardClient, badRequestProvider, eventAggregator, LogWriter);
-            
             var pipeline = new PipelineBuilder(LogWriter);
 
-            Context = new ScenarioContext(pipeline, Api, LogWriter, services);
+            Context = new ScenarioContext(pipeline, FullLoggingApi() , LogWriter, services);
 
-            var when = new When.When(Api, LogWriter, () => { });
+            var when = new When.When(RequestLoggingApi(), LogWriter);
 
             InternalWhen = when;
 
             _then = new Then.Then();
 
-            eventAggregator.Subscribe(_then);
-            eventAggregator.Subscribe(pipeline);
+            _eventAggregator.Subscribe(_then);
+            _eventAggregator.Subscribe(pipeline);
+        }
+
+        protected Api RequestLoggingApi()
+        {
+            var bardClient = HttpClientBuilder.CreateRequestLoggingClient(_client, LogWriter, _badRequestProvider, _eventAggregator);
+            
+            return new Api(bardClient);
+        }
+        
+        private IApi FullLoggingApi()
+        {
+            var bardClient = HttpClientBuilder.CreateFullLoggingClient(_client, LogWriter, _badRequestProvider, _eventAggregator);
+            
+            return new Api(bardClient);
         }
 
         protected ScenarioContext Context { get; }
@@ -68,7 +79,7 @@ namespace Bard.Internal
             var story = options.StoryBook;
             story.Context = context;
 
-            InternalWhen = new When.When(Api, LogWriter, () => context.ExecutePipeline());
+            InternalWhen = new When.When(RequestLoggingApi(), LogWriter, () => context.ExecutePipeline());
 
             _given = story;
         }

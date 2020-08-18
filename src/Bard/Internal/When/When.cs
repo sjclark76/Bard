@@ -11,8 +11,14 @@ namespace Bard.Internal.When
     {
         private readonly Api _api;
         private readonly LogWriter _logWriter;
-        protected readonly Action PreApiCall;
+        protected readonly Action? PreApiCall;
 
+        internal When(Api api, LogWriter logWriter)
+        {
+            _api = api;
+            _logWriter = logWriter;
+        }
+        
         internal When(Api api, LogWriter logWriter,
             Action preApiCall)
         {
@@ -58,7 +64,7 @@ namespace Bard.Internal.When
 
         private IResponse CallApi(Func<IResponse> callApi)
         {
-            PreApiCall();
+            PreApiCall?.Invoke();
 
             WriteHeader();
             

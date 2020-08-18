@@ -21,7 +21,7 @@ namespace Bard.gRPC.Internal
 
         public TResponse Grpc<TResponse>(Func<TGrpcClient, TResponse> grpcCall)
         {
-            PreApiCall();
+            PreApiCall?.Invoke();
 
             WriteHeader();
 

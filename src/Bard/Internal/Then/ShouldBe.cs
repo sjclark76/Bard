@@ -97,6 +97,7 @@ namespace Bard.Internal.Then
             var statusCode = _httpResponse.StatusCode;
 
             var headerMessage = new StringBuilder($"THEN THE RESPONSE SHOULD BE HTTP {(int) httpStatusCode} {httpStatusCode}");
+            
             if (Log)
             {
                 if (statusCode != httpStatusCode)

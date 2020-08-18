@@ -16,14 +16,14 @@ namespace Bard.Internal.When
         private readonly IBadRequestProvider _badRequestProvider;
         private readonly EventAggregator _eventAggregator;
         private readonly LogWriter _logWriter;
-        private readonly HttpClient _httpClient;
+        private readonly BardHttpClient _httpClient;
 
-        internal Api(HttpClient httpClient, IBadRequestProvider badRequestProvider, EventAggregator eventAggregator, LogWriter logWriter)
+        internal Api(BardHttpClient httpClient)
         {
             _httpClient = httpClient;
-            _badRequestProvider = badRequestProvider;
-            _eventAggregator = eventAggregator;
-            _logWriter = logWriter;
+            _badRequestProvider = httpClient.RequestProvider;
+            _eventAggregator = httpClient.EventAggregator;
+            _logWriter = httpClient.Writer;
         }
 
         public IResponse Put<TModel>(string route, TModel model)

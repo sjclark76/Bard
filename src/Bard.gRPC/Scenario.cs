@@ -27,7 +27,7 @@ namespace Bard.gRPC
             var originalClient = options.Client;
 
             var bardClient = HttpClientBuilder
-                .GenerateBardClient(originalClient, logWriter, options.BadRequestProvider, eventAggregator);
+                .CreateFullLoggingClient(originalClient, logWriter, options.BadRequestProvider, eventAggregator);
 
             GrpcChannelOptions channelOptions = new GrpcChannelOptions
             {
@@ -44,7 +44,7 @@ namespace Bard.gRPC
                 return options.GrpcClient.Invoke(channel.Intercept(new BardClientInterceptor(logWriter)));
             }
 
-            var api = new Api(bardClient, options.BadRequestProvider, eventAggregator, logWriter);
+            var api = new Api(bardClient);
             var pipeline = new PipelineBuilder(logWriter);
 
             Context = new GrpcScenarioContext<TGrpcClient>(pipeline, api, logWriter,

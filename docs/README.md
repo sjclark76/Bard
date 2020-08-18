@@ -72,12 +72,6 @@ REQUEST: POST http://localhost/api/bankaccounts/1/deposits
 }
 
 RESPONSE: Http Status Code:  OK (200)
-{
-  "id": 1,
-  "isActive": false,
-  "customerName": "Fred",
-  "balance": 100.0
-}
 
 **********************************************************************
 *                      WITHDRAWAL HAS BEEN MADE                      *

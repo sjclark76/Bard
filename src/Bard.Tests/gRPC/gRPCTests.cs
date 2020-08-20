@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using Bard.gRPC;
 using Bard.gRPCService;
 using Bard.Tests.Scenario;
@@ -10,7 +11,7 @@ using Xunit.Abstractions;
 
 namespace Bard.Tests.gRPC
 {
-    public class GRpcTests
+    public class GRpcTests : IDisposable
     {
         public GRpcTests(ITestOutputHelper output)
         {
@@ -74,6 +75,12 @@ namespace Bard.Tests.gRPC
             scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Response.ShouldBe.Ok();
+        }
+
+        public void Dispose()
+        {
+            _host.Dispose();
+            _httpClient.Dispose();
         }
     }
 }

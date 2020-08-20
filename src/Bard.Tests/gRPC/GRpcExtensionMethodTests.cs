@@ -28,7 +28,11 @@ namespace Bard.Tests.gRPC
                         .UseEnvironment("development"));
 
             _host = hostBuilder.Start();
-            var testClient = _host.GetTestClient().ForGrpc();
+            
+            var testClient = _host
+                .GetTestClient()
+                .ForGrpc();
+            
             _httpClient = testClient;
         }
         

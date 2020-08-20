@@ -118,8 +118,12 @@ namespace Bard.Internal.Then
         public T Content<T>()
         {
             var content = DeserializeContent<T>();
-            
-            _logWriter.LogHeaderMessage($"THEN THE RESPONSE SHOULD BE {typeof(T).Name}");
+
+            if (Log)
+            {
+                _logWriter.LogHeaderMessage($"THEN THE RESPONSE SHOULD BE {typeof(T)}");
+                LogResponse();
+            }
             
             return content;
         }

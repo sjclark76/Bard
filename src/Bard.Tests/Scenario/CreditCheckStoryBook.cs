@@ -15,12 +15,15 @@ namespace Bard.Tests.Scenario
             {
                 var gRpcClient = context.Grpc<CreditRatingCheck.CreditRatingCheckClient>();
 
-                gRpcClient.CheckCreditRequest(
+               var response = gRpcClient.CheckCreditRequest(
                     new CreditRequest
                     {
                         Credit = 100000000,
                         CustomerId = "this shouldn't be happening..."
                     });
+                
+                context.Writer.LogObject(response);
+                
             }).End();
         }
     }

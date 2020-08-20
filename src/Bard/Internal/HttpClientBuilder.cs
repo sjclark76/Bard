@@ -61,5 +61,24 @@ namespace Bard.Internal
 
             return bardHttpClient;
         }
+        
+        internal static HttpClient CreateGrpcClient(HttpClient client)
+        {
+            var httpMessageHandler = GetInstanceField(client);
+            
+            if(httpMessageHandler == null)
+                throw new BardException("Cannot find client handler");
+
+            var grpcMessageHandler = new GrpcMessageHandler(httpMessageHandler);
+
+            var gRpcHttpClient = new HttpClient(grpcMessageHandler)
+            {
+                BaseAddress = client.BaseAddress,
+                Timeout = client.Timeout,
+                MaxResponseContentBufferSize = client.MaxResponseContentBufferSize
+            };
+
+            return gRpcHttpClient;
+        }
     }
 }

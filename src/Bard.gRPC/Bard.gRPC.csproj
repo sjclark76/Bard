@@ -9,30 +9,33 @@
         <Version>3.0.0</Version>
         <PackageTags>BDD Integration-Testing Testing Fluent gRPC API micro-services</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion />
+        <PackageVersion/>
         <Description>A .NET Functional gRPC API Testing Framework</Description>
         <PackageProjectUrl>https://docs.bard.net.nz</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sjclark76/Bard</RepositoryUrl>
         <PackageReleaseNotes>
-            
+            Changes in 3.3
+            - Add gRPC HttpClient TestServer extension method
+
+            Full release notes can be viewed here https://docs.bard.net.nz/miscellaneous/change-log
         </PackageReleaseNotes>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <DocumentationFile>bin\Debug\Bard.gRPC.xml</DocumentationFile>
+        <DocumentationFile>bin\Debug\Bard.gRPC.xml</DocumentationFile>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <DocumentationFile>bin\Release\Bard.gRPC.xml</DocumentationFile>
+        <DocumentationFile>bin\Release\Bard.gRPC.xml</DocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Bard\Bard.csproj" />
+        <ProjectReference Include="..\Bard\Bard.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.Core.Api" Version="2.27.0" />
-        <PackageReference Include="Grpc.Net.Client" Version="2.27.0" />
-        <PackageReference Include="MinVer" Version="2.3.0" />
+        <PackageReference Include="Grpc.Core.Api" Version="2.27.0"/>
+        <PackageReference Include="Grpc.Net.Client" Version="2.27.0"/>
+        <PackageReference Include="MinVer" Version="2.3.0"/>
     </ItemGroup>
 </Project>

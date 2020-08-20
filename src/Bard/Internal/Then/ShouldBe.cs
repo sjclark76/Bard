@@ -56,7 +56,7 @@ namespace Bard.Internal.Then
         {
             Ok();
 
-            var content = Content<T>();
+            var content = DeserializeContent<T>();
 
             AssertContentIsNotNull(content);
 
@@ -72,7 +72,7 @@ namespace Bard.Internal.Then
         {
             Created();
 
-            var content = Content<T>();
+            var content = DeserializeContent<T>();
 
             AssertContentIsNotNull(content);
 
@@ -96,21 +96,18 @@ namespace Bard.Internal.Then
 
             var statusCode = _httpResponse.StatusCode;
 
-            var headerMessage = new StringBuilder($"THEN THE RESPONSE SHOULD BE HTTP {(int) httpStatusCode} {httpStatusCode}");
-            
             if (Log)
             {
+                var headerMessage =
+                    new StringBuilder($"THEN THE RESPONSE SHOULD BE HTTP {(int) httpStatusCode} {httpStatusCode}");
+                
                 if (statusCode != httpStatusCode)
-                {
                     headerMessage.Append($" BUT WAS HTTP {(int) statusCode} {statusCode}");
-                }
 
                 _logWriter.LogHeaderMessage(headerMessage.ToString());
 
-                if (_grpcResponse != null)
-                    _logWriter.LogObject(_grpcResponse);
-                else
-                    _logWriter.WriteHttpResponseToConsole(_httpResponse);
+                LogResponse();            
+                
             }
 
             if (statusCode != httpStatusCode)
@@ -118,15 +115,16 @@ namespace Bard.Internal.Then
                     $"Invalid HTTP Status Code Received \n Expected: {(int) httpStatusCode} {httpStatusCode} \n Actual: {(int) statusCode} {statusCode} \n ");
         }
 
-        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-        private void AssertContentIsNotNull<T>(T content)
-        {
-            if (content == null)
-                throw new BardException(
-                    $"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
-        }
-
         public T Content<T>()
+        {
+            var content = DeserializeContent<T>();
+            
+            _logWriter.LogHeaderMessage($"THEN THE RESPONSE SHOULD BE {typeof(T).Name}");
+            
+            return content;
+        }
+        
+        private T DeserializeContent<T>()
         {
             T content = default!;
 
@@ -146,6 +144,25 @@ namespace Bard.Internal.Then
             }
 
             return content ?? throw new BardException($"Unable to serialize api response {_httpResponseString}");
+        }
+        
+        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
+        private void AssertContentIsNotNull<T>(T content)
+        {
+            if (content == null)
+                throw new BardException(
+                    $"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
+        }
+        
+        private void LogResponse()
+        {
+            if (Log)
+            {
+                if (_grpcResponse != null)
+                    _logWriter.LogObject(_grpcResponse);
+                else
+                    _logWriter.WriteHttpResponseToConsole(_httpResponse);    
+            }
         }
     }
 }

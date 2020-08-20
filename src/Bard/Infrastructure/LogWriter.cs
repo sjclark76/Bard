@@ -98,6 +98,7 @@ namespace Bard.Infrastructure
 
         internal void LogHeaderMessage(string message)
         {
+            message = message.ToUpper();
             var totalLength = 100;
             var messageLength = message.Length;
             

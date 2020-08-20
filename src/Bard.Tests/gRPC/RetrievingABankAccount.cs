@@ -1,4 +1,6 @@
-﻿using Bard.gRPC;
+﻿using System;
+using System.Net.Http;
+using Bard.gRPC;
 using Bard.gRPCService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -8,9 +10,11 @@ using Xunit.Abstractions;
 
 namespace Bard.Tests.gRPC
 {
-    public abstract class BankingTestBase
+    public abstract class BankingTestBase : IDisposable
     {
         protected readonly IScenario<BankAccountService.BankAccountServiceClient> Scenario;
+        private readonly IHost _host;
+        private readonly HttpClient _httpClient;
 
         protected BankingTestBase(ITestOutputHelper output)
         {
@@ -21,18 +25,24 @@ namespace Bard.Tests.gRPC
                         .UseTestServer()
                         .UseEnvironment("development"));
 
-            var host = hostBuilder.Start();
-            var testClient = host.GetTestClient();
+            _host = hostBuilder.Start();
+            _httpClient = _host.GetTestClient();
 
             Scenario = GrpcScenarioConfiguration
                 .UseGrpc<BankAccountService.BankAccountServiceClient>()
                 .Configure(options =>
                 {
-                    options.Services = host.Services;
+                    options.Services = _host.Services;
                     options.LogMessage = output.WriteLine;
                     options.GrpcClient = c => new BankAccountService.BankAccountServiceClient(c);
-                    options.Client = testClient;
+                    options.Client = _httpClient;
                 });
+        }
+        
+        public void Dispose()
+        {
+            _host.Dispose();
+            _httpClient.Dispose();
         }
     }
     public class RetrievingABankAccount : BankingTestBase

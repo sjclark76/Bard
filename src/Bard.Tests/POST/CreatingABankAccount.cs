@@ -1,4 +1,6 @@
-﻿using Bard.Configuration;
+﻿using System;
+using System.Net.Http;
+using Bard.Configuration;
 using Bard.Sample.Api;
 using Bard.Sample.Api.Model;
 using Microsoft.AspNetCore.Hosting;
@@ -9,8 +11,11 @@ using Xunit.Abstractions;
 
 namespace Bard.Tests.POST
 {
-    public class CreatingABankAccount
+    public class CreatingABankAccount: IDisposable
     {
+        private IHost _host;
+        private HttpClient _httpClient;
+
         public CreatingABankAccount(ITestOutputHelper output)
         {
             var hostBuilder = new HostBuilder()
@@ -20,16 +25,16 @@ namespace Bard.Tests.POST
                         .UseTestServer()
                         .UseEnvironment("development"));
 
-            var host = hostBuilder.Start();
+            _host = hostBuilder.Start();
 
-            var httpClient = host.GetTestClient();
+            _httpClient = _host.GetTestClient();
 
             Scenario = ScenarioConfiguration
                 .Configure(options =>
                 {
-                    options.Client = httpClient;
+                    options.Client = _httpClient;
                     options.LogMessage = output.WriteLine;
-                    options.Services = host.Services;
+                    options.Services = _host.Services;
                 });
 
             When = Scenario.When;
@@ -56,6 +61,12 @@ namespace Bard.Tests.POST
                 .Response
                 .ShouldBe
                 .Created();
+        }
+
+        public void Dispose()
+        {
+            _host.Dispose();
+            _httpClient.Dispose();
         }
     }
 }

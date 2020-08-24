@@ -23,11 +23,11 @@ namespace Bard.Internal
         {
             var httpMessageHandler = GetInstanceField(client);
             
-            if(httpMessageHandler == null)
+            if (httpMessageHandler == null)
                 throw new BardException("Cannot find client handler");
 
             var grpcMessageHandler = new GrpcMessageHandler(httpMessageHandler);
-            var requestLoggerMessageHandler = new  RequestLoggerMessageHandler(logWriter, grpcMessageHandler);
+            var requestLoggerMessageHandler = new RequestLoggerMessageHandler(logWriter, grpcMessageHandler);
             var bardResponsePublisher = new BardResponsePublisher(requestLoggerMessageHandler);
 
             var bardHttpClient = new BardHttpClient(eventAggregator, bardResponsePublisher, badRequestProvider, logWriter)
@@ -44,12 +44,12 @@ namespace Bard.Internal
         {
             var httpMessageHandler = GetInstanceField(client);
             
-            if(httpMessageHandler == null)
+            if (httpMessageHandler == null)
                 throw new BardException("Cannot find client handler");
 
             var grpcMessageHandler = new GrpcMessageHandler(httpMessageHandler);
-            var responseLoggerMessageHandler = new  ResponseLoggerMessageHandler(logWriter, grpcMessageHandler);
-            var requestLoggerMessageHandler = new  RequestLoggerMessageHandler(logWriter, responseLoggerMessageHandler);
+            var responseLoggerMessageHandler = new ResponseLoggerMessageHandler(logWriter, grpcMessageHandler);
+            var requestLoggerMessageHandler = new RequestLoggerMessageHandler(logWriter, responseLoggerMessageHandler);
             var bardResponsePublisher = new BardResponsePublisher(requestLoggerMessageHandler);
 
             var bardHttpClient = new BardHttpClient(eventAggregator, bardResponsePublisher, badRequestProvider, logWriter)
@@ -66,7 +66,7 @@ namespace Bard.Internal
         {
             var httpMessageHandler = GetInstanceField(client);
             
-            if(httpMessageHandler == null)
+            if (httpMessageHandler == null)
                 throw new BardException("Cannot find client handler");
 
             var grpcMessageHandler = new GrpcMessageHandler(httpMessageHandler);

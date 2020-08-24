@@ -34,7 +34,7 @@ namespace Bard.Internal.When
         {
             var response = await base.SendAsync(request, cancellationToken);
 
-            var responseString =  await response.Content.ReadAsStringAsync();
+            var responseString = await response.Content.ReadAsStringAsync();
             var apiResult = new ApiResult(response, responseString);
 
             PublishApiResult?.Invoke(apiResult);

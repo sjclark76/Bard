@@ -33,7 +33,7 @@ namespace Bard.Internal
 
             var pipeline = new PipelineBuilder(LogWriter);
 
-            Context = new ScenarioContext(pipeline, FullLoggingApi() , LogWriter, services);
+            Context = new ScenarioContext(pipeline, FullLoggingApi(), LogWriter, services);
 
             var when = new When.When(RequestLoggingApi(), LogWriter);
 

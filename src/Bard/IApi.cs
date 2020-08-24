@@ -20,6 +20,13 @@ namespace Bard
         ///     Send a POST request to the specified route
         /// </summary>
         /// <param name="route">the route to call</param>
+        /// <returns>IResponse</returns>
+        IResponse Post(string route);
+        
+        /// <summary>
+        ///     Send a POST request to the specified route
+        /// </summary>
+        /// <param name="route">the route to call</param>
         /// <param name="model">the model to send</param>
         /// <typeparam name="TModel">The model type</typeparam>
         /// <returns>IResponse</returns>

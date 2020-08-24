@@ -31,6 +31,11 @@ namespace Bard.Internal.When
             return PostOrPut(model, (client, messageContent) => client.PutAsync(route, messageContent));
         }
 
+        public IResponse Post(string route)
+        {
+            return PostOrPut((client, messageContent) => client.PostAsync(route, messageContent));
+        }
+        
         public IResponse Post<TModel>(string route, TModel model)
         {
             return PostOrPut(model, (client, messageContent) => client.PostAsync(route, messageContent));
@@ -98,6 +103,19 @@ namespace Bard.Internal.When
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
+        private IResponse PostOrPut(Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
+        {
+            var messageContent = CreateMessageContent(null);
+            
+            var responseMessage = AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
+
+            var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
+
+            var apiResult = new ApiResult(responseMessage, responseString);
+            var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
+            return response;
+        }
+        
         private IResponse PostOrPut<TModel>(TModel model,
             Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
         {

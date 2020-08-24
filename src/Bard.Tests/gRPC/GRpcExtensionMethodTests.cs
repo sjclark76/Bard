@@ -2,18 +2,16 @@ using System;
 using System.Net.Http;
 using Bard.gRPC;
 using Bard.gRPCService;
-using Bard.Tests.Scenario;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 using Shouldly;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Bard.Tests.gRPC
 {
-    public class GRpcExtensionMethodTests  : IDisposable
+    public class GRpcExtensionMethodTests : IDisposable
     {
         private readonly IHost _host;
         private readonly HttpClient _httpClient;

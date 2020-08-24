@@ -42,6 +42,11 @@ namespace Bard.Internal.When
             return CallApi(() => _api.Put(route, model));
         }
 
+        public IResponse Post(string route)
+        {
+            return CallApi(() => _api.Post(route));
+        }
+
         public IResponse Post<TModel>(string route, TModel model)
         {
             return CallApi(() => _api.Post(route, model));

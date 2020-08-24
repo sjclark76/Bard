@@ -11,10 +11,10 @@ using Xunit.Abstractions;
 
 namespace Bard.Tests.POST
 {
-    public class CreatingABankAccount: IDisposable
+    public class CreatingABankAccount : IDisposable
     {
-        private IHost _host;
-        private HttpClient _httpClient;
+        private readonly IHost _host;
+        private readonly HttpClient _httpClient;
 
         public CreatingABankAccount(ITestOutputHelper output)
         {

@@ -70,7 +70,7 @@ namespace Bard.Internal
 
                     stringBuilder.Clear();
                 }
-                catch (BardException exception)
+                catch (System.Exception exception)
                 {
                     throw new ChapterException($"Error executing story {pipelineStep.StepName}", exception);
                 }

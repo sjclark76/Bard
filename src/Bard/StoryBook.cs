@@ -33,7 +33,7 @@ namespace Bard
         /// <typeparam name="TStoryParams"></typeparam>
         /// <returns></returns>
         /// <exception cref="BardConfigurationException"></exception>
-        protected IChapterGiven<TStoryData, TStoryParams> Given<TStoryParams>(Func<TStoryParams> storyParameter)
+        protected IChapterGiven<TStoryData, TStoryParams> Given<TStoryParams>(Func<TStoryData, TStoryParams> storyParameter)
             where TStoryParams : new()
         {
             if (Context == null)

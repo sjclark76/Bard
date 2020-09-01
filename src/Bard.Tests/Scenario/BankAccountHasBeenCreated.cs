@@ -56,7 +56,7 @@ namespace Bard.Tests.Scenario
                 .End();
         }
 
-        public DepositMade DepositHasBeenMade(Func<Deposit> configureDeposit)
+        public DepositMade Deposit_has_been_made(Func<BankingStoryData, Deposit> configureDeposit)
         {
             return
                 Given(configureDeposit)
@@ -64,7 +64,7 @@ namespace Bard.Tests.Scenario
                     .ProceedToChapter<DepositMade>();
         }
 
-        public WithdrawalMade Withdrawal_has_been_made(Func<Withdrawal> modifyRequest)
+        public WithdrawalMade Withdrawal_has_been_made(Func<BankingStoryData, Withdrawal> modifyRequest)
         {
             return
                 Given(modifyRequest)

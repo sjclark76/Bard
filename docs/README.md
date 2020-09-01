@@ -21,18 +21,22 @@ The fluent interface guides the developer how to construct the scenario in a log
 This means that when there are a number of sequential steps performed during the arrangement of the test data can flow from one step to the next step.
 
 ```csharp
-  Given       
+[Fact]
+public void Retrieving_a_bankAccount_by_id_should_return_a_200_ok_response()
+{
+    Given       
        .BankAccount_has_been_created(account => account.CustomerName = "Dougal")
        .Deposit_has_been_made(100)
        .Withdrawal_has_been_made(50)
        .GetResult(out BankingStoryData bankAccount);
        
-  When
-      .Get($"api/bankaccounts/{bankAccount.BankAccountId}");
+    When
+       .Get($"api/bankaccounts/{bankAccount.BankAccountId}");
       
-  Then.Response
-      .ShouldBe
-      .Ok<BankAccount>();       
+    Then.Response
+       .ShouldBe
+       .Ok<BankAccount>();       
+}
 ```
 
 ### First Class Logging

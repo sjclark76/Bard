@@ -39,19 +39,20 @@ namespace Bard
 
             return new ChapterWhen<TStoryData>(Context, execute);
         }
-
+ 
         /// <summary>
         ///     Define the parameters that the story will received through an Action.
         /// </summary>
         /// <param name="storyParams">The function that will create the parameters for the story.</param>
         /// <returns>IChapterGiven</returns>
         /// <exception cref="BardException">If something has gone wrong internally.</exception>
-        protected IChapterGiven<TStoryData, TStoryParams> Given<TStoryParams>(Func<TStoryParams> storyParams)
+        protected IChapterGiven<TStoryData, TStoryParams> Given<TStoryParams>(Func<TStoryData, TStoryParams> storyParams)
             where TStoryParams : new()
         {
             if (Context == null)
                 throw new BardException($"{nameof(Context)} has not been set.");
 
+            
             return new ChapterGiven<TStoryData, TStoryParams>(Context, storyParams);
         }
     }

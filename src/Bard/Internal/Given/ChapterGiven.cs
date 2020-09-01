@@ -6,17 +6,17 @@ namespace Bard.Internal.Given
         where TStoryParams : new() where TStoryData : class, new()
     {
         private readonly ScenarioContext<TStoryData> _context;
-        private readonly Func<TStoryParams> _createRequest;
+        private readonly Func<TStoryData, TStoryParams> _storyParameters;
 
-        internal ChapterGiven(ScenarioContext<TStoryData> context, Func<TStoryParams> createRequest)
+        internal ChapterGiven(ScenarioContext<TStoryData> context, Func<TStoryData, TStoryParams> storyParameters)
         {
             _context = context;
-            _createRequest = createRequest;
+            _storyParameters = storyParameters;
         }
 
         public IChapterGivenWhen<TStoryData> When(Action<ScenarioContext<TStoryData>, TStoryParams> execute)
         {
-            return new ChapterGivenWhen<TStoryData, TStoryParams>(_context, _createRequest, execute);
+            return new ChapterGivenWhen<TStoryData, TStoryParams>(_context, _storyParameters, execute);
         }
     }
 }

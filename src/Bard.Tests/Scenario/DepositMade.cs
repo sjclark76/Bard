@@ -8,7 +8,10 @@ namespace Bard.Tests.Scenario
         public DepositMade Deposit_has_been_made(decimal amount)
         {
             return
-                Given(storyData => new Deposit {Amount = 50})
+                Given(storyData =>
+                    {
+                        return new Deposit {Amount = 50};
+                    })
                     .When(BankingScenarioFunctions.MakeADeposit)
                     .ProceedToChapter<DepositMade>();
         }

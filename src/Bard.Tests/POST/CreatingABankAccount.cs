@@ -62,7 +62,20 @@ namespace Bard.Tests.POST
                 .ShouldBe
                 .Created();
         }
+        [Fact]
+        public void When_creating_a_bank_account_header()
+        {
+            When
+                .Post(ApiBankaccounts, new BankAccount
+                {
+                    CustomerName = "Ranulph Fiennes"
+                });
 
+            Then
+                .Response
+                .Header
+                .ShouldInclude("Location");
+        }
         public void Dispose()
         {
             _host.Dispose();

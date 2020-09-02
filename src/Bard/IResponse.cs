@@ -12,6 +12,8 @@ namespace Bard
         /// </summary>
         IShouldBe ShouldBe { get; }
 
+        IHeader Header { get; }
+        
         internal bool Log { get; set; }
 
         /// <summary>

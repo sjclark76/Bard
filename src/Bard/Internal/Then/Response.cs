@@ -8,13 +8,16 @@ namespace Bard.Internal.Then
     {
         private readonly ShouldBe _shouldBe;
 
-        internal Response(EventAggregator eventAggregator, ApiResult result, IBadRequestProvider badRequestProvider, LogWriter logWriter)
+        internal Response(EventAggregator eventAggregator, ApiResult apiResult, IBadRequestProvider badRequestProvider, LogWriter logWriter)
         {
-            _shouldBe = new ShouldBe(result, badRequestProvider, logWriter);
+            _shouldBe = new ShouldBe(apiResult, badRequestProvider, logWriter);
             eventAggregator.Subscribe(_shouldBe);
+            Header = new Header(apiResult, logWriter);
         }
 
         public IShouldBe ShouldBe => _shouldBe;
+        
+        public IHeader Header { get; }
 
         bool IResponse.Log
         {

@@ -52,9 +52,15 @@ namespace Bard.Infrastructure
             var content = AsyncHelper.RunSync(() => httpResponse.Content.ReadAsStringAsync());
             LogMessage(
                 $"RESPONSE: Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int) httpResponse.StatusCode})");
-            if (httpResponse.Headers.Contains("Location"))
-                LogMessage($"Header::Location {httpResponse.Headers.Location.OriginalString}");
 
+            foreach (var header in httpResponse.Headers)
+            {
+                foreach (var value in header.Value)
+                {
+                    LogMessage($"Header::{header.Key} {value}");
+                }
+            }
+            
             if (!string.IsNullOrEmpty(content))
             {
                 try
@@ -76,6 +82,14 @@ namespace Bard.Infrastructure
         {
             LogMessage($"REQUEST: {request.Method.Method} {request.RequestUri}");
 
+            foreach (var header in request.Headers)
+            {
+                foreach (var value in header.Value)
+                {
+                    LogMessage($"Header::{header.Key} {value}");
+                }
+            }
+            
             if (request.Content != null)
             {
                 var content = AsyncHelper.RunSync(() => request.Content.ReadAsStringAsync());
@@ -98,7 +112,6 @@ namespace Bard.Infrastructure
 
         internal void LogHeaderMessage(string message)
         {
-            message = message.ToUpper();
             var totalLength = 100;
             var messageLength = message.Length;
             

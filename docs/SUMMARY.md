@@ -24,6 +24,7 @@
 
 ## Miscellaneous
 
+* [Fiddles](miscellaneous/fiddles.md)
 * [Change Log](miscellaneous/change-log.md)
 * [Migration Guide](miscellaneous/migration-guide.md)
 

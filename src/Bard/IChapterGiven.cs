@@ -14,6 +14,6 @@ namespace Bard
         /// </summary>
         /// <param name="executeStory"></param>
         /// <returns></returns>
-        IChapterGivenWhen<TStoryData> When(Action<ScenarioContext<TStoryData>, TStoryParams> executeStory);
+        IChapterWhen<TStoryData> When(Action<ScenarioContext<TStoryData>, TStoryParams> executeStory);
     }
 }

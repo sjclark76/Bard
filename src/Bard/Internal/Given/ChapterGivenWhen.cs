@@ -8,10 +8,10 @@ namespace Bard.Internal.Given
     {
         private readonly ScenarioContext<TStoryData> _context;
         private readonly Func<TStoryData, TStoryParams> _storyParameters;
-        private readonly Action<ScenarioContext<TStoryData>, TStoryParams> _execute;
+        private readonly Action<ScenarioContext<TStoryData>, Func<TStoryData, TStoryParams>> _execute;
 
         internal ChapterGivenWhen(ScenarioContext<TStoryData> context, Func<TStoryData, TStoryParams> storyParameters,
-            Action<ScenarioContext<TStoryData>, TStoryParams> execute)
+            Action<ScenarioContext<TStoryData>, Func<TStoryData, TStoryParams>> execute)
         {
             _context = context;
             _storyParameters = storyParameters;
@@ -21,9 +21,12 @@ namespace Bard.Internal.Given
         public TNextChapter ProceedToChapter<TNextChapter>([CallerMemberName] string memberName = "")
             where TNextChapter : Chapter<TStoryData>, new()
         {
-            var request = _storyParameters(_context.StoryData);
+            //var request = _storyParameters(_context.StoryData);
 
-            _context.AddPipelineStep(memberName, () => { _execute(_context, request); });
+            _context.AddPipelineStep(memberName, () =>
+            {
+                _execute(_context, _storyParameters);
+            });
 
             var nextStep = new TNextChapter {Context = _context};
 

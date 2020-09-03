@@ -28,5 +28,7 @@ namespace Bard
         /// <typeparam name="T">The class to be converted to.</typeparam>
         /// <returns>The converted class instance</returns>
         T Content<T>();
+
+        void WriteResponse();
     }
 }

@@ -53,11 +53,19 @@ namespace Bard.Infrastructure
             LogMessage(
                 $"RESPONSE: Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int) httpResponse.StatusCode})");
 
+            foreach (var header in httpResponse.Content.Headers)
+            {
+                foreach (var value in header.Value)
+                {
+                    LogMessage($"{header.Key} {value}");
+                }
+            }
+            
             foreach (var header in httpResponse.Headers)
             {
                 foreach (var value in header.Value)
                 {
-                    LogMessage($"Header::{header.Key} {value}");
+                    LogMessage($"{header.Key} {value}");
                 }
             }
             

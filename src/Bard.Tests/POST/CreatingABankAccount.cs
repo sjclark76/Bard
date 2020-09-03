@@ -75,6 +75,8 @@ namespace Bard.Tests.POST
                 .Response
                 .Header
                 .ShouldInclude("Location");
+            
+            Then.Response.Header.Should.Include.ContentType();
         }
         public void Dispose()
         {

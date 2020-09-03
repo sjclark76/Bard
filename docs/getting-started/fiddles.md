@@ -4,7 +4,9 @@ description: This page links to some .NET Fiddles to demonstrate. More to be add
 
 # .NET Fiddles
 
-* Basic 200 OK Success
+{% embed url="https://dotnetfiddle.net/O8TE31" %}
+
+
 
 
 

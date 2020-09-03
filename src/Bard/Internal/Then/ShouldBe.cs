@@ -106,8 +106,7 @@ namespace Bard.Internal.Then
 
                 _logWriter.LogHeaderMessage(headerMessage.ToString());
 
-                LogResponse();            
-                
+                LogResponse();       
             }
 
             if (statusCode != httpStatusCode)

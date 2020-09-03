@@ -98,6 +98,14 @@ namespace Bard.Infrastructure
         internal void WriteHttpRequestToConsole(HttpRequestMessage request)
         {
             LogMessage($"REQUEST: {request.Method.Method} {request.RequestUri}");
+
+            foreach (var header in request.Headers)
+            {
+                foreach (var value in header.Value)
+                {
+                    LogMessage($"Header::{header.Key} {value}");
+                }
+            }
             
             if (request.Content != null)
             {
@@ -112,7 +120,6 @@ namespace Bard.Infrastructure
                 {
                     LogObject(request);
                     LogMessage(content);
-                    
                 }
             }
             
@@ -121,7 +128,6 @@ namespace Bard.Infrastructure
 
         internal void LogHeaderMessage(string message)
         {
-            message = message.ToUpper();
             var totalLength = 100;
             var messageLength = message.Length;
             

@@ -6,15 +6,22 @@ namespace Bard.Internal.Then
 {
     internal class Response : IResponse
     {
+        private readonly ApiResult _apiResult;
+        private readonly LogWriter _logWriter;
         private readonly ShouldBe _shouldBe;
 
-        internal Response(EventAggregator eventAggregator, ApiResult result, IBadRequestProvider badRequestProvider, LogWriter logWriter)
+        internal Response(EventAggregator eventAggregator, ApiResult apiResult, IBadRequestProvider badRequestProvider, LogWriter logWriter)
         {
-            _shouldBe = new ShouldBe(result, badRequestProvider, logWriter);
+            _apiResult = apiResult;
+            _logWriter = logWriter;
+            _shouldBe = new ShouldBe(apiResult, badRequestProvider, logWriter);
             eventAggregator.Subscribe(_shouldBe);
+            Headers = new Headers(apiResult, logWriter);
         }
 
         public IShouldBe ShouldBe => _shouldBe;
+        
+        public IHeaders Headers { get; }
 
         bool IResponse.Log
         {
@@ -30,6 +37,11 @@ namespace Bard.Internal.Then
         public T Content<T>()
         {
             return _shouldBe.Content<T>();
+        }
+
+        public void WriteResponse()
+        {
+            _logWriter.WriteHttpResponseToConsole(_apiResult.ResponseMessage);
         }
     }
 }

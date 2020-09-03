@@ -62,7 +62,20 @@ namespace Bard.Tests.POST
                 .ShouldBe
                 .Created();
         }
+        [Fact]
+        public void When_creating_a_bank_account_header_the_location_header_should_be_present()
+        {
+            When
+                .Post(ApiBankaccounts, new BankAccount
+                {
+                    CustomerName = "Ranulph Fiennes"
+                });
 
+            Then
+                .Response
+                .Headers
+                .ShouldInclude("Location");
+        }
         public void Dispose()
         {
             _host.Dispose();

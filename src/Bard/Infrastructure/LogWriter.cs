@@ -52,8 +52,7 @@ namespace Bard.Infrastructure
         internal void WriteHttpResponseToConsole(HttpResponseMessage httpResponse)
         {
             var content = AsyncHelper.RunSync(() => httpResponse.Content.ReadAsStringAsync());
-            LogMessage(
-                $"RESPONSE: Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int) httpResponse.StatusCode})");
+            LogMessage($"Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int) httpResponse.StatusCode})");
 
             foreach (var header in httpResponse.Content.Headers)
             {

@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -50,40 +52,47 @@ namespace Bard.Infrastructure
         internal void WriteHttpResponseToConsole(HttpResponseMessage httpResponse)
         {
             var content = AsyncHelper.RunSync(() => httpResponse.Content.ReadAsStringAsync());
-            LogMessage(
-                $"RESPONSE: Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int) httpResponse.StatusCode})");
+            LogMessage($"Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int) httpResponse.StatusCode})");
 
             foreach (var header in httpResponse.Content.Headers)
             {
-                foreach (var value in header.Value)
-                {
-                    LogMessage($"{header.Key} {value}");
-                }
+                LogMessage($"{header.Key}:{string.Join(' ', header.Value)}");
             }
-            
-            foreach (var header in httpResponse.Headers)
+
+            if (httpResponse.Headers.Contains("Location"))
+                LogMessage($"Header::Location {httpResponse.Headers.Location.OriginalString}");
+
+            var plainText = new[]
             {
-                foreach (var value in header.Value)
-                {
-                    LogMessage($"{header.Key} {value}");
-                }
-            }
+                MediaTypeNames.Application.Soap,
+                MediaTypeNames.Application.Xml,
+                MediaTypeNames.Text.Html,
+                MediaTypeNames.Text.Plain,
+                MediaTypeNames.Text.Xml,
+                MediaTypeNames.Text.RichText
+            };
             
             if (!string.IsNullOrEmpty(content))
             {
-                try
+                var mediaType = httpResponse.Content.Headers.ContentType.MediaType;
+
+                if (mediaType == MediaTypeNames.Application.Json || mediaType == "application/problem+json")
                 {
-                    var jsonFormatted = JToken.Parse(content).ToString(Formatting.Indented);
-                    LogMessage(jsonFormatted);
+                    try
+                    {
+                        var jsonFormatted = JToken.Parse(content).ToString(Formatting.Indented);
+                        LogMessage(jsonFormatted);
+                    }
+                    catch (Exception)
+                    {
+                        LogMessage(content);
+                    }
                 }
-                catch (Exception)
+                else if (plainText.Contains(mediaType))
                 {
                     LogMessage(content);
                 }
             }
-            
-            LogMessage(string.Empty);
-
         }
 
         internal void WriteHttpRequestToConsole(HttpRequestMessage request)

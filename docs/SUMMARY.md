@@ -7,6 +7,7 @@
 * [Installation](getting-started/installation.md)
 * [Writing Your First Test](getting-started/writing-your-first-test.md)
 * [Configuration](getting-started/configuration.md)
+* [.NET Fiddles](getting-started/fiddles.md)
 
 ## Anatomy Of A Scenario <a id="scenario"></a>
 

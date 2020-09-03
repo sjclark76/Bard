@@ -7,6 +7,10 @@ Bard is a .NET library for API testing.
 
 Get the full documentation [here](https://bard-1.gitbook.io/bard/)
 
+## Have A Play
+
+[DotNet Fiddle](https://dotnetfiddle.net/O8TE31)
+
 ## Installation
 
 ```text

@@ -1,30 +1,50 @@
-using System;
-using System.Net.Http.Headers;
-
 namespace Bard
 {
     /// <summary>
-    /// 
     /// </summary>
-    public interface IHeader
+    public interface IHeaders
     {
-        IHeaderShould Should { get; }
-        string ContentType { get; }
-        EntityTagHeaderValue ETag { get; }
-        Uri? ContentLocation { get; }
-        DateTimeOffset? LastModified { get; }
-        DateTimeOffset? Expires { get; }
-        long? ContentLength { get; }
-        void ShouldInclude(string headerName);
+        /// <summary>
+        /// 
+        /// </summary>
+        IHeadersShould Should { get; }
+
+        /// <summary>
+        ///     Assert that the header is present
+        /// </summary>
+        /// <param name="headerName">The header name</param>
+        /// <param name="headerValue">the header value</param>
+        IHeaders ShouldInclude(string headerName, string? headerValue = null);
     }
 
-    public interface IHeaderShould
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IHeadersShould
     {
+        /// <summary>
+        /// 
+        /// </summary>
         IInclude Include { get; }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IInclude
     {
-        void ContentType();
+        /// <summary>
+        /// Assert the headers include a content type
+        /// </summary>
+        /// <param name="headerValue">the value (optional)</param>
+        /// <returns></returns>
+        IHeaders ContentType(string? headerValue = null);
+        
+        /// <summary>
+        /// Assert the headers include a content length
+        /// </summary>
+        /// <param name="headerValue">the value (optional)</param>
+        /// <returns></returns>
+        IHeaders ContentLength(string? headerValue = null);
     }
 }

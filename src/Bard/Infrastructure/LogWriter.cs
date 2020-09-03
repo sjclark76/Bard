@@ -120,7 +120,6 @@ namespace Bard.Infrastructure
                 {
                     LogObject(request);
                     LogMessage(content);
-                    
                 }
             }
             

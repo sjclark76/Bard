@@ -52,7 +52,6 @@ namespace Bard
             if (Context == null)
                 throw new BardException($"{nameof(Context)} has not been set.");
 
-            
             return new ChapterGiven<TStoryData, TStoryParams>(Context, storyParams);
         }
     }

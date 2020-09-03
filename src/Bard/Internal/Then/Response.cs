@@ -16,12 +16,12 @@ namespace Bard.Internal.Then
             _logWriter = logWriter;
             _shouldBe = new ShouldBe(apiResult, badRequestProvider, logWriter);
             eventAggregator.Subscribe(_shouldBe);
-            Header = new Header(apiResult, logWriter);
+            Headers = new Headers(apiResult, logWriter);
         }
 
         public IShouldBe ShouldBe => _shouldBe;
         
-        public IHeader Header { get; }
+        public IHeaders Headers { get; }
 
         bool IResponse.Log
         {

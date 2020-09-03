@@ -12,7 +12,10 @@ namespace Bard
         /// </summary>
         IShouldBe ShouldBe { get; }
 
-        IHeader Header { get; }
+        /// <summary>
+        /// Gateway to check the response headers.
+        /// </summary>
+        IHeaders Headers { get; }
         
         internal bool Log { get; set; }
 
@@ -29,6 +32,9 @@ namespace Bard
         /// <returns>The converted class instance</returns>
         T Content<T>();
 
+        /// <summary>
+        /// Write out the http response to the console.
+        /// </summary>
         void WriteResponse();
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -35,14 +36,18 @@ namespace Bard.Internal.Then
 
             var allHeaders = contentHeaders.Concat(headers).ToList();
 
-            var (headerKey, headerValues) = allHeaders.FirstOrDefault(pair => pair.Key == headerName);
+            var (headerKey, headerValues) = allHeaders.FirstOrDefault(pair => string.Equals(pair.Key, headerName, StringComparison.CurrentCultureIgnoreCase));
 
             if (headerKey == null)
                 throw new BardException($"Header '{headerName} not present.");
 
-            if (headerValue != null && headerValues.Contains(headerValue) == false)
-                throw new BardException($"Header Value'{headerValue} not present.");
+            if (headerValue == null) return this;
             
+            var lowerCase = headerValue.ToLower();
+            
+            if (headerValues.Select(hv => hv.ToLower()).Contains(lowerCase) == false)
+                throw new BardException($"Header Value'{headerValue} not present.");
+
             return this;
         }
 

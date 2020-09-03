@@ -30,15 +30,31 @@ namespace Bard.Internal
             var requestLoggerMessageHandler = new RequestLoggerMessageHandler(logWriter, grpcMessageHandler);
             var bardResponsePublisher = new BardResponsePublisher(requestLoggerMessageHandler);
 
+            var bardHttpClient = CloneHttpClient(client, logWriter, badRequestProvider, eventAggregator, bardResponsePublisher);
+
+            return bardHttpClient;
+        }
+
+        private static BardHttpClient CloneHttpClient(HttpClient client, LogWriter logWriter,
+            IBadRequestProvider badRequestProvider, EventAggregator eventAggregator,
+            BardResponsePublisher bardResponsePublisher)
+        {
             var bardHttpClient = new BardHttpClient(eventAggregator, bardResponsePublisher, badRequestProvider, logWriter)
             {
                 BaseAddress = client.BaseAddress,
                 Timeout = client.Timeout,
-                MaxResponseContentBufferSize = client.MaxResponseContentBufferSize
+                MaxResponseContentBufferSize = client.MaxResponseContentBufferSize,
+                DefaultRequestVersion = client.DefaultRequestVersion
             };
 
+            foreach (var (key, value) in client.DefaultRequestHeaders)
+            {
+                bardHttpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, value);
+            }
+            
             return bardHttpClient;
         }
+
         internal static BardHttpClient CreateFullLoggingClient(HttpClient client, LogWriter logWriter,
             IBadRequestProvider badRequestProvider, EventAggregator eventAggregator)
         {
@@ -52,12 +68,7 @@ namespace Bard.Internal
             var requestLoggerMessageHandler = new RequestLoggerMessageHandler(logWriter, responseLoggerMessageHandler);
             var bardResponsePublisher = new BardResponsePublisher(requestLoggerMessageHandler);
 
-            var bardHttpClient = new BardHttpClient(eventAggregator, bardResponsePublisher, badRequestProvider, logWriter)
-            {
-                BaseAddress = client.BaseAddress,
-                Timeout = client.Timeout,
-                MaxResponseContentBufferSize = client.MaxResponseContentBufferSize
-            };
+            var bardHttpClient = CloneHttpClient(client, logWriter, badRequestProvider, eventAggregator, bardResponsePublisher);
 
             return bardHttpClient;
         }

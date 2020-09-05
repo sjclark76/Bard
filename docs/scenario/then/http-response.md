@@ -1,8 +1,4 @@
-# Then
-
-This is the test assertion part of your test. 
-
-Bard provides a fluent API for working with your API responses. You can Assert that the response is as expected.
+# HTTP Response
 
 ## HTTP Response Assertion
 
@@ -37,9 +33,5 @@ If you need to Assert another HTTP code was returned then you can specify the HT
      .StatusCodeShouldBe(HttpStatusCode.Ambiguous);
 ```
 
-### Bad Requests
-
-The response can be checked to ensure the correct error message or error code is returned by the API.
-
-When your API returns an HTTP 400 Bard give you the ability to interrogate the API response in more detail. 
+### 
 

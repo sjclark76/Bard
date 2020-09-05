@@ -17,7 +17,11 @@
   * [Chapter](scenario/given/chapter.md)
   * [Story](scenario/given/story.md)
 * [When](scenario/when.md)
-* [Then](scenario/then.md)
+* [Then](scenario/then/README.md)
+  * [HTTP Response](scenario/then/http-response.md)
+  * [Headers](scenario/then/headers.md)
+  * [Bad Requests](scenario/then/bad-requests.md)
+  * [Performance Testing](scenario/then/performance-testing.md)
 
 ## Advanced
 

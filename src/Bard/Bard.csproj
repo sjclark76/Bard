@@ -15,6 +15,12 @@
         <PackageProjectUrl>https://docs.bard.net.nz</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sjclark76/Bard</RepositoryUrl>
         <PackageReleaseNotes>
+            Changes in 4.2.0
+            - New Feature Performance Testing
+            Changes in 4.1.0
+            - New Feature Header Assertions            
+            Changes in 4.0.0
+            - Pass in StoryData as parameter to Given Function when building stories.
             Changes in 3.4
             - When POST to API Model can now be nullable
             Changes in 3.3

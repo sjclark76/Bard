@@ -11,7 +11,7 @@ namespace Bard.Internal.Then
     {
         private readonly LogWriter _logWriter;
         private readonly HttpResponseMessage _responseMessage;
-        private ApiResult _apiResult;
+        private readonly ApiResult _apiResult;
 
         public Headers(ApiResult apiResult, LogWriter logWriter)
         {
@@ -19,6 +19,8 @@ namespace Bard.Internal.Then
             _apiResult = apiResult;
             _responseMessage = apiResult.ResponseMessage;
         }
+
+        internal int? MaxElapsedTime { get; set; }
 
         public IHeaders ShouldInclude(string headerName, string? headerValue = null)
         {
@@ -37,17 +39,21 @@ namespace Bard.Internal.Then
 
             var allHeaders = contentHeaders.Concat(headers).ToList();
 
-            var (headerKey, headerValues) = allHeaders.FirstOrDefault(pair => string.Equals(pair.Key, headerName, StringComparison.CurrentCultureIgnoreCase));
+            var (headerKey, headerValues) = allHeaders.FirstOrDefault(pair =>
+                string.Equals(pair.Key, headerName, StringComparison.CurrentCultureIgnoreCase));
 
             if (headerKey == null)
                 throw new BardException($"Header '{headerName} not present.");
 
-            if (headerValue == null) return this;
-            
-            var lowerCase = headerValue.ToLower();
-            
-            if (headerValues.Select(hv => hv.ToLower()).Contains(lowerCase) == false)
-                throw new BardException($"Header Value'{headerValue} not present.");
+            if (headerValue != null)
+            {
+                var lowerCase = headerValue.ToLower();
+
+                if (headerValues.Select(hv => hv.ToLower()).Contains(lowerCase) == false)
+                    throw new BardException($"Header Value'{headerValue} not present.");
+            }
+
+            _apiResult.AssertElapsedTime(MaxElapsedTime);
 
             return this;
         }

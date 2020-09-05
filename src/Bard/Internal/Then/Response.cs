@@ -9,6 +9,8 @@ namespace Bard.Internal.Then
         private readonly ApiResult _apiResult;
         private readonly LogWriter _logWriter;
         private readonly ShouldBe _shouldBe;
+        private readonly Headers _headers;
+        private int? _maxElapsedTime;
 
         internal Response(EventAggregator eventAggregator, ApiResult apiResult, IBadRequestProvider badRequestProvider,
             LogWriter logWriter)
@@ -16,13 +18,13 @@ namespace Bard.Internal.Then
             _apiResult = apiResult;
             _logWriter = logWriter;
             _shouldBe = new ShouldBe(apiResult, badRequestProvider, logWriter);
+            _headers = new Headers(apiResult, logWriter);
             eventAggregator.Subscribe(_shouldBe);
-            Headers = new Headers(apiResult, logWriter);
         }
 
         public IShouldBe ShouldBe => _shouldBe;
 
-        public IHeaders Headers { get; }
+        public IHeaders Headers => _headers;
 
         bool IResponse.Log
         {
@@ -47,15 +49,23 @@ namespace Bard.Internal.Then
 
         public ITime Time => this;
 
+        int? IResponse.MaxElapsedTime
+        {
+            get => _maxElapsedTime;
+            set
+            {
+                _maxElapsedTime = value;
+                _headers.MaxElapsedTime = value;
+                _shouldBe.MaxElapsedTime = value;
+            }
+        }
+
         public void LessThan(int milliseconds)
         {
             _logWriter.LogHeaderMessage($"THEN THE RESPONSE SHOULD BE LESS THAN {milliseconds} MILLISECONDS");
             _logWriter.WriteHttpResponseToConsole(_apiResult);
-            
-            if (_apiResult.ElapsedTime != null && _apiResult.ElapsedTime.Value.TotalMilliseconds > milliseconds)
-            {
-                throw new BardException($"The API response took longer than {milliseconds} milliseconds. ({milliseconds})");
-            }
+
+            _apiResult.AssertElapsedTime(milliseconds);
         }
     }
 }

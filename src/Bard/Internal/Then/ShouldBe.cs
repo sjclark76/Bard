@@ -42,6 +42,8 @@ namespace Bard.Internal.Then
         }
 
         public IBadRequestProvider BadRequest { get; }
+        
+        internal int? MaxElapsedTime { get; set; }
 
         public void Ok()
         {
@@ -113,6 +115,8 @@ namespace Bard.Internal.Then
             if (statusCode != httpStatusCode)
                 throw new BardException(
                     $"Invalid HTTP Status Code Received \n Expected: {(int) httpStatusCode} {httpStatusCode} \n Actual: {(int) statusCode} {statusCode} \n ");
+            
+            _apiResult.AssertElapsedTime(MaxElapsedTime);
         }
 
         public T Content<T>()

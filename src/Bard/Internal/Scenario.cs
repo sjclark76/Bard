@@ -18,12 +18,12 @@ namespace Bard.Internal
         private readonly EventAggregator _eventAggregator;
 
         internal Scenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
-            options.BadRequestProvider, options.Services)
+            options.BadRequestProvider, options.Services, options.MaxApiResponseTime)
         {
         }
 
         protected Scenario(HttpClient? client, Action<string> logMessage, IBadRequestProvider badRequestProvider,
-            IServiceProvider? services)
+            IServiceProvider? services, int? maxElapsedTime)
         {
             _client = client ?? throw new BardConfigurationException("client not set.");
             _badRequestProvider = badRequestProvider;
@@ -39,7 +39,7 @@ namespace Bard.Internal
 
             InternalWhen = when;
 
-            _then = new Then.Then();
+            _then = new Then.Then(maxElapsedTime);
 
             _eventAggregator.Subscribe(_then);
             _eventAggregator.Subscribe(pipeline);
@@ -72,7 +72,7 @@ namespace Bard.Internal
         private readonly TStoryBook _given;
 
         internal Scenario(ScenarioOptions<TStoryBook, TStoryData> options) : base(options.Client, options.LogMessage,
-            options.BadRequestProvider, options.Services)
+            options.BadRequestProvider, options.Services, options.MaxApiResponseTime)
         {
             var context = new ScenarioContext<TStoryData>(Context);
 

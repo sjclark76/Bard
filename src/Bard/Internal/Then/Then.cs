@@ -4,7 +4,13 @@ namespace Bard.Internal.Then
 {
     internal class Then : IThen, IObserver<IResponse>
     {
+        private readonly int? _maxElapsedTime;
         private IResponse? _response;
+
+        public Then(int? maxElapsedTime)
+        {
+            _maxElapsedTime = maxElapsedTime;
+        }
 
         public void OnCompleted()
         {
@@ -27,6 +33,8 @@ namespace Bard.Internal.Then
                     throw new BardException("The api has not been called. Call When.Get(url))");
 
                 _response.Log = true;
+                _response.MaxElapsedTime = _maxElapsedTime;
+                
                 return _response;
             }
         }

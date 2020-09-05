@@ -17,5 +17,12 @@ namespace Bard.Internal.When
 
         public HttpResponseMessage ResponseMessage { get; }
         public string ResponseString { get; }
+
+        public void AssertElapsedTime(int? milliseconds)
+        {
+            if (milliseconds.HasValue && ElapsedTime != null && ElapsedTime.Value.TotalMilliseconds > milliseconds)
+                throw new BardException(
+                    $"The API response took longer than {milliseconds} milliseconds. ({milliseconds})");
+        }
     }
 }

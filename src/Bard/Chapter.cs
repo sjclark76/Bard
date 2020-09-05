@@ -1,5 +1,4 @@
 ﻿using System;
-using Bard.Internal.Exception;
 using Bard.Internal.Given;
 
 namespace Bard

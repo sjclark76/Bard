@@ -22,8 +22,11 @@ namespace Bard.Internal
         internal LogWriter Writer { get; }
         internal EventAggregator EventAggregator { get; }
 
+        public ApiResult? Result { get; private set; }
+
         private void NotifyObservers(ApiResult apiResult)
         {
+            Result = apiResult;
             EventAggregator.PublishResponse(new Response(EventAggregator, apiResult, RequestProvider, Writer));
         }
     }

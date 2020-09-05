@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using Bard.Infrastructure;
-using Bard.Internal.Exception;
 using Bard.Internal.When;
 using Newtonsoft.Json;
 
@@ -12,12 +11,14 @@ namespace Bard.Internal.Then
     internal class ShouldBe : IShouldBe, IObserver<GrpcResponse>
     {
         private readonly string _httpResponseString;
+        private readonly ApiResult _apiResult;
         private readonly LogWriter _logWriter;
         private object? _grpcResponse;
         private HttpResponseMessage _httpResponse;
 
         internal ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider, LogWriter logWriter)
         {
+            _apiResult = apiResult;
             _logWriter = logWriter;
             badRequestProvider.StringContent = apiResult.ResponseString;
             BadRequest = new BadRequestProviderDecorator(this, badRequestProvider);
@@ -41,6 +42,8 @@ namespace Bard.Internal.Then
         }
 
         public IBadRequestProvider BadRequest { get; }
+        
+        internal int? MaxElapsedTime { get; set; }
 
         public void Ok()
         {
@@ -112,6 +115,8 @@ namespace Bard.Internal.Then
             if (statusCode != httpStatusCode)
                 throw new BardException(
                     $"Invalid HTTP Status Code Received \n Expected: {(int) httpStatusCode} {httpStatusCode} \n Actual: {(int) statusCode} {statusCode} \n ");
+            
+            _apiResult.AssertElapsedTime(MaxElapsedTime);
         }
 
         public T Content<T>()
@@ -159,13 +164,12 @@ namespace Bard.Internal.Then
         
         private void LogResponse()
         {
-            if (Log)
-            {
-                if (_grpcResponse != null)
-                    _logWriter.LogObject(_grpcResponse);
-                else
-                    _logWriter.WriteHttpResponseToConsole(_httpResponse);    
-            }
+            if (!Log) return;
+            
+            if (_grpcResponse != null)
+                _logWriter.LogObject(_grpcResponse);
+            else
+                _logWriter.WriteHttpResponseToConsole(_apiResult);
         }
     }
 }

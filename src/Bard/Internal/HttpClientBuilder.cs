@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using System.Reflection;
 using Bard.Infrastructure;
-using Bard.Internal.Exception;
 using Bard.Internal.When;
 
 namespace Bard.Internal

@@ -39,6 +39,13 @@ namespace Bard.Configuration
         ///     <remarks>Recommended</remarks>
         /// </summary>
         public IServiceProvider? Services { get; set; }
+
+        /// <summary>
+        /// Specify a global max response time in Milliseconds for all API calls. If an API
+        /// call exceeds this time then an exception will be thrown when executing a test
+        /// against the API
+        /// </summary>
+        public int? MaxApiResponseTime { get; set; }
     }
 
     /// <summary>

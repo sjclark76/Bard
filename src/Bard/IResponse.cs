@@ -13,11 +13,18 @@ namespace Bard
         IShouldBe ShouldBe { get; }
 
         /// <summary>
-        /// Gateway to check the response headers.
+        ///     Gateway to check the response headers.
         /// </summary>
         IHeaders Headers { get; }
-        
+
         internal bool Log { get; set; }
+
+        /// <summary>
+        ///     Assert the elapsed time of the API response
+        /// </summary>
+        ITime Time { get; }
+
+        internal int? MaxElapsedTime { get; set; }
 
         /// <summary>
         ///     Assert that the response Http Code is correct
@@ -33,7 +40,7 @@ namespace Bard
         T Content<T>();
 
         /// <summary>
-        /// Write out the http response to the console.
+        ///     Write out the http response to the console.
         /// </summary>
         void WriteResponse();
     }

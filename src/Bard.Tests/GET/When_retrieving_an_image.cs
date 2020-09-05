@@ -20,5 +20,19 @@ namespace Bard.Tests.GET
                 .ShouldBe
                 .Ok();
         }
+
+        [Fact]
+        public void When_calling_the_slow_running_endpoint_a_bard_exception_should_be_thrown()
+        {
+            When
+                .Get("api/misc/slow");
+
+            Assert.Throws<BardException>(() =>
+            {
+                Then.Response
+                    .Time
+                    .LessThan(2000);
+            });
+        }
     }
 }

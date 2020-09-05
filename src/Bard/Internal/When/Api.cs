@@ -15,8 +15,8 @@ namespace Bard.Internal.When
     {
         private readonly IBadRequestProvider _badRequestProvider;
         private readonly EventAggregator _eventAggregator;
-        private readonly LogWriter _logWriter;
         private readonly BardHttpClient _httpClient;
+        private readonly LogWriter _logWriter;
 
         internal Api(BardHttpClient httpClient)
         {
@@ -35,7 +35,7 @@ namespace Bard.Internal.When
         {
             return PostOrPut((client, messageContent) => client.PostAsync(route, messageContent));
         }
-        
+
         public IResponse Post<TModel>(string route, TModel model)
         {
             return PostOrPut(model, (client, messageContent) => client.PostAsync(route, messageContent));
@@ -44,7 +44,7 @@ namespace Bard.Internal.When
         public IResponse Patch<TModel>(string route, TModel model)
         {
             var messageContent = CreateMessageContent(model);
-            var responseMessage = AsyncHelper.RunSync(() => PatchAsync(route, messageContent));
+            var responseMessage = AsyncHelper.RunSync(() => _httpClient.PatchAsync(route, messageContent));
 
             var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
 
@@ -106,7 +106,7 @@ namespace Bard.Internal.When
         private IResponse PostOrPut(Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
         {
             var messageContent = CreateMessageContent(null);
-            
+
             var responseMessage = AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
 
             var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
@@ -115,7 +115,7 @@ namespace Bard.Internal.When
             var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
             return response;
         }
-        
+
         private IResponse PostOrPut<TModel>(TModel model,
             Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
         {
@@ -127,19 +127,6 @@ namespace Bard.Internal.When
             var apiResult = new ApiResult(responseMessage, responseString);
             var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
             return response;
-        }
-
-        /// <summary>
-        ///     HttpClient does not have Patch built in so need to do it ourselves
-        /// </summary>
-        private async Task<HttpResponseMessage> PatchAsync(string route, HttpContent content)
-        {
-            var request = new HttpRequestMessage(new HttpMethod("PATCH"), route)
-            {
-                Content = content
-            };
-
-            return await _httpClient.SendAsync(request);
         }
     }
 }

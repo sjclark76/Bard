@@ -37,15 +37,9 @@ namespace Bard
         /// </summary>
         void WriteResponse();
 
-        ITime Time { get; }
-    }
-
-    public interface ITime
-    {
         /// <summary>
-        /// Assert the response is returned within the specified time
+        /// Assert the elapsed time of the API response
         /// </summary>
-        /// <param name="milliseconds"></param>
-        void LessThan(int milliseconds);
+        ITime Time { get; }
     }
 }

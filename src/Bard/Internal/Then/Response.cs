@@ -1,6 +1,5 @@
 using System.Net;
 using Bard.Infrastructure;
-using Bard.Internal.Exception;
 using Bard.Internal.When;
 
 namespace Bard.Internal.Then

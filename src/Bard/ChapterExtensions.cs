@@ -1,6 +1,4 @@
-﻿using Bard.Internal.Exception;
-
-namespace Bard
+﻿namespace Bard
 {
     /// <summary>
     ///     Extension class for working with Chapters.

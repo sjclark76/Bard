@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using Bard.Infrastructure;
-using Bard.Internal.Exception;
 using Bard.Internal.When;
 using Newtonsoft.Json;
 

@@ -12,7 +12,7 @@ namespace Bard
     /// </summary>
     public class ScenarioContext
     {
-        private IServiceProvider? _services;
+        protected internal IServiceProvider? _services;
 
         internal ScenarioContext(IPipelineBuilder pipelineBuilder, IApi api, LogWriter logWriter,
             IServiceProvider? services, Func<object>? createGrpcClient = null)
@@ -76,7 +76,7 @@ namespace Bard
         private readonly TStoryData? _storyData;
 
         internal ScenarioContext(ScenarioContext context) : base(context.Builder, context.Api, context.Writer,
-            context.Services, context.CreateGrpcClient)
+            context._services, context.CreateGrpcClient)
         {
             _storyData = new TStoryData();
         }

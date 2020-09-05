@@ -1,6 +1,6 @@
-namespace Bard.Internal.Exception
+namespace Bard
 {
-    internal class BardException : System.Exception
+    public class BardException : System.Exception
     {
         internal BardException(string? message) : base(message)
         {

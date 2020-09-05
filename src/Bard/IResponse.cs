@@ -36,5 +36,16 @@ namespace Bard
         /// Write out the http response to the console.
         /// </summary>
         void WriteResponse();
+
+        ITime Time { get; }
+    }
+
+    public interface ITime
+    {
+        /// <summary>
+        /// Assert the response is returned within the specified time
+        /// </summary>
+        /// <param name="milliseconds"></param>
+        void LessThan(int milliseconds);
     }
 }

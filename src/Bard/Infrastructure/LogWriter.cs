@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
+using Bard.Internal.When;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -14,9 +15,9 @@ namespace Bard.Infrastructure
     /// </summary>
     public class LogWriter
     {
-        private readonly Action<string> _logMessage;
         private readonly EventAggregator _eventAggregator;
-      
+        private readonly Action<string> _logMessage;
+
         internal LogWriter(Action<string> logMessage, EventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
@@ -49,15 +50,23 @@ namespace Bard.Infrastructure
                 }));
         }
 
-        internal void WriteHttpResponseToConsole(HttpResponseMessage httpResponse)
+        internal void WriteHttpResponseToConsole(ApiResult result)
+        {
+            WriteHttpResponseToConsole(result.ResponseMessage, result.ElapsedTime);
+        }
+
+        internal void WriteHttpResponseToConsole(HttpResponseMessage httpResponse, TimeSpan? elapsedTime = null)
         {
             var content = AsyncHelper.RunSync(() => httpResponse.Content.ReadAsStringAsync());
             LogMessage($"Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int) httpResponse.StatusCode})");
-
-            foreach (var header in httpResponse.Content.Headers)
+            
+            if (elapsedTime != null)
             {
-                LogMessage($"{header.Key}:{string.Join(' ', header.Value)}");
+                LogMessage($"Elapsed Time: {Math.Round(elapsedTime.Value.TotalMilliseconds)} (milliseconds)");    
             }
+            
+            foreach (var header in httpResponse.Content.Headers)
+                LogMessage($"{header.Key}:{string.Join(' ', header.Value)}");
 
             if (httpResponse.Headers.Contains("Location"))
                 LogMessage($"Header::Location {httpResponse.Headers.Location.OriginalString}");
@@ -71,13 +80,12 @@ namespace Bard.Infrastructure
                 MediaTypeNames.Text.Xml,
                 MediaTypeNames.Text.RichText
             };
-            
+
             if (!string.IsNullOrEmpty(content))
             {
                 var mediaType = httpResponse.Content.Headers.ContentType.MediaType;
 
                 if (mediaType == MediaTypeNames.Application.Json || mediaType == "application/problem+json")
-                {
                     try
                     {
                         var jsonFormatted = JToken.Parse(content).ToString(Formatting.Indented);
@@ -87,11 +95,7 @@ namespace Bard.Infrastructure
                     {
                         LogMessage(content);
                     }
-                }
-                else if (plainText.Contains(mediaType))
-                {
-                    LogMessage(content);
-                }
+                else if (plainText.Contains(mediaType)) LogMessage(content);
             }
         }
 
@@ -100,13 +104,9 @@ namespace Bard.Infrastructure
             LogMessage($"REQUEST: {request.Method.Method} {request.RequestUri}");
 
             foreach (var header in request.Headers)
-            {
-                foreach (var value in header.Value)
-                {
-                    LogMessage($"Header::{header.Key} {value}");
-                }
-            }
-            
+            foreach (var value in header.Value)
+                LogMessage($"Header::{header.Key} {value}");
+
             if (request.Content != null)
             {
                 var content = AsyncHelper.RunSync(() => request.Content.ReadAsStringAsync());
@@ -122,7 +122,7 @@ namespace Bard.Infrastructure
                     LogMessage(content);
                 }
             }
-            
+
             LogMessage(string.Empty);
         }
 
@@ -130,26 +130,23 @@ namespace Bard.Infrastructure
         {
             var totalLength = 100;
             var messageLength = message.Length;
-            
-            if (messageLength > totalLength)
-            {
-                totalLength = messageLength + 2;
-            }
-            
+
+            if (messageLength > totalLength) totalLength = messageLength + 2;
+
             var envelopeLength = totalLength - 2;
 
             var messageBuilder = new StringBuilder();
             if (messageLength >= envelopeLength) return;
-            
+
             decimal whiteSpaceLength = envelopeLength - messageLength;
 
             var halfWhiteSpace = whiteSpaceLength == 0 ? 0 : whiteSpaceLength / 2;
 
             var pre = decimal.ToInt32(Math.Floor(halfWhiteSpace));
             var post = decimal.ToInt32(Math.Ceiling(halfWhiteSpace));
-                
+
             // 27 / 2 = 13.5 13 + 14
-                
+
             var astrixLine = new string('*', totalLength);
             _logMessage(astrixLine);
             messageBuilder.Append("*");

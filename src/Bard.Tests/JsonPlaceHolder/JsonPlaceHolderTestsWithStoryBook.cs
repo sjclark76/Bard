@@ -1,8 +1,6 @@
 using System;
 using System.Net.Http;
 using Bard.Configuration;
-using Shouldly;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace Bard.Tests.JsonPlaceHolder
@@ -12,6 +10,7 @@ namespace Bard.Tests.JsonPlaceHolder
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
     }
+
     public class JsonPlaceHolderStoryData
     {
         public int PostId { get; set; }
@@ -22,14 +21,14 @@ namespace Bard.Tests.JsonPlaceHolder
         public EndChapter<JsonPlaceHolderStoryData> A_post_has_been_created()
         {
             return When(context =>
-            {
-                var response = context.Api.Post("https://jsonplaceholder.typicode.com/posts", new Post{ Name = "Test Post"});
+                {
+                    var response = context.Api.Post("https://jsonplaceholder.typicode.com/posts",
+                        new Post {Name = "Test Post"});
 
-                var myPost = response.Content<Post>();
+                    var myPost = response.Content<Post>();
 
-                context.StoryData.PostId = myPost.Id;
-                
-            })
+                    context.StoryData.PostId = myPost.Id;
+                })
                 .End();
         }
     }
@@ -37,6 +36,10 @@ namespace Bard.Tests.JsonPlaceHolder
     // ReSharper disable once InconsistentNaming
     public class JsonPlaceHolderTestsWithStoryBook : IDisposable
     {
+        private const string URL = "https://jsonplaceholder.typicode.com/posts/";
+
+        private readonly HttpClient _httpClient;
+
         public JsonPlaceHolderTestsWithStoryBook(ITestOutputHelper output)
         {
             _httpClient = new HttpClient();
@@ -53,20 +56,16 @@ namespace Bard.Tests.JsonPlaceHolder
             Then = scenario.Then;
         }
 
-        public void Dispose()
-        {
-            _httpClient.Dispose();
-        }
-
-        private const string URL = "https://jsonplaceholder.typicode.com/posts/";
-
         public JsonPlaceHolderStoryBook Given { get; set; }
-
-        private readonly HttpClient _httpClient;
 
         public IThen Then { get; set; }
 
         public IWhen When { get; set; }
+
+        public void Dispose()
+        {
+            _httpClient.Dispose();
+        }
 
         // [Fact]
         // public void For_a_customer_that_does_not_exist()

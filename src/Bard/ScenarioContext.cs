@@ -12,7 +12,7 @@ namespace Bard
     /// </summary>
     public class ScenarioContext
     {
-        protected internal IServiceProvider? _services;
+        internal IServiceProvider? ServicesInternal;
 
         internal ScenarioContext(IPipelineBuilder pipelineBuilder, IApi api, LogWriter logWriter,
             IServiceProvider? services, Func<object>? createGrpcClient = null)
@@ -38,13 +38,13 @@ namespace Bard
         {
             get
             {
-                if (_services == null)
+                if (ServicesInternal == null)
                     throw new BardConfigurationException(
                         $"Error Accessing {nameof(ScenarioContext)} {nameof(Services)} property. It has not been set in {nameof(ScenarioConfiguration)} {nameof(ScenarioConfiguration.Configure)} method.");
 
-                return _services;
+                return ServicesInternal;
             }
-            set => _services = value;
+            set => ServicesInternal = value;
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Bard
         private readonly TStoryData? _storyData;
 
         internal ScenarioContext(ScenarioContext context) : base(context.Builder, context.Api, context.Writer,
-            context._services, context.CreateGrpcClient)
+            context.ServicesInternal, context.CreateGrpcClient)
         {
             _storyData = new TStoryData();
         }

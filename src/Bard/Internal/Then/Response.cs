@@ -42,7 +42,7 @@ namespace Bard.Internal.Then
 
         public void WriteResponse()
         {
-            _logWriter.WriteHttpResponseToConsole(_apiResult.ResponseMessage);
+            _logWriter.WriteHttpResponseToConsole(_apiResult);
         }
 
         public ITime Time => this;

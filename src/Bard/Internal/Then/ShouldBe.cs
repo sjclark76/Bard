@@ -11,12 +11,14 @@ namespace Bard.Internal.Then
     internal class ShouldBe : IShouldBe, IObserver<GrpcResponse>
     {
         private readonly string _httpResponseString;
+        private readonly ApiResult _apiResult;
         private readonly LogWriter _logWriter;
         private object? _grpcResponse;
         private HttpResponseMessage _httpResponse;
 
         internal ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider, LogWriter logWriter)
         {
+            _apiResult = apiResult;
             _logWriter = logWriter;
             badRequestProvider.StringContent = apiResult.ResponseString;
             BadRequest = new BadRequestProviderDecorator(this, badRequestProvider);
@@ -158,13 +160,12 @@ namespace Bard.Internal.Then
         
         private void LogResponse()
         {
-            if (Log)
-            {
-                if (_grpcResponse != null)
-                    _logWriter.LogObject(_grpcResponse);
-                else
-                    _logWriter.WriteHttpResponseToConsole(_httpResponse);    
-            }
+            if (!Log) return;
+            
+            if (_grpcResponse != null)
+                _logWriter.LogObject(_grpcResponse);
+            else
+                _logWriter.WriteHttpResponseToConsole(_apiResult);
         }
     }
 }

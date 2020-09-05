@@ -11,10 +11,12 @@ namespace Bard.Internal.Then
     {
         private readonly LogWriter _logWriter;
         private readonly HttpResponseMessage _responseMessage;
+        private ApiResult _apiResult;
 
         public Headers(ApiResult apiResult, LogWriter logWriter)
         {
             _logWriter = logWriter;
+            _apiResult = apiResult;
             _responseMessage = apiResult.ResponseMessage;
         }
 
@@ -28,7 +30,7 @@ namespace Bard.Internal.Then
 
             _logWriter.LogHeaderMessage(headerMessage.ToString());
 
-            _logWriter.WriteHttpResponseToConsole(_responseMessage);
+            _logWriter.WriteHttpResponseToConsole(_apiResult);
 
             var contentHeaders = _responseMessage.Content.Headers.Select(pair => pair);
             var headers = _responseMessage.Headers.Select(pair => pair);

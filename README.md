@@ -1,7 +1,7 @@
 
 # Introduction
 
-[![Join the chat at https://gitter.im/Bard-NET/Bard](https://badges.gitter.im/Bard-NET/Bard.svg)](https://gitter.im/Bard-NET/Bard?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/Bard-NET/Bard](https://badges.gitter.im/Bard-NET/Bard.svg)](https://gitter.im/Bard-NET/Bard?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) ![.NET Core](https://github.com/sjclark76/bard/workflows/.NET%20Core/badge.svg?branch=master)
 
 Bard is a .NET library for API testing.
 
@@ -135,4 +135,4 @@ A fluent API response helper is built directly into Bard. This hides away the bo
 ```
 
 
-![.NET Core](https://github.com/sjclark76/bard/workflows/.NET%20Core/badge.svg?branch=master)
+

@@ -21,7 +21,7 @@ namespace Bard.Internal
             IBadRequestProvider badRequestProvider, EventAggregator eventAggregator)
         {
             var httpMessageHandler = GetInstanceField(client);
-            
+
             if (httpMessageHandler == null)
                 throw new BardException("Cannot find client handler");
 
@@ -29,7 +29,8 @@ namespace Bard.Internal
             var requestLoggerMessageHandler = new RequestLoggerMessageHandler(logWriter, grpcMessageHandler);
             var bardResponsePublisher = new BardResponsePublisher(requestLoggerMessageHandler);
 
-            var bardHttpClient = CloneHttpClient(client, logWriter, badRequestProvider, eventAggregator, bardResponsePublisher);
+            var bardHttpClient = CloneHttpClient(client, logWriter, badRequestProvider, eventAggregator,
+                bardResponsePublisher);
 
             return bardHttpClient;
         }
@@ -38,19 +39,20 @@ namespace Bard.Internal
             IBadRequestProvider badRequestProvider, EventAggregator eventAggregator,
             BardResponsePublisher bardResponsePublisher)
         {
-            var bardHttpClient = new BardHttpClient(eventAggregator, bardResponsePublisher, badRequestProvider, logWriter)
-            {
-                BaseAddress = client.BaseAddress,
-                Timeout = client.Timeout,
-                MaxResponseContentBufferSize = client.MaxResponseContentBufferSize,
-                DefaultRequestVersion = client.DefaultRequestVersion
-            };
+            var bardHttpClient =
+                new BardHttpClient(eventAggregator, bardResponsePublisher, badRequestProvider, logWriter)
+                {
+                    BaseAddress = client.BaseAddress,
+                    Timeout = client.Timeout,
+                    MaxResponseContentBufferSize = client.MaxResponseContentBufferSize,
+                    //DefaultRequestVersion = client.DefaultRequestVersion
+                };
 
             foreach (var (key, value) in client.DefaultRequestHeaders)
             {
                 bardHttpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, value);
             }
-            
+
             return bardHttpClient;
         }
 
@@ -58,7 +60,7 @@ namespace Bard.Internal
             IBadRequestProvider badRequestProvider, EventAggregator eventAggregator)
         {
             var httpMessageHandler = GetInstanceField(client);
-            
+
             if (httpMessageHandler == null)
                 throw new BardException("Cannot find client handler");
 
@@ -67,15 +69,16 @@ namespace Bard.Internal
             var requestLoggerMessageHandler = new RequestLoggerMessageHandler(logWriter, responseLoggerMessageHandler);
             var bardResponsePublisher = new BardResponsePublisher(requestLoggerMessageHandler);
 
-            var bardHttpClient = CloneHttpClient(client, logWriter, badRequestProvider, eventAggregator, bardResponsePublisher);
+            var bardHttpClient = CloneHttpClient(client, logWriter, badRequestProvider, eventAggregator,
+                bardResponsePublisher);
 
             return bardHttpClient;
         }
-        
+
         internal static HttpClient CreateGrpcClient(HttpClient client)
         {
             var httpMessageHandler = GetInstanceField(client);
-            
+
             if (httpMessageHandler == null)
                 throw new BardException("Cannot find client handler");
 

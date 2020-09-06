@@ -1,5 +1,3 @@
-using System;
-
 namespace Bard
 {
     /// <summary>
@@ -55,7 +53,7 @@ namespace Bard
 
         private void ShouldContain(string value)
         {
-            if (StringContent.Contains(value, StringComparison.InvariantCultureIgnoreCase) == false)
+            if (StringContent.Contains(value) == false)
                 throw new BardException($"The received response did not contain the message:{value}");
         }
     }

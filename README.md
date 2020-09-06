@@ -1,6 +1,8 @@
 
 # Introduction
 
+[![Join the chat at https://gitter.im/Bard-NET/Bard](https://badges.gitter.im/Bard-NET/Bard.svg)](https://gitter.im/Bard-NET/Bard?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Bard is a .NET library for API testing.
 
 ## Documentation

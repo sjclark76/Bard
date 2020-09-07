@@ -123,7 +123,7 @@ RESPONSE: Http Status Code:  OK (200)
 }
 ```
 
-## Smart HTTP Response Assertions
+## Fluent Assertions
 A fluent API response helper is built directly into Bard. This hides away the boiler plate code needed to work with the HTTP Response and makes the intent of the test easier to comprehend.
 ```c#
    Then

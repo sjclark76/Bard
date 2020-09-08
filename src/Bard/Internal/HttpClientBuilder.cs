@@ -39,14 +39,12 @@ namespace Bard.Internal
             IBadRequestProvider badRequestProvider, EventAggregator eventAggregator,
             BardResponsePublisher bardResponsePublisher)
         {
-            var bardHttpClient =
-                new BardHttpClient(eventAggregator, bardResponsePublisher, badRequestProvider, logWriter)
-                {
-                    BaseAddress = client.BaseAddress,
-                    Timeout = client.Timeout,
-                    MaxResponseContentBufferSize = client.MaxResponseContentBufferSize,
-                    //DefaultRequestVersion = client.DefaultRequestVersion
-                };
+            var bardHttpClient = new BardHttpClient(eventAggregator, bardResponsePublisher, badRequestProvider, logWriter)
+            {
+                BaseAddress = client.BaseAddress,
+                Timeout = client.Timeout,
+                MaxResponseContentBufferSize = client.MaxResponseContentBufferSize
+            };
 
             foreach (var (key, value) in client.DefaultRequestHeaders)
             {

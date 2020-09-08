@@ -31,6 +31,7 @@ namespace Bard.Tests.GET
         {
             Given
                 .BankAccount_has_been_created(account => account.CustomerName = "Fred")
+                .BankAccount_has_been_created()
                 .GetResult(out BankingStoryData bankAccount);
 
             When

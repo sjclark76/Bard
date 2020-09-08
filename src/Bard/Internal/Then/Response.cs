@@ -1,15 +1,18 @@
+using System;
 using System.Net;
 using Bard.Infrastructure;
 using Bard.Internal.When;
+using Snapshooter;
+using Snapshooter.Core;
 
 namespace Bard.Internal.Then
 {
     internal class Response : IResponse, ITime
     {
         private readonly ApiResult _apiResult;
+        private readonly Headers _headers;
         private readonly LogWriter _logWriter;
         private readonly ShouldBe _shouldBe;
-        private readonly Headers _headers;
         private int? _maxElapsedTime;
 
         internal Response(EventAggregator eventAggregator, ApiResult apiResult, IBadRequestProvider badRequestProvider,
@@ -45,6 +48,24 @@ namespace Bard.Internal.Then
         public void WriteResponse()
         {
             _logWriter.WriteHttpResponseToConsole(_apiResult);
+        }
+
+        public void Snapshot<T>(Func<MatchOptions, MatchOptions>? matchOptions = null)
+        {
+            var snapShooter = new Snapshooter.Snapshooter(
+                new SnapshotAssert(
+                    new SnapshotSerializer(),
+                    new SnapshotFileHandler(),
+                    new SnapshotEnvironmentCleaner(
+                        new SnapshotFileHandler()),
+                    new JsonSnapshotComparer(
+                        new BardAssert(),
+                        new SnapshotSerializer())),
+                new SnapshotFullNameResolver(
+                    new BardSnapshotFullNameReader()));
+
+            var content = _shouldBe.Content<T>();
+            snapShooter.AssertSnapshot(content, snapShooter.ResolveSnapshotFullName(), matchOptions);
         }
 
         public ITime Time => this;

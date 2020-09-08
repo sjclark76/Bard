@@ -1,4 +1,6 @@
+using System;
 using System.Net;
+using Snapshooter;
 
 namespace Bard
 {
@@ -43,5 +45,7 @@ namespace Bard
         ///     Write out the http response to the console.
         /// </summary>
         void WriteResponse();
+
+        void Snapshot<T>(Func<MatchOptions, MatchOptions>? matchOptions = null);
     }
 }

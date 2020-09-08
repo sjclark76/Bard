@@ -13,8 +13,7 @@ namespace Bard.Internal.When
             ElapsedTime = elapsedTime;
         }
 
-        public TimeSpan? ElapsedTime { get; set; }
-
+        public TimeSpan? ElapsedTime { get; }
         public HttpResponseMessage ResponseMessage { get; }
         public string ResponseString { get; }
 

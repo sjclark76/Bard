@@ -5,7 +5,7 @@ namespace Bard.Internal.When
 {
     internal class ApiResult
     {
-        internal ApiResult(HttpResponseMessage responseMessage, string responseString,
+        internal ApiResult(ApiRequest apiRequest, HttpResponseMessage responseMessage, string responseString,
             TimeSpan? elapsedTime = null)
         {
             ResponseMessage = responseMessage;

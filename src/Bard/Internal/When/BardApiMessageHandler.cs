@@ -42,7 +42,7 @@ namespace Bard.Internal.When
             
             Stopwatch.Stop();
             var responseString = await response.Content.ReadAsStringAsync();
-            var apiResult = new ApiResult(response, responseString, Stopwatch.Elapsed);
+            var apiResult = new ApiResult(new ApiRequest(request), response, responseString, Stopwatch.Elapsed);
 
             PublishApiResult?.Invoke(apiResult);
 

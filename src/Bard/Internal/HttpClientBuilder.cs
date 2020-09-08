@@ -42,8 +42,7 @@ namespace Bard.Internal
             {
                 BaseAddress = client.BaseAddress,
                 Timeout = client.Timeout,
-                MaxResponseContentBufferSize = client.MaxResponseContentBufferSize,
-                DefaultRequestVersion = client.DefaultRequestVersion
+                MaxResponseContentBufferSize = client.MaxResponseContentBufferSize
             };
 
             foreach (var (key, value) in client.DefaultRequestHeaders)

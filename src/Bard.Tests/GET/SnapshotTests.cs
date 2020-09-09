@@ -42,7 +42,7 @@ namespace Bard.Tests.GET
                 .Get($"{ApiBankaccounts}/{bankAccount.BankAccountId}");
 
             MyScenario.Then.Response
-                .Snapshot<BankAccount>();
+                .Snapshot<BankAccount>(options => options.IgnoreField<int>("Id"));
         }
 
         [Fact]
@@ -55,8 +55,8 @@ namespace Bard.Tests.GET
             When
                 .Get($"{ApiBankaccounts}/{bankAccount.BankAccountId}");
 
-            Then.Response
-                .Snapshot<BankAccount>();
+            MyScenario.Then.Response
+                .Snapshot<BankAccount>(options => options.IgnoreField<int>("Id"));
         }
     }
 }

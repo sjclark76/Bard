@@ -1,17 +1,16 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
+using Bard.Infrastructure;
 
 namespace Bard.Internal.When
 {
-    public class ApiRequest
+    internal class ApiRequest
     {
-        private readonly HttpRequestMessage? _request;
-        public string? Route { get; }
-        public StringContent? MessageContent { get; }
-
-        public ApiRequest(string route, StringContent messageContent)
+        public ApiRequest(string route, HttpContent httpContent)
         {
-            MessageContent = messageContent;
+            Route = route;
+            HttpContent = httpContent;
         }
 
         public ApiRequest(string route)
@@ -21,15 +20,30 @@ namespace Bard.Internal.When
 
         public ApiRequest(HttpRequestMessage request)
         {
-            _request = request;
+            Route = request.RequestUri.AbsoluteUri;
+
+            HttpContent = request.Content;
         }
 
-        public string Hash()
+        public string Route { get; }
+
+        public HttpContent? HttpContent { get; }
+
+        public string GenerateHash()
         {
-            if (_request != null)
-            {
-                _request.Content.GetMD5Hash()
-            }
+            string input = Route;
+
+            if (HttpContent != null)
+                input = Route + AsyncHelper.RunSync(() => HttpContent.ReadAsStringAsync());
+
+            MD5 md5 = MD5.Create();
+            var inputBytes = Encoding.ASCII.GetBytes(input);
+            var hashBytes = md5.ComputeHash(inputBytes);
+
+            // Step 2, convert byte array to hex string
+            var sb = new StringBuilder();
+            foreach (var t in hashBytes) sb.Append(t.ToString("X2"));
+            return sb.ToString();
         }
     }
 }

@@ -62,7 +62,7 @@ namespace Bard.Internal.Then
                         new BardAssert(),
                         new SnapshotSerializer())),
                 new SnapshotFullNameResolver(
-                    new BardSnapshotFullNameReader()));
+                    new BardSnapshotFullNameReader(_apiResult)));
 
             var content = _shouldBe.Content<T>();
             snapShooter.AssertSnapshot(content, snapShooter.ResolveSnapshotFullName(), matchOptions);

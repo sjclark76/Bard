@@ -7,9 +7,9 @@ namespace Bard.Internal.Then
     internal class Response : IResponse, ITime
     {
         private readonly ApiResult _apiResult;
+        private readonly Headers _headers;
         private readonly LogWriter _logWriter;
         private readonly ShouldBe _shouldBe;
-        private readonly Headers _headers;
         private int? _maxElapsedTime;
 
         internal Response(EventAggregator eventAggregator, ApiResult apiResult, IBadRequestProvider badRequestProvider,

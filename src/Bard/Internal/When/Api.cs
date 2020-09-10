@@ -47,7 +47,6 @@ namespace Bard.Internal.When
             var responseMessage = AsyncHelper.RunSync(() => _httpClient.PatchAsync(route, messageContent));
 
             var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
-
             var apiResult = new ApiResult(responseMessage, responseString);
             var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
 
@@ -72,7 +71,6 @@ namespace Bard.Internal.When
         {
             var message = AsyncHelper.RunSync(() => _httpClient.GetAsync(route));
             var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
-
             var apiResult = new ApiResult(message, content);
             var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
 
@@ -84,7 +82,6 @@ namespace Bard.Internal.When
             var message = AsyncHelper.RunSync(() => _httpClient.DeleteAsync(route));
 
             var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
-
             var apiResult = new ApiResult(message, content);
             var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
 
@@ -110,7 +107,6 @@ namespace Bard.Internal.When
             var responseMessage = AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
 
             var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
-
             var apiResult = new ApiResult(responseMessage, responseString);
             var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
             return response;
@@ -123,7 +119,6 @@ namespace Bard.Internal.When
             var responseMessage = AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
 
             var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
-
             var apiResult = new ApiResult(responseMessage, responseString);
             var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
             return response;

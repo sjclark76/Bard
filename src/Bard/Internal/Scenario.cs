@@ -39,7 +39,7 @@ namespace Bard.Internal
 
             InternalWhen = when;
 
-            _then = new Then.Then(maxElapsedTime);
+            _then = new Then.Then(maxElapsedTime, LogWriter);
 
             _eventAggregator.Subscribe(_then);
             _eventAggregator.Subscribe(pipeline);

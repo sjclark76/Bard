@@ -38,10 +38,13 @@ namespace Bard.Tests
                     options.BadRequestProvider = new MyBadRequestProvider();
                 });
 
+            MyScenario = scenario;
             Given = scenario.Given;
             When = scenario.When;
             Then = scenario.Then;
         }
+
+        public IScenario<BankingStory, BankingStoryData> MyScenario { get; }
 
         protected BankingStory Given { get; set; }
 

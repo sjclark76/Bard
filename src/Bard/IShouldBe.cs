@@ -51,5 +51,12 @@ namespace Bard
         ///     Assert the response matches the provided value
         /// </summary>
         void StatusCodeShouldBe(HttpStatusCode statusCode);
+
+        /// <summary>
+        /// Returns the response body as the specified type with out asserting.
+        /// </summary>
+        /// <typeparam name="T">The response object type.</typeparam>
+        /// <returns>The Response Object</returns>
+        T Content<T>();
     }
 }

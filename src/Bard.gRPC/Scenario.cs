@@ -55,7 +55,7 @@ namespace Bard.gRPC
 
             When = when;
 
-            _then = new Then(null);
+            _then = new Then(null, logWriter);
 
             eventAggregator.Subscribe(_then);
             eventAggregator.Subscribe(pipeline);

@@ -1,15 +1,18 @@
 using System;
+using Bard.Infrastructure;
 
 namespace Bard.Internal.Then
 {
     internal class Then : IThen, IObserver<IResponse>
     {
         private readonly int? _maxElapsedTime;
+        private readonly LogWriter _logWriter;
         private IResponse? _response;
 
-        public Then(int? maxElapsedTime)
+        public Then(int? maxElapsedTime, LogWriter logWriter)
         {
             _maxElapsedTime = maxElapsedTime;
+            _logWriter = logWriter;
         }
 
         public void OnCompleted()
@@ -37,6 +40,11 @@ namespace Bard.Internal.Then
                 
                 return _response;
             }
+        }
+
+        public ISnapshot Snapshot(params object[] extensions)
+        {
+            return new BardSnapshot(_logWriter, Response.ShouldBe, extensions);
         }
     }
 }

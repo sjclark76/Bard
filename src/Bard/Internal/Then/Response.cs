@@ -1,9 +1,6 @@
-using System;
 using System.Net;
 using Bard.Infrastructure;
 using Bard.Internal.When;
-using Snapshooter;
-using Snapshooter.Core;
 
 namespace Bard.Internal.Then
 {
@@ -48,24 +45,6 @@ namespace Bard.Internal.Then
         public void WriteResponse()
         {
             _logWriter.WriteHttpResponseToConsole(_apiResult);
-        }
-
-        public void Snapshot<T>(Func<MatchOptions, MatchOptions>? matchOptions = null)
-        {
-            var snapShooter = new Snapshooter.Snapshooter(
-                new SnapshotAssert(
-                    new SnapshotSerializer(),
-                    new SnapshotFileHandler(),
-                    new SnapshotEnvironmentCleaner(
-                        new SnapshotFileHandler()),
-                    new JsonSnapshotComparer(
-                        new BardAssert(),
-                        new SnapshotSerializer())),
-                new SnapshotFullNameResolver(
-                    new BardSnapshotFullNameReader(_apiResult)));
-
-            var content = _shouldBe.Content<T>();
-            snapShooter.AssertSnapshot(content, snapShooter.ResolveSnapshotFullName(), matchOptions);
         }
 
         public ITime Time => this;

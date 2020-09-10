@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Bard.Internal.When;
 using Snapshooter;
 using Snapshooter.Core;
 using Snapshooter.Exceptions;
@@ -15,13 +14,6 @@ namespace Bard.Internal.Then
     /// </summary>
     internal class BardSnapshotFullNameReader : ISnapshotFullNameReader
     {
-        private readonly ApiResult _apiResult;
-
-        public BardSnapshotFullNameReader(ApiResult apiResult)
-        {
-            _apiResult = apiResult;
-        }
-
         /// <summary>
         ///     Evaluates the snapshot full name information.
         /// </summary>
@@ -35,13 +27,12 @@ namespace Bard.Internal.Then
             {
                 var response = stackFrames.Select((frame, index) =>
                         new {frame.GetMethod().DeclaringType, Index = index})
-                    .First(arg => arg.DeclaringType == typeof(Response));
+                    .First(arg => arg.DeclaringType == typeof(BardSnapshot));
 
                 var testMethodFrame = stackFrames[response.Index + 1];
                 var testMethod = testMethodFrame.GetMethod();
 
                 var fileName = testMethod.ToName();
-                if (testMethod.GetParameters().Any()) fileName = $"{fileName}.{_apiResult.ApiRequest.GenerateHash()}";
 
                 snapshotFullName = new SnapshotFullName(
                     fileName,

@@ -60,7 +60,7 @@ Now in our Chapter we write our Story by referencing our Function
 public DepositMade Deposit_has_been_made(decimal amount)
 {
     return
-        Given(() => new Deposit {Amount = amount})
+        Given((storyData) => new Deposit {Amount = amount})
             .When(BankingScenarioFunctions.MakeADeposit)
             .ProceedToChapter<DepositMade>();
 }

@@ -13,8 +13,8 @@ namespace Bard
         /// <summary>
         /// Fluent interface for performing Snapshot testing.
         /// </summary>
-        /// <param name="suffix"></param>
+        /// <param name="extensions">Creates a new snapshot name extension from the given objects.</param>
         /// <returns></returns>
-        ISnapshot Snapshot(params object[] suffix);
+        ISnapshot Snapshot(params object[] extensions);
     }
 }

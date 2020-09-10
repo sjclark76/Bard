@@ -19,17 +19,17 @@ Lets demonstrate what that would look like with a code example.
 public BankAccountHasBeenCreated BankAccount_has_been_created()
 {
     return When(context =>
+        {
+            var bankAccount = new BankAccount
             {
-                var bankAccount = new BankAccount
-                {
-                    CustomerName = "Ranulph Fiennes"
-                };
+                CustomerName = "Ranulph Fiennes"
+            };
 
-                var response = context.Api.Post("api/bankaccounts", bankAccount);
+            var response = context.Api.Post("api/bankaccounts", bankAccount);
                 
-                context.StoryData.BankAccountId = response.Id;
-            })
-            .ProceedToChapter<BankAccountHasBeenCreated>();
+            context.StoryData.BankAccountId = response.Id;
+        })
+        .ProceedToChapter<BankAccountHasBeenCreated>();
 }
 ```
 

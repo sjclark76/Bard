@@ -21,7 +21,7 @@ namespace Bard.Internal.When
         {
             if (milliseconds.HasValue && ElapsedTime != null && ElapsedTime.Value.TotalMilliseconds > milliseconds)
                 throw new BardException(
-                    $"The API response took longer than {milliseconds} milliseconds. ({milliseconds})");
+                    $"The API response took longer than {milliseconds} milliseconds. ({ElapsedTime.Value.TotalMilliseconds})");
         }
     }
 }

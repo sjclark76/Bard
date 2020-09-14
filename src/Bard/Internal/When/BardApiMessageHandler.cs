@@ -25,24 +25,24 @@ namespace Bard.Internal.When
     internal class BardResponsePublisher : DelegatingHandler
     {
         public Action<ApiResult>? PublishApiResult;
-        public Stopwatch Stopwatch;
+        private readonly Stopwatch _stopwatch;
 
         public BardResponsePublisher(HttpMessageHandler innerHandler) : base(innerHandler)
         {
-            Stopwatch = new Stopwatch();
+            _stopwatch = new Stopwatch();
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            Stopwatch.Reset();
-            Stopwatch.Start();
+            _stopwatch.Reset();
+            _stopwatch.Start();
             
             var response = await base.SendAsync(request, cancellationToken);
             
-            Stopwatch.Stop();
+            _stopwatch.Stop();
             var responseString = await response.Content.ReadAsStringAsync();
-            var apiResult = new ApiResult(response, responseString, Stopwatch.Elapsed);
+            var apiResult = new ApiResult(response, responseString, _stopwatch.Elapsed);
 
             PublishApiResult?.Invoke(apiResult);
 

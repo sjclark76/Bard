@@ -76,6 +76,26 @@ namespace Bard.Tests.gRPC
 
             scenario.Then.Response.ShouldBe.Ok();
         }
+        
+        [Fact]
+        public void Call_grpc_snapshot()
+        {
+            var scenario = GrpcScenarioConfiguration
+                .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
+                .Configure(options =>
+                {
+                    options.Services = _host.Services;
+                    options.LogMessage = s => _output.WriteLine(s);
+                    options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    options.Client = _httpClient;
+                });
+
+            var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
+
+            scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+
+            scenario.Then.Snapshot().Match<CreditReply>();
+        }
 
         public void Dispose()
         {

@@ -10,19 +10,22 @@ namespace Bard.Internal.When
     internal class When : IWhen
     {
         private readonly Api _api;
+        private readonly EventAggregator _eventAggregator;
         private readonly LogWriter _logWriter;
         protected readonly Action? PreApiCall;
 
-        internal When(Api api, LogWriter logWriter)
+        internal When(Api api, EventAggregator eventAggregator, LogWriter logWriter)
         {
             _api = api;
+            _eventAggregator = eventAggregator;
             _logWriter = logWriter;
         }
         
-        internal When(Api api, LogWriter logWriter,
+        internal When(Api api, EventAggregator eventAggregator, LogWriter logWriter,
             Action preApiCall)
         {
             _api = api;
+            _eventAggregator = eventAggregator;
             _logWriter = logWriter;
             PreApiCall = preApiCall;
         }
@@ -74,7 +77,9 @@ namespace Bard.Internal.When
             WriteHeader();
             
             var response = callApi();
-
+            
+            _eventAggregator.PublishApiRequest(callApi);
+            
             return response;
         }
 

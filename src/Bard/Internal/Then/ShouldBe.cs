@@ -8,11 +8,13 @@ using Newtonsoft.Json;
 
 namespace Bard.Internal.Then
 {
-    internal class ShouldBe : IShouldBe, IObserver<GrpcResponse>
+    internal class ShouldBe : IShouldBe, IObserver<GrpcResponse>, IObserver<Func<IResponse>>
     {
-        private readonly string _httpResponseString;
         private readonly ApiResult _apiResult;
+        private readonly string _httpResponseString;
         private readonly LogWriter _logWriter;
+        private readonly PerformanceMonitor _performanceMonitor;
+        private Func<IResponse>? _apiRequest;
         private object? _grpcResponse;
         private HttpResponseMessage _httpResponse;
 
@@ -24,9 +26,17 @@ namespace Bard.Internal.Then
             BadRequest = new BadRequestProviderDecorator(this, badRequestProvider);
             _httpResponse = apiResult.ResponseMessage;
             _httpResponseString = apiResult.ResponseString;
+            _performanceMonitor = new PerformanceMonitor(_logWriter);
         }
 
         public bool Log { get; set; }
+
+        internal int? MaxElapsedTime { get; set; }
+
+        public void OnNext(Func<IResponse> apiRequest)
+        {
+            _apiRequest = apiRequest;
+        }
 
         public void OnCompleted()
         {
@@ -42,8 +52,6 @@ namespace Bard.Internal.Then
         }
 
         public IBadRequestProvider BadRequest { get; }
-        
-        internal int? MaxElapsedTime { get; set; }
 
         public void Ok()
         {
@@ -103,20 +111,20 @@ namespace Bard.Internal.Then
             {
                 var headerMessage =
                     new StringBuilder($"THEN THE RESPONSE SHOULD BE HTTP {(int) httpStatusCode} {httpStatusCode}");
-                
+
                 if (statusCode != httpStatusCode)
                     headerMessage.Append($" BUT WAS HTTP {(int) statusCode} {statusCode}");
 
                 _logWriter.LogHeaderMessage(headerMessage.ToString());
 
-                LogResponse();       
+                LogResponse();
             }
 
             if (statusCode != httpStatusCode)
                 throw new BardException(
                     $"Invalid HTTP Status Code Received \n Expected: {(int) httpStatusCode} {httpStatusCode} \n Actual: {(int) statusCode} {statusCode} \n ");
-            
-            _apiResult.AssertElapsedTime(MaxElapsedTime);
+
+            _performanceMonitor.AssertElapsedTime(_apiRequest, _apiResult, MaxElapsedTime);
         }
 
         public T Content<T>()
@@ -128,10 +136,10 @@ namespace Bard.Internal.Then
                 _logWriter.LogHeaderMessage($"THEN THE RESPONSE SHOULD BE {typeof(T)}");
                 LogResponse();
             }
-            
+
             return content;
         }
-        
+
         private T DeserializeContent<T>()
         {
             T content = default!;
@@ -153,7 +161,7 @@ namespace Bard.Internal.Then
 
             return content ?? throw new BardException($"Unable to serialize api response {_httpResponseString}");
         }
-        
+
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
         private void AssertContentIsNotNull<T>(T content)
         {
@@ -161,11 +169,11 @@ namespace Bard.Internal.Then
                 throw new BardException(
                     $"Couldn't deserialize the result to a {typeof(T)}. Result was: {_httpResponseString}.");
         }
-        
+
         private void LogResponse()
         {
             if (!Log) return;
-            
+
             if (_grpcResponse != null)
                 _logWriter.LogObject(_grpcResponse);
             else

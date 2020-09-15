@@ -9,14 +9,22 @@ namespace Bard
         private readonly List<IObserver<GrpcResponse>> _grpcObservers;
         private readonly List<IObserver<MessageLogged>> _messageLoggedObservers;
         private readonly List<IObserver<IResponse>> _observers;
-
+        private readonly List<IObserver<Func<IResponse>>> _callApiObservers;
         internal EventAggregator()
         {
+            _callApiObservers = new List<IObserver<Func<IResponse>>>();
             _grpcObservers = new List<IObserver<GrpcResponse>>();
             _observers = new List<IObserver<IResponse>>();
             _messageLoggedObservers = new List<IObserver<MessageLogged>>();
         }
 
+        public IDisposable SubscribeToApiRequests(IObserver<Func<IResponse>> observer)
+        {
+            // Check whether observer is already registered. If not, add it
+            if (!_callApiObservers.Contains(observer)) _callApiObservers.Add(observer);
+            return new UnSubscriber<Func<IResponse>>(_callApiObservers, observer);
+        }
+        
         public IDisposable Subscribe(IObserver<GrpcResponse> observer)
         {
             // Check whether observer is already registered. If not, add it
@@ -54,6 +62,12 @@ namespace Bard
         {
             foreach (var observer in _messageLoggedObservers)
                 observer.OnNext(messageLogged);
+        }
+
+        public void PublishApiRequest(Func<IResponse> callApi)
+        {
+            foreach (var observer in _callApiObservers)
+                observer.OnNext(callApi);
         }
 
         private class UnSubscriber<TResponse> : IDisposable

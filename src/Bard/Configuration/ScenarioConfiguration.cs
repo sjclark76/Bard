@@ -20,7 +20,7 @@ namespace Bard.Configuration
 
             configure(options);
 
-            return new Scenario(options);
+            return new Scenario(options, new EventAggregator());
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Bard.Configuration
 
             configure(options);
 
-            return new Scenario<TStoryBook, TStoryData>(options);
+            return new Scenario<TStoryBook, TStoryData>(options, new EventAggregator());
         }
     }
 }

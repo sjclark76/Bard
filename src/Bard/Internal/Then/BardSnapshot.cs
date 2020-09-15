@@ -47,7 +47,7 @@ namespace Bard.Internal.Then
             var snapShooter = SnapShooter;
             var snapshotFullName = snapShooter.ResolveSnapshotFullName(snapshotNameExtension: snapshotExtension);
             _logWriter.LogMessage("");
-            _logWriter.LogMessage($"MATCHING AGAINST SNAPSHOT: {snapshotFullName.FolderPath}\\{snapshotFullName.Filename}");
+            _logWriter.LogMessage($"MATCHING AGAINST SNAPSHOT: {snapshotFullName.FolderPath}\\__snapshots__\\{snapshotFullName.Filename}");
             snapShooter.AssertSnapshot(content, snapshotFullName, matchOptions);
         }
     }

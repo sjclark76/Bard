@@ -17,21 +17,21 @@ namespace Bard.Internal.When
         public HttpResponseMessage ResponseMessage { get; }
         public string ResponseString { get; }
 
-        public void AssertElapsedTime(TimeSpan? elapsedTime, int? milliseconds)
+        internal void AssertElapsedTime(TimeSpan? elapsedTime, int? milliseconds)
         {
-            if (ExceededElapsedTime(milliseconds))
+            if (ExceededElapsedTime(elapsedTime, milliseconds))
                 throw new BardException(
                     $"The API response took longer than {milliseconds} milliseconds. ({elapsedTime?.TotalMilliseconds})");
         }
-        
-        public void AssertElapsedTime(int? milliseconds)
-        {
-            AssertElapsedTime(ElapsedTime, milliseconds);
-        }
 
-        public bool ExceededElapsedTime(int? milliseconds)
+        private static bool ExceededElapsedTime(TimeSpan? elapsedTime, int? milliseconds)
         {
-            return milliseconds.HasValue && ElapsedTime != null && ElapsedTime.Value.TotalMilliseconds > milliseconds;
+            return milliseconds.HasValue && elapsedTime != null && elapsedTime.Value.TotalMilliseconds > milliseconds;
+        }
+        
+        internal bool ExceededElapsedTime(int? milliseconds)
+        {
+            return ExceededElapsedTime(ElapsedTime, milliseconds);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Bard.Infrastructure
     /// </summary>
     public class LogWriter
     {
+        private const int TotalLength = 100;
         private readonly EventAggregator _eventAggregator;
         private readonly Action<string> _logMessage;
 
@@ -59,12 +60,10 @@ namespace Bard.Infrastructure
         {
             var content = AsyncHelper.RunSync(() => httpResponse.Content.ReadAsStringAsync());
             LogMessage($"Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int) httpResponse.StatusCode})");
-            
+
             if (elapsedTime != null)
-            {
-                LogMessage($"Elapsed Time: {Math.Round(elapsedTime.Value.TotalMilliseconds)} (milliseconds)");    
-            }
-            
+                LogMessage($"Elapsed Time: {Math.Round(elapsedTime.Value.TotalMilliseconds)} (milliseconds)");
+
             foreach (var header in httpResponse.Content.Headers)
                 LogMessage($"{header.Key}:{string.Join(' ', header.Value)}");
 
@@ -128,10 +127,10 @@ namespace Bard.Infrastructure
 
         internal void LogHeaderMessage(string message)
         {
-            var totalLength = 100;
+            var totalLength = TotalLength;
             var messageLength = message.Length;
 
-            if (messageLength > totalLength) totalLength = messageLength + 2;
+            if (messageLength > TotalLength) totalLength = messageLength + 2;
 
             var envelopeLength = totalLength - 2;
 
@@ -147,8 +146,8 @@ namespace Bard.Infrastructure
 
             // 27 / 2 = 13.5 13 + 14
 
-            var astrixLine = new string('*', totalLength);
-            _logMessage(astrixLine);
+            LogLineBreak(totalLength);
+            
             messageBuilder.Append("*");
             messageBuilder.Append((char) 32, pre);
             messageBuilder.Append(message);
@@ -156,7 +155,18 @@ namespace Bard.Infrastructure
             messageBuilder.Append("*");
 
             _logMessage(messageBuilder.ToString());
+            LogLineBreak(totalLength);
+            BlankLine();
+        }
+
+        internal void LogLineBreak(int totalLength = TotalLength)
+        {
+            var astrixLine = new string('*', totalLength);
             _logMessage(astrixLine);
+        }
+
+        internal void BlankLine()
+        {
             _logMessage(string.Empty);
         }
     }

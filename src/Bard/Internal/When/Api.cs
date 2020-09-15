@@ -46,9 +46,9 @@ namespace Bard.Internal.When
             var messageContent = CreateMessageContent(model);
             var responseMessage = AsyncHelper.RunSync(() => _httpClient.PatchAsync(route, messageContent));
 
-            var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
-            var apiResult = new ApiResult(responseMessage, responseString);
-            var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
+            AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
+            
+            var response = new Response(_eventAggregator,  _httpClient.Result, _badRequestProvider, _logWriter);
 
             return response;
         }
@@ -70,9 +70,9 @@ namespace Bard.Internal.When
         public IResponse Get(string route)
         {
             var message = AsyncHelper.RunSync(() => _httpClient.GetAsync(route));
-            var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
-            var apiResult = new ApiResult(message, content);
-            var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
+            AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
+            
+            var response = new Response(_eventAggregator,  _httpClient.Result, _badRequestProvider, _logWriter);
 
             return response;
         }
@@ -81,9 +81,9 @@ namespace Bard.Internal.When
         {
             var message = AsyncHelper.RunSync(() => _httpClient.DeleteAsync(route));
 
-            var content = AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
-            var apiResult = new ApiResult(message, content);
-            var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
+            AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
+    
+            var response = new Response(_eventAggregator,  _httpClient.Result, _badRequestProvider, _logWriter);
 
             return response;
         }
@@ -100,27 +100,25 @@ namespace Bard.Internal.When
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
-        private IResponse PostOrPut(Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
+        private IResponse PostOrPut(Func<BardHttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
         {
             var messageContent = CreateMessageContent(null);
 
-            var responseMessage = AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
+            AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
+           
+            var response = new Response(_eventAggregator,  _httpClient.Result, _badRequestProvider, _logWriter);
 
-            var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
-            var apiResult = new ApiResult(responseMessage, responseString);
-            var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
             return response;
         }
 
         private IResponse PostOrPut<TModel>(TModel model,
-            Func<HttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
+            Func<BardHttpClient, StringContent, Task<HttpResponseMessage>> callHttpClient)
         {
             var messageContent = CreateMessageContent(model);
-            var responseMessage = AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
+            AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
 
-            var responseString = AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
-            var apiResult = new ApiResult(responseMessage, responseString);
-            var response = new Response(_eventAggregator, apiResult, _badRequestProvider, _logWriter);
+            var response = new Response(_eventAggregator, _httpClient.Result, _badRequestProvider, _logWriter);
+            
             return response;
         }
     }

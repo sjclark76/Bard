@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 
 namespace Bard
@@ -19,11 +20,15 @@ namespace Bard
 
         internal bool Log { get; set; }
 
+        internal bool ExceededElapsedTime(int? milliseconds);
+        
         /// <summary>
         ///     Assert the elapsed time of the API response
         /// </summary>
         ITime Time { get; }
 
+        internal TimeSpan? ElapsedTime { get; }
+        
         internal int? MaxElapsedTime { get; set; }
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace Bard.gRPC.Internal
 
         internal When(Func<TGrpcClient> grpcClientFactory, EventAggregator eventAggregator, Api api,
             LogWriter logWriter, Action preApiCall) : base(
-            api, logWriter, preApiCall)
+            api, eventAggregator, logWriter, preApiCall)
         {
             _grpcClientFactory = grpcClientFactory;
             _eventAggregator = eventAggregator;

@@ -7,17 +7,20 @@ using Bard.Internal.When;
 
 namespace Bard.Internal.Then
 {
-    internal class Headers : IHeaders, IHeadersShould, IInclude
+    internal class Headers : IHeaders, IHeadersShould, IInclude , IObserver<Func<IResponse>>
     {
         private readonly LogWriter _logWriter;
         private readonly HttpResponseMessage _responseMessage;
         private readonly ApiResult _apiResult;
+        private Func<IResponse>? _apiRequest;
+        private PerformanceMonitor _performanceMonitor;
 
         public Headers(ApiResult apiResult, LogWriter logWriter)
         {
             _logWriter = logWriter;
             _apiResult = apiResult;
             _responseMessage = apiResult.ResponseMessage;
+            _performanceMonitor = new PerformanceMonitor(_logWriter);
         }
 
         internal int? MaxElapsedTime { get; set; }
@@ -53,8 +56,8 @@ namespace Bard.Internal.Then
                     throw new BardException($"Header Value'{headerValue} not present.");
             }
 
-            _apiResult.AssertElapsedTime(MaxElapsedTime);
-
+            _performanceMonitor.AssertElapsedTime(_apiRequest, _apiResult, MaxElapsedTime);
+            
             return this;
         }
 
@@ -74,6 +77,21 @@ namespace Bard.Internal.Then
             ShouldInclude("Content-Length", headerValue);
 
             return this;
+        }
+
+        public void OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnError(System.Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNext(Func<IResponse> apiRequest)
+        {
+            _apiRequest = apiRequest;
         }
     }
 }

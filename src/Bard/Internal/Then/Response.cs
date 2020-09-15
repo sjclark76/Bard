@@ -1,25 +1,30 @@
+using System;
 using System.Net;
 using Bard.Infrastructure;
 using Bard.Internal.When;
 
 namespace Bard.Internal.Then
 {
-    internal class Response : IResponse, ITime
+    internal class Response : IResponse, ITime,  IObserver<Func<IResponse>>
     {
         private readonly ApiResult _apiResult;
         private readonly Headers _headers;
         private readonly LogWriter _logWriter;
         private readonly ShouldBe _shouldBe;
         private int? _maxElapsedTime;
+        private Func<IResponse>? _apiRequest;
 
-        internal Response(EventAggregator eventAggregator, ApiResult apiResult, IBadRequestProvider badRequestProvider,
+        internal Response(EventAggregator eventAggregator, ApiResult? apiResult, IBadRequestProvider badRequestProvider,
             LogWriter logWriter)
         {
-            _apiResult = apiResult;
+            _apiResult = apiResult ?? throw new BardException("apiResult cannot be null");
             _logWriter = logWriter;
             _shouldBe = new ShouldBe(apiResult, badRequestProvider, logWriter);
             _headers = new Headers(apiResult, logWriter);
             eventAggregator.Subscribe(_shouldBe);
+            eventAggregator.SubscribeToApiRequests(_shouldBe);
+            eventAggregator.SubscribeToApiRequests(_headers);
+            eventAggregator.SubscribeToApiRequests(this);
         }
 
         public IShouldBe ShouldBe => _shouldBe;
@@ -47,7 +52,14 @@ namespace Bard.Internal.Then
             _logWriter.WriteHttpResponseToConsole(_apiResult);
         }
 
+        bool IResponse.ExceededElapsedTime(int? milliseconds)
+        {
+            return _apiResult.ExceededElapsedTime(milliseconds);
+        }
+
         public ITime Time => this;
+
+        TimeSpan? IResponse.ElapsedTime => _apiResult.ElapsedTime;
 
         int? IResponse.MaxElapsedTime
         {
@@ -62,10 +74,25 @@ namespace Bard.Internal.Then
 
         public void LessThan(int milliseconds)
         {
-            _logWriter.LogHeaderMessage($"THEN THE RESPONSE SHOULD BE LESS THAN {milliseconds} MILLISECONDS");
-            _logWriter.WriteHttpResponseToConsole(_apiResult);
+            var performanceMonitor = new PerformanceMonitor(_logWriter);
 
-            _apiResult.AssertElapsedTime(milliseconds);
+            performanceMonitor.AssertElapsedTime(_apiRequest, _apiResult, milliseconds);
+        }
+
+
+        public void OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnError(System.Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNext(Func<IResponse> apiRequest)
+        {
+            _apiRequest = apiRequest;
         }
     }
 }

@@ -11,31 +11,31 @@ namespace Bard.Internal
     {
         private readonly HttpClient _client;
         private readonly IBadRequestProvider _badRequestProvider;
+        private readonly EventAggregator _eventAggregator;
 
         private readonly Then.Then _then;
         protected readonly LogWriter LogWriter;
         protected When.When InternalWhen;
-        private readonly EventAggregator _eventAggregator;
 
-        internal Scenario(ScenarioOptions options) : this(options.Client, options.LogMessage,
-            options.BadRequestProvider, options.Services, options.MaxApiResponseTime)
+        internal Scenario(ScenarioOptions options, EventAggregator eventAggregator) : this(options.Client, options.LogMessage,
+            options.BadRequestProvider, options.Services, options.MaxApiResponseTime, eventAggregator)
         {
         }
 
         protected Scenario(HttpClient? client, Action<string> logMessage, IBadRequestProvider badRequestProvider,
-            IServiceProvider? services, int? maxElapsedTime)
+            IServiceProvider? services, int? maxElapsedTime, EventAggregator eventAggregator)
         {
             _client = client ?? throw new BardConfigurationException("client not set.");
             _badRequestProvider = badRequestProvider;
-            _eventAggregator = new EventAggregator();
-            
+            _eventAggregator = eventAggregator;
+
             LogWriter = new LogWriter(logMessage, _eventAggregator);
 
             var pipeline = new PipelineBuilder(LogWriter);
 
             Context = new ScenarioContext(pipeline, FullLoggingApi(), LogWriter, services);
 
-            var when = new When.When(RequestLoggingApi(), LogWriter);
+            var when = new When.When(RequestLoggingApi(), _eventAggregator, LogWriter);
 
             InternalWhen = when;
 
@@ -71,15 +71,15 @@ namespace Bard.Internal
     {
         private readonly TStoryBook _given;
 
-        internal Scenario(ScenarioOptions<TStoryBook, TStoryData> options) : base(options.Client, options.LogMessage,
-            options.BadRequestProvider, options.Services, options.MaxApiResponseTime)
+        internal Scenario(ScenarioOptions<TStoryBook, TStoryData> options, EventAggregator eventAggregator) : base(options.Client, options.LogMessage,
+            options.BadRequestProvider, options.Services, options.MaxApiResponseTime, eventAggregator)
         {
             var context = new ScenarioContext<TStoryData>(Context);
 
             var story = options.StoryBook;
             story.Context = context;
 
-            InternalWhen = new When.When(RequestLoggingApi(), LogWriter, () => context.ExecutePipeline());
+            InternalWhen = new When.When(RequestLoggingApi(),eventAggregator , LogWriter, () => context.ExecutePipeline());
 
             _given = story;
         }

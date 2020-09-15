@@ -22,7 +22,7 @@ namespace Bard.Internal.Then
 
             if (JToken.DeepEquals(expectedSnapshotJToken, actualSnapshotJToken))
                 return;
-
+            
             var snapShotDiff = FindDiff(JToken.Parse(expectedSnapshot), JToken.Parse(actualSnapshot));
             throw new BardSnapshotException(snapShotDiff);
         }
@@ -82,8 +82,8 @@ namespace Bard.Internal.Then
                     var actual = (JArray) actualSnapshot;
                     var plus = new JArray(expected.Except(actual, new JTokenEqualityComparer()));
                     var minus = new JArray(actual.Except(expected, new JTokenEqualityComparer()));
-                    if (plus.HasValues) diff["+"] = plus;
-                    if (minus.HasValues) diff["-"] = minus;
+                    if (plus.HasValues) diff["expected"] = plus;
+                    if (minus.HasValues) diff["actual"] = minus;
                 }
                     break;
                 default:

@@ -12,7 +12,7 @@ namespace Bard.Tests.gRPC
 {
     public abstract class BankingTestBase : IDisposable
     {
-        protected readonly IScenario<BankAccountService.BankAccountServiceClient> Scenario;
+        protected Bard.gRPC.IScenario Scenario{ get; set; }
         private readonly IHost _host;
         private readonly HttpClient _httpClient;
 
@@ -34,11 +34,13 @@ namespace Bard.Tests.gRPC
                 {
                     options.Services = _host.Services;
                     options.LogMessage = output.WriteLine;
-                    options.GrpcClient = c => new BankAccountService.BankAccountServiceClient(c);
+                    //options.GrpcClient = c => new BankAccountService.BankAccountServiceClient(c);
                     options.Client = _httpClient;
                 });
         }
-        
+
+       
+
         public void Dispose()
         {
             _host.Dispose();
@@ -50,7 +52,7 @@ namespace Bard.Tests.gRPC
         [Fact]
         public void Foo()
         {
-            Scenario.When.Grpc(client => client.GetBankAccount(new BankAccountRequest()));
+            Scenario.When.Grpc<BankAccountService.BankAccountServiceClient, BankAccountResponse>(client => client.GetBankAccount(new BankAccountRequest()));
 
             Scenario.Then.Response.ShouldBe.Ok<BankAccountResponse>();
         }

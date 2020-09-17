@@ -44,7 +44,7 @@ namespace Bard.Tests.gRPC
                 {
                     options.Services = _host.Services;
                     options.LogMessage = s => _output.WriteLine(s);
-                    options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    //options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
                     options.Client = _httpClient;
                 });
 
@@ -53,7 +53,7 @@ namespace Bard.Tests.gRPC
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 
-            scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+            scenario.When.Grpc<CreditRatingCheck.CreditRatingCheckClient, CreditReply>(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Response.ShouldBe.Ok();
         }
@@ -67,13 +67,13 @@ namespace Bard.Tests.gRPC
                 {
                     options.Services = _host.Services;
                     options.LogMessage = s => _output.WriteLine(s);
-                    options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    //options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
                     options.Client = _httpClient;
                 });
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 
-            scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+            scenario.When.Grpc<CreditRatingCheck.CreditRatingCheckClient, CreditReply>(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Response.ShouldBe.Ok();
         }
@@ -87,13 +87,13 @@ namespace Bard.Tests.gRPC
                 {
                     options.Services = _host.Services;
                     options.LogMessage = s => _output.WriteLine(s);
-                    options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    //options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
                     options.Client = _httpClient;
                 });
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 
-            scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+            scenario.When.Grpc<CreditRatingCheck.CreditRatingCheckClient, CreditReply>(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Snapshot().Match<CreditReply>();
         }
@@ -108,7 +108,7 @@ namespace Bard.Tests.gRPC
                 {
                     options.Services = _host.Services;
                     options.LogMessage = s => _output.WriteLine(s);
-                    options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    //options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
                     options.Client = _httpClient;
                 });
             
@@ -117,7 +117,7 @@ namespace Bard.Tests.gRPC
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 
-            scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+            scenario.When.Grpc<CreditRatingCheck.CreditRatingCheckClient, CreditReply>(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Response.ShouldBe.Ok();
         }

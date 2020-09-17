@@ -8,7 +8,7 @@ namespace Bard.gRPC
     /// <summary>
     ///     Scenario Context allows state to be passed between stories.
     /// </summary>
-    public class GrpcScenarioContext<TGrpcClient> : ScenarioContext where TGrpcClient : ClientBase<TGrpcClient>
+    public class GrpcScenarioContext : ScenarioContext 
     {
         internal GrpcScenarioContext(IPipelineBuilder pipelineBuilder,
             IApi api, LogWriter logWriter, IServiceProvider? services,

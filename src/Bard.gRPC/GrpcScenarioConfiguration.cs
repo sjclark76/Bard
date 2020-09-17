@@ -36,14 +36,14 @@ namespace Bard.gRPC
             /// </summary>
             /// <param name="configure">The action that configures the scenario</param>
             /// <returns>The created scenario</returns>
-            public IScenario<TGrpcClient, TStoryBook, TStoryData> Configure(
-                Action<GrpcScenarioOptions<TGrpcClient, TStoryBook>> configure)
+            public Bard.gRPC.IScenario<TStoryBook, TStoryData> Configure(
+                Action<GrpcScenarioOptions<TStoryBook>> configure)
             {
-                var options = new GrpcScenarioOptions<TGrpcClient, TStoryBook>();
+                var options = new GrpcScenarioOptions<TStoryBook>();
 
                 configure(options);
 
-                return new Scenario<TGrpcClient, TStoryBook, TStoryData>(options);
+                return new Scenario<TStoryBook, TStoryData>(options);
             }
         }
 
@@ -58,13 +58,13 @@ namespace Bard.gRPC
             /// </summary>
             /// <param name="configure"></param>
             /// <returns></returns>
-            public IScenario<TGrpcClient> Configure(Action<GrpcScenarioOptions<TGrpcClient>> configure) 
+            public IScenario Configure(Action<GrpcScenarioOptions> configure) 
             {
-                var options = new GrpcScenarioOptions<TGrpcClient>();
+                var options = new GrpcScenarioOptions();
             
                 configure(options);
             
-                return new Scenario<TGrpcClient>(options);
+                return new Scenario(options);
             }
 
             /// <summary>

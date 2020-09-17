@@ -6,15 +6,16 @@ using Bard.Internal.Exception;
 using Bard.Internal.Then;
 using Bard.Internal.When;
 using Grpc.Core;
+using When = Bard.gRPC.Internal.When;
 
 namespace Bard.gRPC
 {
-    internal class Scenario<TGrpcClient> : IScenario<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
+    internal class Scenario : IScenario
 
     {
         private readonly Then _then;
 
-        internal Scenario(GrpcScenarioOptions<TGrpcClient> options)
+        internal Scenario(GrpcScenarioOptions options)
         {
             if (options.Client == null)
                 throw new BardConfigurationException("Client not set");
@@ -39,10 +40,10 @@ namespace Bard.gRPC
            
             var pipeline = new PipelineBuilder(logWriter);
 
-            Context = new GrpcScenarioContext<TGrpcClient>(pipeline, api, logWriter,
+            Context = new GrpcScenarioContext(pipeline, api, logWriter,
                 options.Services, clientFactory);
 
-            var when = new When<TGrpcClient>(clientFactory, eventAggregator, api, logWriter,
+            var when = new When(clientFactory, eventAggregator, api, logWriter,
                 () => Context.ExecutePipeline());
 
             When = when;
@@ -53,22 +54,21 @@ namespace Bard.gRPC
             eventAggregator.Subscribe(pipeline);
         }
 
-        protected GrpcScenarioContext<TGrpcClient> Context { get; set; }
+        protected GrpcScenarioContext Context { get; set; }
 
-        public IWhen<TGrpcClient> When { get; }
+        public IWhen When { get; }
 
         public IThen Then => _then;
     }
 
-    internal class Scenario<TGrpcClient, TStoryBook, TStoryData> : Scenario<TGrpcClient>,
-        IScenario<TGrpcClient, TStoryBook, TStoryData>
-        where TGrpcClient : ClientBase<TGrpcClient>
+    internal class Scenario<TStoryBook, TStoryData> : Scenario,
+        IScenario<TStoryBook, TStoryData>
         where TStoryBook : StoryBook<TStoryData>, new()
         where TStoryData : class, new()
     {
         private readonly TStoryBook _given;
 
-        internal Scenario(GrpcScenarioOptions<TGrpcClient, TStoryBook> options) : base(options)
+        internal Scenario(GrpcScenarioOptions<TStoryBook> options) : base(options)
         {
             var story = options.Story;
 

@@ -6,7 +6,7 @@ using Grpc.Core;
 
 namespace Bard.gRPC.Internal
 {
-    internal class When<TGrpcClient> : When, IWhen<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
+    internal class When : Bard.Internal.When.When, IWhen 
     {
         private readonly GrpcClientFactory _grpcClientFactory;
         private readonly EventAggregator _eventAggregator;
@@ -19,16 +19,16 @@ namespace Bard.gRPC.Internal
             _eventAggregator = eventAggregator;
         }
 
-        public TResponse Grpc<TResponse>(Func<TGrpcClient, TResponse> grpcCall)
+        public TResponse Grpc<TGrpcClient, TResponse>(Func<TGrpcClient, TResponse> grpcCall) where TGrpcClient : ClientBase<TGrpcClient>
         {
             PreApiCall?.Invoke();
-
+        
             WriteHeader();
-
+        
             var gRpcClient = _grpcClientFactory.Create<TGrpcClient>();
-
+        
             var response = grpcCall(gRpcClient);
-
+        
             _eventAggregator.PublishGrpcResponse(new GrpcResponse(response));
             
             return response;

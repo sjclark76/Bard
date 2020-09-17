@@ -1,12 +1,11 @@
-﻿using Bard.gRPC.Internal;
+﻿using System.Net.Http;
+using Bard.gRPC.Internal;
 using Bard.Infrastructure;
 using Bard.Internal;
 using Bard.Internal.Exception;
 using Bard.Internal.Then;
 using Bard.Internal.When;
 using Grpc.Core;
-using Grpc.Core.Interceptors;
-using Grpc.Net.Client;
 
 namespace Bard.gRPC
 {
@@ -29,28 +28,21 @@ namespace Bard.gRPC
             var bardClient = HttpClientBuilder
                 .CreateFullLoggingClient(originalClient, logWriter, options.BadRequestProvider, eventAggregator);
 
-            GrpcChannelOptions channelOptions = new GrpcChannelOptions
+            foreach (var grpc in options.GrpcClients)
             {
-                HttpClient = bardClient
-            };
-
-            var channel = GrpcChannel.ForAddress(bardClient.BaseAddress, channelOptions);
-            
-            TGrpcClient GRpcFactory()
-            {
-                if (options.GrpcClient == null)
-                    throw new BardConfigurationException($"{nameof(options.GrpcClient)} has not been configured.");
                 
-                return options.GrpcClient.Invoke(channel.Intercept(new BardClientInterceptor(logWriter)));
             }
-
+            
+            GrpcClientFactory clientFactory = new GrpcClientFactory(bardClient, logWriter);
+           
             var api = new Api(bardClient);
+           
             var pipeline = new PipelineBuilder(logWriter);
 
             Context = new GrpcScenarioContext<TGrpcClient>(pipeline, api, logWriter,
-                options.Services, GRpcFactory);
+                options.Services, clientFactory);
 
-            var when = new When<TGrpcClient>(GRpcFactory, eventAggregator, api, logWriter,
+            var when = new When<TGrpcClient>(clientFactory, eventAggregator, api, logWriter,
                 () => Context.ExecutePipeline());
 
             When = when;

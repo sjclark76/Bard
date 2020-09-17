@@ -8,10 +8,10 @@ namespace Bard.gRPC.Internal
 {
     internal class When<TGrpcClient> : When, IWhen<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
     {
-        private readonly Func<TGrpcClient> _grpcClientFactory;
+        private readonly GrpcClientFactory _grpcClientFactory;
         private readonly EventAggregator _eventAggregator;
 
-        internal When(Func<TGrpcClient> grpcClientFactory, EventAggregator eventAggregator, Api api,
+        internal When(GrpcClientFactory grpcClientFactory, EventAggregator eventAggregator, Api api,
             LogWriter logWriter, Action preApiCall) : base(
             api, eventAggregator, logWriter, preApiCall)
         {
@@ -25,7 +25,7 @@ namespace Bard.gRPC.Internal
 
             WriteHeader();
 
-            var gRpcClient = _grpcClientFactory();
+            var gRpcClient = _grpcClientFactory.Create<TGrpcClient>();
 
             var response = grpcCall(gRpcClient);
 

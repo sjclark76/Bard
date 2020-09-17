@@ -6,7 +6,7 @@ using Bard.Internal.Exception;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bard
-{
+{  
     /// <summary>
     ///     Scenario Context allows state to be passed between stories.
     /// </summary>
@@ -15,7 +15,7 @@ namespace Bard
         internal IServiceProvider? ServicesInternal;
 
         internal ScenarioContext(IPipelineBuilder pipelineBuilder, IApi api, LogWriter logWriter,
-            IServiceProvider? services, Func<object>? createGrpcClient = null)
+            IServiceProvider? services, Func<Type, object>? createGrpcClient = null)
         {
             Builder = pipelineBuilder;
             Api = api;
@@ -28,7 +28,7 @@ namespace Bard
 
         internal IPipelineBuilder Builder { get; }
 
-        internal Func<object>? CreateGrpcClient { get; set; }
+        internal Func<Type, object>? CreateGrpcClient { get; set; }
 
         /// <summary>
         ///     Provides access to the instance of IServiceProvider to use Dependency Injection from within a story.

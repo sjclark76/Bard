@@ -3,6 +3,7 @@ using System.Net.Http;
 using Bard.gRPC;
 using Bard.gRPCService;
 using Bard.Tests.Scenario;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
@@ -96,6 +97,58 @@ namespace Bard.Tests.gRPC
 
             scenario.Then.Snapshot().Match<CreditReply>();
         }
+        
+        [Fact]
+        public void Call_new_grpc_with_story_book()
+        {
+            var scenario = GrpcScenarioConfiguration
+                .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
+                .WithStoryBook<CreditCheckStoryBook, CreditCheckData>()
+                .Configure(options =>
+                {
+                    options.Services = _host.Services;
+                    options.LogMessage = s => _output.WriteLine(s);
+                    options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    options.Client = _httpClient;
+                });
+            
+            scenario.Given
+                .Nothing_much_happens();
+
+            var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
+
+            scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+
+            scenario.Then.Response.ShouldBe.Ok();
+        }
+        
+        // [Fact]
+        // public void Call_xnew_grpc_with_story_book()
+        // {
+        //     using var channel = GrpcChannel.ForAddress("https://localhost:5001");
+        //     var foo = new new CreditRatingCheck.CreditRatingCheckClient(new GrpcChannel())
+        //     var scenario = GrpcScenarioConfiguration
+        //         .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
+        //         .WithStoryBook<CreditCheckStoryBook, CreditCheckData>()
+        //         .Configure(options =>
+        //         {
+        //             options.Services = _host.Services;
+        //             options.LogMessage = s => _output.WriteLine(s);
+        //             options.AddGrpcClient<CreditRatingCheck.CreditRatingCheckClient>("address");
+        //             
+        //             //options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+        //             options.Client = _httpClient;
+        //         });
+        //     
+        //     scenario.Given
+        //         .Nothing_much_happens();
+        //
+        //     var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
+        //
+        //     scenario.When.Grpc(client => client.CheckCreditRequest(creditRequest));
+        //
+        //     scenario.Then.Response.ShouldBe.Ok();
+        // }
 
         public void Dispose()
         {

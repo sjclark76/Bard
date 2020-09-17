@@ -12,8 +12,8 @@ namespace Bard.gRPC
     {
         internal GrpcScenarioContext(IPipelineBuilder pipelineBuilder,
             IApi api, LogWriter logWriter, IServiceProvider? services,
-            Func<TGrpcClient> createGrpcClient) : base(
-            pipelineBuilder, api, logWriter, services, createGrpcClient)
+            GrpcClientFactory grpcClientFactory) : base(
+            pipelineBuilder, api, logWriter, services, grpcClientFactory.Create)
         {
         }
     }

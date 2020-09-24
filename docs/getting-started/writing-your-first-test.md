@@ -19,7 +19,7 @@ var scenario = ScenarioConfiguration
 ```
 
 {% hint style="info" %}
- The GitHub repository has some example tests you can see a working example [here](https://github.com/sjclark76/bard/blob/515c7eb9c4490018af6cf4042d0b1fd48c32bd76/Bard/Bard.Tests/BankingTestBase.cs#L14-L32).
+ The GitHub repository has some example tests you can see a working example [here](https://github.com/sjclark76/Bard/blob/master/src/Bard.Tests/BankingTestBase.cs).
 {% endhint %}
 
 ## Write The First Test

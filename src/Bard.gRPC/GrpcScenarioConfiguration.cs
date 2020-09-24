@@ -36,7 +36,7 @@ namespace Bard.gRPC
             /// </summary>
             /// <param name="configure">The action that configures the scenario</param>
             /// <returns>The created scenario</returns>
-            public Bard.gRPC.IScenario<TStoryBook, TStoryData> Configure(
+            public IScenario<TStoryBook, TStoryData> Configure(
                 Action<GrpcScenarioOptions<TStoryBook>> configure)
             {
                 var options = new GrpcScenarioOptions<TStoryBook>();

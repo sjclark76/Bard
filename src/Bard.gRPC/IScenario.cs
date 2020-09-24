@@ -23,9 +23,17 @@ namespace Bard.gRPC
        /// <summary>
         ///     Test Act
         /// </summary>
-        Bard.gRPC.IWhen  When { get; }
+        IWhen When { get; }
 
         /// <summary>
+        /// Call the gRPC client during the test Act
+        /// </summary>
+        /// <typeparam name="TGrpcClient"></typeparam>
+        /// <returns></returns>
+       IGrpc<TGrpcClient> Grpc<TGrpcClient>() where TGrpcClient : ClientBase<TGrpcClient>;
+
+
+       /// <summary>
         ///     Test Assertion
         /// </summary>
         IThen Then { get; }

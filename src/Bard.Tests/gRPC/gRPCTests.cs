@@ -38,13 +38,14 @@ namespace Bard.Tests.gRPC
         public void Call_grpc_with_story_book()
         {
             var scenario = GrpcScenarioConfiguration
+                    //TODO ??
                 .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
                 .WithStoryBook<CreditCheckStoryBook, CreditCheckData>()
                 .Configure(options =>
                 {
                     options.Services = _host.Services;
                     options.LogMessage = s => _output.WriteLine(s);
-                    //options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    options.AddGrpcClient<CreditRatingCheck.CreditRatingCheckClient>("http://localhost/");
                     options.Client = _httpClient;
                 });
 
@@ -53,7 +54,9 @@ namespace Bard.Tests.gRPC
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 
-            scenario.When.Grpc<CreditRatingCheck.CreditRatingCheckClient, CreditReply>(client => client.CheckCreditRequest(creditRequest));
+            scenario
+                .Grpc<CreditRatingCheck.CreditRatingCheckClient>()
+                .When(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Response.ShouldBe.Ok();
         }
@@ -67,13 +70,13 @@ namespace Bard.Tests.gRPC
                 {
                     options.Services = _host.Services;
                     options.LogMessage = s => _output.WriteLine(s);
-                    //options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    options.AddGrpcClient<CreditRatingCheck.CreditRatingCheckClient>("http://localhost/");
                     options.Client = _httpClient;
                 });
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 
-            scenario.When.Grpc<CreditRatingCheck.CreditRatingCheckClient, CreditReply>(client => client.CheckCreditRequest(creditRequest));
+            scenario.Grpc<CreditRatingCheck.CreditRatingCheckClient>().When(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Response.ShouldBe.Ok();
         }
@@ -87,13 +90,15 @@ namespace Bard.Tests.gRPC
                 {
                     options.Services = _host.Services;
                     options.LogMessage = s => _output.WriteLine(s);
-                    //options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    
+                    options.AddGrpcClient<CreditRatingCheck.CreditRatingCheckClient>("http://localhost/");
+                    
                     options.Client = _httpClient;
                 });
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 
-            scenario.When.Grpc<CreditRatingCheck.CreditRatingCheckClient, CreditReply>(client => client.CheckCreditRequest(creditRequest));
+            scenario.Grpc<CreditRatingCheck.CreditRatingCheckClient>().When(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Snapshot().Match<CreditReply>();
         }
@@ -108,7 +113,7 @@ namespace Bard.Tests.gRPC
                 {
                     options.Services = _host.Services;
                     options.LogMessage = s => _output.WriteLine(s);
-                    //options.GrpcClient = c => new CreditRatingCheck.CreditRatingCheckClient(c);
+                    options.AddGrpcClient<CreditRatingCheck.CreditRatingCheckClient>("http://localhost/");
                     options.Client = _httpClient;
                 });
             
@@ -117,7 +122,7 @@ namespace Bard.Tests.gRPC
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 
-            scenario.When.Grpc<CreditRatingCheck.CreditRatingCheckClient, CreditReply>(client => client.CheckCreditRequest(creditRequest));
+            scenario.Grpc<CreditRatingCheck.CreditRatingCheckClient>().When(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Response.ShouldBe.Ok();
         }

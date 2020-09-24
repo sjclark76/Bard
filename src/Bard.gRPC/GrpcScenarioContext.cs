@@ -1,7 +1,6 @@
 ﻿using System;
 using Bard.Infrastructure;
 using Bard.Internal;
-using Grpc.Core;
 
 namespace Bard.gRPC
 {

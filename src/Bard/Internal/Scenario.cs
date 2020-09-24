@@ -79,7 +79,7 @@ namespace Bard.Internal
             var story = options.StoryBook;
             story.Context = context;
 
-            InternalWhen = new When.When(RequestLoggingApi(),eventAggregator , LogWriter, () => context.ExecutePipeline());
+            InternalWhen = new When.When(RequestLoggingApi(), eventAggregator, LogWriter, () => context.ExecutePipeline());
 
             _given = story;
         }

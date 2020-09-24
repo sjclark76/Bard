@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Bard.gRPC.Internal;
 using Bard.Infrastructure;
 using Bard.Internal;
@@ -9,42 +10,38 @@ namespace Bard.gRPC
 {
     internal class GrpcClientFactory
     {
-        private readonly BardHttpClient _httpClient;
+        private readonly Dictionary<Type, string> _grpcClients;
+        private readonly BardHttpClient _bardHttpClient;
         private readonly LogWriter _logWriter;
 
-        internal GrpcClientFactory(BardHttpClient httpClient, LogWriter logWriter)
+        internal GrpcClientFactory(Dictionary<Type, string> grpcClients, BardHttpClient bardHttpClient, LogWriter logWriter)
         {
-            _httpClient = httpClient;
+            _grpcClients = grpcClients;
+            _bardHttpClient = bardHttpClient;
             _logWriter = logWriter;
         }
 
         internal object Create(Type gRpcClientType)
         {
+            if (_grpcClients.ContainsKey(gRpcClientType) == false)
+                throw new BardException($"gRPC client :{gRpcClientType.Name} base url not registered.");
+
             GrpcChannelOptions channelOptions = new GrpcChannelOptions
             {
-                HttpClient = _httpClient
+                HttpClient = _bardHttpClient
             };
-        
-            var channel = GrpcChannel.ForAddress(_httpClient.BaseAddress, channelOptions);
+            
+            var channel = GrpcChannel.ForAddress(_grpcClients[gRpcClientType], channelOptions);
 
-            var grpcClient = Activator.CreateInstance(gRpcClientType, channel.Intercept(new BardClientInterceptor(_logWriter)));
-        
+            var grpcClient =
+                Activator.CreateInstance(gRpcClientType, channel.Intercept(new BardClientInterceptor(_logWriter)));
+
             return grpcClient;
         }
-        
+
         internal TGrpcClient Create<TGrpcClient>()
         {
-            GrpcChannelOptions channelOptions = new GrpcChannelOptions
-            {
-                HttpClient = _httpClient
-            };
-        
-            var channel = GrpcChannel.ForAddress(_httpClient.BaseAddress, channelOptions);
-        
-            var grpcClient = (TGrpcClient) Activator.CreateInstance(typeof(TGrpcClient),
-                channel.Intercept(new BardClientInterceptor(_logWriter)));
-        
-            return grpcClient;
+            return (TGrpcClient) Create(typeof(TGrpcClient));
         }
     }
 }

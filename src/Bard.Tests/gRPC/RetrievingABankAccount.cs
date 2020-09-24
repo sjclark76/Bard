@@ -34,7 +34,7 @@ namespace Bard.Tests.gRPC
                 {
                     options.Services = _host.Services;
                     options.LogMessage = output.WriteLine;
-                    //options.GrpcClient = c => new BankAccountService.BankAccountServiceClient(c);
+                    options.AddGrpcClient<BankAccountService.BankAccountServiceClient>("http://localhost");
                     options.Client = _httpClient;
                 });
         }
@@ -52,8 +52,10 @@ namespace Bard.Tests.gRPC
         [Fact]
         public void Foo()
         {
-            Scenario.When.Grpc<BankAccountService.BankAccountServiceClient, BankAccountResponse>(client => client.GetBankAccount(new BankAccountRequest()));
-
+            Scenario
+                .Grpc<BankAccountService.BankAccountServiceClient>()
+                .When(client => client.GetBankAccount(new BankAccountRequest()));
+            
             Scenario.Then.Response.ShouldBe.Ok<BankAccountResponse>();
         }
 

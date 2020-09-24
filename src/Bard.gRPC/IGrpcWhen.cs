@@ -3,11 +3,7 @@ using Grpc.Core;
 
 namespace Bard.gRPC
 {
-    /// <summary>
-    ///     Test Actor
-    /// </summary>
-    /// <typeparam name="TGrpcClient"></typeparam>
-    public interface IWhen
+    public interface IGrpc<out TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
     {
         /// <summary>
         ///     Call the gRPC client during the test Act
@@ -15,7 +11,6 @@ namespace Bard.gRPC
         /// <param name="grpcCall"></param>
         /// <typeparam name="TResponse"></typeparam>
         /// <returns></returns>
-        TResponse Grpc<TGrpcClient, TResponse>(Func<TGrpcClient, TResponse> grpcCall)
-            where TGrpcClient : ClientBase<TGrpcClient>;
+        TResponse When<TResponse>(Func<TGrpcClient, TResponse> grpcCall);
     }
 }

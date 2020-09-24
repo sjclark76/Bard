@@ -9,7 +9,7 @@ namespace Bard.Tests.Scenario
 
     public class CreditCheckStoryBook : StoryBook<CreditCheckData>
     {
-        public EndChapter<CreditCheckData> Nothing_much_happens()
+        public NothingMuchHappens Call_credit_check_service()
         {
             return When(context =>
             {
@@ -23,7 +23,19 @@ namespace Bard.Tests.Scenario
                     });
                 
                 context.Writer.LogObject(response);
-                
+            }).ProceedToChapter<NothingMuchHappens>();
+        }
+    }
+
+    public class NothingMuchHappens : Chapter<CreditCheckData>
+    {
+        public EndChapter<CreditCheckData> Call_banking_service()
+        {
+            return When(context =>
+            {
+                var gRpcClient = context.Grpc<BankAccountService.BankAccountServiceClient>();
+
+                gRpcClient.GetBankAccount(new BankAccountRequest());
             }).End();
         }
     }

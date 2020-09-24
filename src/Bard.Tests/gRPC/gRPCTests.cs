@@ -3,7 +3,6 @@ using System.Net.Http;
 using Bard.gRPC;
 using Bard.gRPCService;
 using Bard.Tests.Scenario;
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
@@ -38,19 +37,20 @@ namespace Bard.Tests.gRPC
         public void Call_grpc_with_story_book()
         {
             var scenario = GrpcScenarioConfiguration
-                    //TODO ??
-                .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
+                .UseGrpc()
                 .WithStoryBook<CreditCheckStoryBook, CreditCheckData>()
                 .Configure(options =>
                 {
                     options.Services = _host.Services;
                     options.LogMessage = s => _output.WriteLine(s);
+                    options.AddGrpcClient<BankAccountService.BankAccountServiceClient>("http://localhost");
                     options.AddGrpcClient<CreditRatingCheck.CreditRatingCheckClient>("http://localhost/");
                     options.Client = _httpClient;
                 });
 
             scenario.Given
-                .Nothing_much_happens();
+                .Call_credit_check_service()
+                .Call_banking_service();
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 
@@ -65,7 +65,7 @@ namespace Bard.Tests.gRPC
         public void Call_grpc_without_story_book()
         {
             var scenario = GrpcScenarioConfiguration
-                .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
+                .UseGrpc()
                 .Configure(options =>
                 {
                     options.Services = _host.Services;
@@ -85,7 +85,7 @@ namespace Bard.Tests.gRPC
         public void Call_grpc_snapshot()
         {
             var scenario = GrpcScenarioConfiguration
-                .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
+                .UseGrpc()
                 .Configure(options =>
                 {
                     options.Services = _host.Services;
@@ -107,7 +107,7 @@ namespace Bard.Tests.gRPC
         public void Call_new_grpc_with_story_book()
         {
             var scenario = GrpcScenarioConfiguration
-                .UseGrpc<CreditRatingCheck.CreditRatingCheckClient>()
+                .UseGrpc()
                 .WithStoryBook<CreditCheckStoryBook, CreditCheckData>()
                 .Configure(options =>
                 {
@@ -118,7 +118,7 @@ namespace Bard.Tests.gRPC
                 });
             
             scenario.Given
-                .Nothing_much_happens();
+                .Call_credit_check_service();
 
             var creditRequest = new CreditRequest {CustomerId = "id0201", Credit = 7000};
 

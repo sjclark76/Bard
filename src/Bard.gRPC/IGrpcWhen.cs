@@ -3,6 +3,10 @@ using Grpc.Core;
 
 namespace Bard.gRPC
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TGrpcClient"></typeparam>
     public interface IGrpc<out TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
     {
         /// <summary>

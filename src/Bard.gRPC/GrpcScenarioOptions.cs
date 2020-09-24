@@ -19,6 +19,11 @@ namespace Bard.gRPC
             GrpcClients = new Dictionary<Type, string>();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="address"></param>
+        /// <typeparam name="T"></typeparam>
         public void AddGrpcClient<T>(string address) where T : ClientBase<T>
         {
             GrpcClients.Add(typeof(T), address);

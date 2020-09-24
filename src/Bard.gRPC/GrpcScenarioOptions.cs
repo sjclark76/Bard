@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Bard.Configuration;
 using Grpc.Core;
 
@@ -9,12 +10,24 @@ namespace Bard.gRPC
     ///     necessary to customize and bootstrap a working
     ///     gRPC Scenario
     /// </summary>
-    public class GrpcScenarioOptions<TGrpcClient> : ScenarioOptions where TGrpcClient : ClientBase<TGrpcClient>
+    public class GrpcScenarioOptions : ScenarioOptions 
     {
+        internal Dictionary<Type, string> GrpcClients { get; }
+
+        internal GrpcScenarioOptions()
+        {
+            GrpcClients = new Dictionary<Type, string>();
+        }
+
         /// <summary>
-        ///     The function to create a gRPC client
+        /// 
         /// </summary>
-        public Func<CallInvoker, TGrpcClient>? GrpcClient { get; set; }
+        /// <param name="address"></param>
+        /// <typeparam name="T"></typeparam>
+        public void AddGrpcClient<T>(string address) where T : ClientBase<T>
+        {
+            GrpcClients.Add(typeof(T), address);
+        }
     }
 
     /// <summary>
@@ -22,8 +35,8 @@ namespace Bard.gRPC
     ///     necessary to customize and bootstrap a working
     ///     gRPC Scenario with StoryBook
     /// </summary>
-    public class GrpcScenarioOptions<TGrpcClient, TStoryBook> : GrpcScenarioOptions<TGrpcClient>
-        where TGrpcClient : ClientBase<TGrpcClient> where TStoryBook : new()
+    public class GrpcScenarioOptions<TStoryBook> : GrpcScenarioOptions
+         where TStoryBook : new()
     {
         internal GrpcScenarioOptions()
         {

@@ -1,82 +1,78 @@
-﻿using Bard.gRPC.Internal;
+﻿using System.Linq;
+using Bard.gRPC.Internal;
 using Bard.Infrastructure;
 using Bard.Internal;
 using Bard.Internal.Exception;
 using Bard.Internal.Then;
 using Bard.Internal.When;
 using Grpc.Core;
-using Grpc.Core.Interceptors;
-using Grpc.Net.Client;
 
 namespace Bard.gRPC
 {
-    internal class Scenario<TGrpcClient> : IScenario<TGrpcClient> where TGrpcClient : ClientBase<TGrpcClient>
+    internal class Scenario : IScenario
 
     {
+        private readonly Api _api;
+        private readonly GrpcClientFactory _clientFactory;
+        private readonly EventAggregator _eventAggregator;
+        private readonly LogWriter _logWriter;
         private readonly Then _then;
+        private readonly IWhen _when;
 
-        internal Scenario(GrpcScenarioOptions<TGrpcClient> options)
+        internal Scenario(GrpcScenarioOptions options)
         {
-            if (options.Client == null)
+            if (options.GrpcClients.Any() == false && options.Client == null)
                 throw new BardConfigurationException("Client not set");
 
-            var eventAggregator = new EventAggregator();
-            
-            var logWriter = new LogWriter(options.LogMessage, eventAggregator);
+            _eventAggregator = new EventAggregator();
 
-            var originalClient = options.Client;
+            _logWriter = new LogWriter(options.LogMessage, _eventAggregator);
+
+            var originalClient = options.Client ?? throw new BardConfigurationException("client not set.");
 
             var bardClient = HttpClientBuilder
-                .CreateFullLoggingClient(originalClient, logWriter, options.BadRequestProvider, eventAggregator);
+                .CreateFullLoggingClient(originalClient, _logWriter, options.BadRequestProvider, _eventAggregator);
 
-            GrpcChannelOptions channelOptions = new GrpcChannelOptions
-            {
-                HttpClient = bardClient
-            };
+            _clientFactory = new GrpcClientFactory(options.GrpcClients, bardClient, _logWriter);
 
-            var channel = GrpcChannel.ForAddress(bardClient.BaseAddress, channelOptions);
-            
-            TGrpcClient GRpcFactory()
-            {
-                if (options.GrpcClient == null)
-                    throw new BardConfigurationException($"{nameof(options.GrpcClient)} has not been configured.");
-                
-                return options.GrpcClient.Invoke(channel.Intercept(new BardClientInterceptor(logWriter)));
-            }
+            _api = new Api(bardClient);
 
-            var api = new Api(bardClient);
-            var pipeline = new PipelineBuilder(logWriter);
+            var pipeline = new PipelineBuilder(_logWriter);
 
-            Context = new GrpcScenarioContext<TGrpcClient>(pipeline, api, logWriter,
-                options.Services, GRpcFactory);
+            Context = new GrpcScenarioContext(pipeline, _api, _logWriter,
+                options.Services, _clientFactory);
 
-            var when = new When<TGrpcClient>(GRpcFactory, eventAggregator, api, logWriter,
-                () => Context.ExecutePipeline());
+            _when = new When(_api, _eventAggregator, _logWriter);
 
-            When = when;
+            _then = new Then(null, _logWriter);
 
-            _then = new Then(null, logWriter);
-
-            eventAggregator.Subscribe(_then);
-            eventAggregator.Subscribe(pipeline);
+            _eventAggregator.Subscribe(_then);
+            _eventAggregator.Subscribe(pipeline);
         }
 
-        protected GrpcScenarioContext<TGrpcClient> Context { get; set; }
+        protected GrpcScenarioContext Context { get; }
 
-        public IWhen<TGrpcClient> When { get; }
+        IWhen IScenario.When => _when;
+
+        public IGrpc<TGrpcClient> Grpc<TGrpcClient>() where TGrpcClient : ClientBase<TGrpcClient>
+        {
+            var grpcWhen = new GrpcWhen<TGrpcClient>(_clientFactory, _eventAggregator, _api, _logWriter,
+                () => Context.ExecutePipeline());
+
+            return grpcWhen;
+        }
 
         public IThen Then => _then;
     }
 
-    internal class Scenario<TGrpcClient, TStoryBook, TStoryData> : Scenario<TGrpcClient>,
-        IScenario<TGrpcClient, TStoryBook, TStoryData>
-        where TGrpcClient : ClientBase<TGrpcClient>
+    internal class Scenario<TStoryBook, TStoryData> : Scenario,
+        IScenario<TStoryBook, TStoryData>
         where TStoryBook : StoryBook<TStoryData>, new()
         where TStoryData : class, new()
     {
         private readonly TStoryBook _given;
 
-        internal Scenario(GrpcScenarioOptions<TGrpcClient, TStoryBook> options) : base(options)
+        internal Scenario(GrpcScenarioOptions<TStoryBook> options) : base(options)
         {
             var story = options.Story;
 

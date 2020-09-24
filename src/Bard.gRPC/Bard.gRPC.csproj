@@ -9,7 +9,7 @@
         <Version>3.0.0</Version>
         <PackageTags>BDD Integration-Testing Testing Fluent gRPC API micro-services</PackageTags>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageVersion/>
+        <PackageVersion />
         <Description>A .NET Functional gRPC API Testing Framework</Description>
         <PackageProjectUrl>https://docs.bard.net.nz</PackageProjectUrl>
         <RepositoryUrl>https://github.com/sjclark76/Bard</RepositoryUrl>
@@ -30,12 +30,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Bard\Bard.csproj"/>
+        <ProjectReference Include="..\Bard\Bard.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.Core.Api" Version="2.27.0"/>
-        <PackageReference Include="Grpc.Net.Client" Version="2.27.0"/>
-        <PackageReference Include="MinVer" Version="2.3.0"/>
+        <PackageReference Include="Grpc.Core.Api" Version="2.27.0" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.27.0" />
+        <PackageReference Include="MinVer" Version="2.3.0" />
     </ItemGroup>
 </Project>

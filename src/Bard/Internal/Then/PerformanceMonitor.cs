@@ -25,7 +25,6 @@ namespace Bard.Internal.Then
                 _logWriter.LogLineBreak();
                 _logWriter.BlankLine();
                 return response;
-
             }
 
             if (apiResult.ExceededElapsedTime(maxElapsedTime))
@@ -36,7 +35,7 @@ namespace Bard.Internal.Then
                 
                 var totalTime = new TimeSpan();
                 
-                for (var i = 0 ;i < retryCount; i++)
+                for (var i = 0; i < retryCount; i++)
                 {
                     var response = RetryApiCall(i);
 
@@ -48,7 +47,6 @@ namespace Bard.Internal.Then
                 _logWriter.LogMessage($"Average Response Time: {averageTime.TotalMilliseconds} (milliseconds)");
                 
                 apiResult.AssertElapsedTime(averageTime, maxElapsedTime);
-                
             }
         }
     }

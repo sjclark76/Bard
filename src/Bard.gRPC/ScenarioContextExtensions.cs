@@ -20,9 +20,10 @@ namespace Bard.gRPC
             if (context.CreateGrpcClient == null)
                 throw new BardConfigurationException($"context {nameof(context.CreateGrpcClient)} not set.");
 
-            var gRpcClient = (TGrpcClient) context.CreateGrpcClient();
+            
+            var gRpcClient = context.CreateGrpcClient(typeof(TGrpcClient));
 
-            return gRpcClient;
+            return (TGrpcClient) gRpcClient;
         }
     }
 }

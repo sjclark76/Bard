@@ -7,13 +7,13 @@ using Bard.Internal.When;
 
 namespace Bard.Internal.Then
 {
-    internal class Headers : IHeaders, IHeadersShould, IInclude , IObserver<Func<IResponse>>
+    internal class Headers : IHeaders, IHeadersShould, IInclude, IObserver<Func<IResponse>>
     {
         private readonly LogWriter _logWriter;
         private readonly HttpResponseMessage _responseMessage;
         private readonly ApiResult _apiResult;
         private Func<IResponse>? _apiRequest;
-        private PerformanceMonitor _performanceMonitor;
+        private readonly PerformanceMonitor _performanceMonitor;
 
         public Headers(ApiResult apiResult, LogWriter logWriter)
         {

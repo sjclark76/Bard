@@ -14,10 +14,10 @@ namespace Bard.Tests.GET
         private const string ApiBankaccounts = "api/bankaccounts";
 
         
-        // [Theory(Skip = "")]
-        // [InlineData("Dougal")]
-        // [InlineData("Dexter")]
-        // [InlineData("Fergus")]
+        [Theory]
+        [InlineData("Dougal")]
+        [InlineData("Dexter")]
+        [InlineData("Fergus")]
         public void Then_the_snapshot_customer_should_be_correct(string customerName)
         {
             Given
@@ -32,7 +32,7 @@ namespace Bard.Tests.GET
                 .Match<BankAccount>(options => options.IgnoreField("Id"));
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void Then_the_snapshot_for_my_scenario_should_be_correct()
         {
             MyScenario
@@ -48,7 +48,7 @@ namespace Bard.Tests.GET
                 .Match<BankAccount>(options => options.IgnoreField<int>("Id"));
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void Then_the_snapshot_should_be_correct()
         {
             Given

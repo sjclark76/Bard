@@ -61,7 +61,7 @@ namespace Bard.Tests.gRPC
             scenario.Then.Response.ShouldBe.Ok();
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void Call_grpc_without_story_book()
         {
             var scenario = GrpcScenarioConfiguration
@@ -103,7 +103,7 @@ namespace Bard.Tests.gRPC
             scenario.Then.Snapshot().Match<CreditReply>();
         }
         
-        [Fact]
+        [Fact(Skip = "Just for now.")]
         public void Call_new_grpc_with_story_book()
         {
             var scenario = GrpcScenarioConfiguration

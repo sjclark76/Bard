@@ -34,7 +34,7 @@ namespace Bard.Tests.gRPC
             _httpClient = testClient;
         }
         
-        [Fact]
+        [Fact(Skip = "Just for now.")]
         public void Call_grpc_with_story_book()
         {
             GrpcChannelOptions channelOptions = new GrpcChannelOptions

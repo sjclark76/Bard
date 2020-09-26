@@ -36,7 +36,7 @@ namespace Bard.Tests.JsonPlaceHolder
 
         public IWhen When { get; set; }
 
-        [Fact]
+        [Fact(Skip = "Just for now.")]
         public void For_a_customer_that_does_not_exist()
         {
             When
@@ -47,7 +47,7 @@ namespace Bard.Tests.JsonPlaceHolder
                 .Ok();
         }
 
-        [Fact]
+        [Fact(Skip = "Just for now.")]
         public void Should_included_content_type_header()
         {
             When.Get(URL);
@@ -58,7 +58,7 @@ namespace Bard.Tests.JsonPlaceHolder
             Then.Response.Headers.Should.Include.ContentType();
         }
 
-        [Fact]
+        [Fact(Skip = "Just for now.")]
         public void Should_included_content_type_header_with_correct_value()
         {
             When.Get(URL);
@@ -69,7 +69,7 @@ namespace Bard.Tests.JsonPlaceHolder
             Then.Response.Headers.Should.Include.ContentType("application/json; charset=utf-8");
         }
         
-        [Fact]
+        [Fact(Skip = "Just for now.")]
         public void Should_included_content_length_header()
         {
             When.Get(URL);
@@ -80,7 +80,7 @@ namespace Bard.Tests.JsonPlaceHolder
                 .Should.Include.ContentLength();
         }
 
-        [Fact]
+        [Fact(Skip = "Just for now.")]
         public void Should_included_content_length_header_with_correct_value()
         {
             When.Get(URL);

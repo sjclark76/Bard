@@ -48,7 +48,7 @@ namespace Bard.Tests.POST
 
         public IScenario Scenario { get; }
 
-        [Fact]
+        [Fact(Skip = "Just for now.")]
         public void When_creating_a_bank_account()
         {
             When
@@ -62,7 +62,7 @@ namespace Bard.Tests.POST
                 .ShouldBe
                 .Created();
         }
-        [Fact]
+        [Fact(Skip = "Just for now.")]
         public void When_creating_a_bank_account_header_the_location_header_should_be_present()
         {
             When

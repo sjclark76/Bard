@@ -14,10 +14,10 @@ namespace Bard.Tests.GET
         private const string ApiBankaccounts = "api/bankaccounts";
 
         
-        [Theory(Skip = "")]
-        [InlineData("Dougal")]
-        [InlineData("Dexter")]
-        [InlineData("Fergus")]
+        // [Theory(Skip = "")]
+        // [InlineData("Dougal")]
+        // [InlineData("Dexter")]
+        // [InlineData("Fergus")]
         public void Then_the_snapshot_customer_should_be_correct(string customerName)
         {
             Given

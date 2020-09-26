@@ -26,7 +26,7 @@ namespace Bard.Tests.GET
                 .NotFound();
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void Given_that_a_bank_account_has_been_created()
         {
             Given
@@ -66,7 +66,7 @@ namespace Bard.Tests.GET
                 .ShouldBe(75);
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void Given_that_multiple_deposits_have_been_made_then_the_balance_should_be_correct()
         {
             Given
@@ -86,7 +86,7 @@ namespace Bard.Tests.GET
                 .ShouldBe(75);
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void If_a_bank_account_has_been_updated_then_the_customer_name_should_be_correct()
         {
             Given
@@ -104,7 +104,7 @@ namespace Bard.Tests.GET
                 .ShouldBe("Fergus");
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void Then_the_customer_name_should_be_correct()
         {
             Given
@@ -120,5 +120,7 @@ namespace Bard.Tests.GET
                 .CustomerName
                 .ShouldBe("Fred");
         }
+        
+       
     }
 }

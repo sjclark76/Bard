@@ -42,7 +42,7 @@ namespace Bard.Tests.POST
                 .WithMessage("Insufficient Funds to make withdrawal.");
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void If_the_the_transfer_is_successful_then_an_ok_response_should_be_returned()
         {
             Given
@@ -65,7 +65,7 @@ namespace Bard.Tests.POST
             Then.Response.ShouldBe.Created();
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void Transfer_extracting_result_multiple_times()
         {
             Given

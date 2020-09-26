@@ -11,7 +11,7 @@ namespace Bard.Tests.POST
         {
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void If_a_deposit_is_made_for_bank_account_that_does_not_exist_then_a_404_should_be_returned()
         {
             Given
@@ -26,7 +26,7 @@ namespace Bard.Tests.POST
                 .NotFound();
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void If_the_deposit_is_successful_then_an_ok_response_should_be_returned()
         {
             Given

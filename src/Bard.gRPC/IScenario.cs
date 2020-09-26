@@ -1,11 +1,12 @@
-﻿using Grpc.Core;
+﻿using System;
+using Grpc.Core;
 
 namespace Bard.gRPC
 {
     /// <summary>
     ///     Full Scenario with Given When and Then functionality
     /// </summary>
-    public interface IScenario<out TStoryBook, TStoryData>  : IScenario
+    public interface IScenario<out TStoryBook, TStoryData> : IScenario
         where TStoryBook : StoryBook<TStoryData>, new()
         where TStoryData : class, new()
     {
@@ -14,28 +15,27 @@ namespace Bard.gRPC
         /// </summary>
         TStoryBook Given { get; }
     }
-    
+
     /// <summary>
     ///     Basic Scenario with When and Then functionality
     /// </summary>
-    public interface IScenario
+    public interface IScenario : IDisposable
     {
-       /// <summary>
+        /// <summary>
         ///     Test Act
         /// </summary>
         IWhen When { get; }
 
         /// <summary>
-        /// Call the gRPC client during the test Act
-        /// </summary>
-        /// <typeparam name="TGrpcClient"></typeparam>
-        /// <returns></returns>
-       IGrpc<TGrpcClient> Grpc<TGrpcClient>() where TGrpcClient : ClientBase<TGrpcClient>;
-
-
-       /// <summary>
         ///     Test Assertion
         /// </summary>
         IThen Then { get; }
+
+        /// <summary>
+        ///     Call the gRPC client during the test Act
+        /// </summary>
+        /// <typeparam name="TGrpcClient"></typeparam>
+        /// <returns></returns>
+        IGrpc<TGrpcClient> Grpc<TGrpcClient>() where TGrpcClient : ClientBase<TGrpcClient>;
     }
 }

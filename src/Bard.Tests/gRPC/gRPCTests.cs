@@ -79,6 +79,9 @@ namespace Bard.Tests.gRPC
             scenario.Grpc<CreditRatingCheck.CreditRatingCheckClient>().When(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Response.ShouldBe.Ok();
+            
+            scenario.Dispose();
+
         }
         
         [Fact(Skip = "Just for now.")]
@@ -125,6 +128,7 @@ namespace Bard.Tests.gRPC
             scenario.Grpc<CreditRatingCheck.CreditRatingCheckClient>().When(client => client.CheckCreditRequest(creditRequest));
 
             scenario.Then.Response.ShouldBe.Ok();
+            
         }
         
         // [Fact]

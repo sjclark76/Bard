@@ -8,17 +8,19 @@ using Grpc.Net.Client;
 
 namespace Bard.gRPC
 {
-    internal class GrpcClientFactory
+    internal class GrpcClientFactory : IDisposable
     {
         private readonly Dictionary<Type, string> _grpcClients;
         private readonly BardHttpClient _bardHttpClient;
         private readonly LogWriter _logWriter;
-
+        private readonly Dictionary<Type, GrpcChannel> _channels;
+        
         internal GrpcClientFactory(Dictionary<Type, string> grpcClients, BardHttpClient bardHttpClient, LogWriter logWriter)
         {
             _grpcClients = grpcClients;
             _bardHttpClient = bardHttpClient;
             _logWriter = logWriter;
+            _channels = new Dictionary<Type, GrpcChannel>();
         }
 
         internal object Create(Type gRpcClientType)
@@ -26,13 +28,18 @@ namespace Bard.gRPC
             if (_grpcClients.ContainsKey(gRpcClientType) == false)
                 throw new BardException($"gRPC client :{gRpcClientType.Name} base url not registered.");
 
-            GrpcChannelOptions channelOptions = new GrpcChannelOptions
+            var channelOptions = new GrpcChannelOptions
             {
                 HttpClient = _bardHttpClient
             };
-            
-            var channel = GrpcChannel.ForAddress(_grpcClients[gRpcClientType], channelOptions);
 
+            if (_channels.ContainsKey(gRpcClientType) == false)
+            {
+                _channels.Add(gRpcClientType, GrpcChannel.ForAddress(_grpcClients[gRpcClientType], channelOptions));
+            }
+            
+            var channel = _channels[gRpcClientType];
+            
             var grpcClient =
                 Activator.CreateInstance(gRpcClientType, channel.Intercept(new BardClientInterceptor(_logWriter)));
 
@@ -42,6 +49,16 @@ namespace Bard.gRPC
         internal TGrpcClient Create<TGrpcClient>()
         {
             return (TGrpcClient) Create(typeof(TGrpcClient));
+        }
+
+        public void Dispose()
+        {
+            _bardHttpClient.Dispose();
+
+            foreach (var grpcChannel in _channels)
+            {
+                AsyncHelper.RunSync(() => grpcChannel.Value.ShutdownAsync());
+            }
         }
     }
 }

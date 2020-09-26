@@ -63,6 +63,11 @@ namespace Bard.gRPC
         }
 
         public IThen Then => _then;
+
+        public void Dispose()
+        {
+            _clientFactory.Dispose();
+        }
     }
 
     internal class Scenario<TStoryBook, TStoryData> : Scenario,

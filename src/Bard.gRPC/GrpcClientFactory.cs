@@ -57,7 +57,8 @@ namespace Bard.gRPC
 
             foreach (var grpcChannel in _channels)
             {
-                AsyncHelper.RunSync(() => grpcChannel.Value.ShutdownAsync());
+                grpcChannel.Value.Dispose();
+                //AsyncHelper.RunSync(() => grpcChannel.Value.ShutdownAsync());
             }
         }
     }

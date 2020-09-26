@@ -53,7 +53,7 @@ namespace Bard.Tests.GET
 
         private IWhen When { get; }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void ShouldBeOk_should_throw_exception()
         {
             When
@@ -66,7 +66,7 @@ namespace Bard.Tests.GET
             });
         }
         
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void StatusCodeShouldBe_should_throw_exception()
         {
             When
@@ -78,7 +78,7 @@ namespace Bard.Tests.GET
             });
         }
         
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void Headers_should_throw_exception()
         {
             When

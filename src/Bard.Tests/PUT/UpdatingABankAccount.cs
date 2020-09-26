@@ -11,7 +11,7 @@ namespace Bard.Tests.PUT
         {
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void When_updating_a_bank_account_the_response_should_be_no_content()
         {
             Given

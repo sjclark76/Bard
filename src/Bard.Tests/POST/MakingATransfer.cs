@@ -11,7 +11,7 @@ namespace Bard.Tests.POST
         {
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void If_a_withdrawal_is_made_for_bank_account_that_does_not_exist_then_a_404_should_be_returned()
         {
             When
@@ -23,7 +23,7 @@ namespace Bard.Tests.POST
                 .NotFound();
         }
 
-        [Fact(Skip = "Just for now.")]
+        [Fact]
         public void
             If_a_withdrawal_is_requested_but_there_are_insufficient_funds_then_a_bad_request_should_be_returned()
         {

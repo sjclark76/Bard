@@ -58,5 +58,15 @@ namespace Bard
         /// <typeparam name="T">The response object type.</typeparam>
         /// <returns>The Response Object</returns>
         T Content<T>();
+
+        /// <summary>
+        ///     Assert the response was a HTTP Accepted response
+        /// </summary>
+        void Accepted();
+        
+        /// <summary>
+        /// Assert the response was a HTTP 418 I'm a teapot client error response code indicates that the server refuses to brew coffee because it is, permanently, a teapot. A combined coffee/tea pot that is temporarily out of coffee should instead return 503. 
+        /// </summary>
+        void AmATeapot();
     }
 }

@@ -99,6 +99,16 @@ namespace Bard.Internal.Then
         {
             StatusCodeShouldBe(HttpStatusCode.NotFound);
         }
+        
+        public void Accepted()
+        {
+            StatusCodeShouldBe(HttpStatusCode.Accepted);
+        }
+        
+        public void AmATeapot()
+        {
+            StatusCodeShouldBe((HttpStatusCode) 418);
+        }
 
         public void StatusCodeShouldBe(HttpStatusCode httpStatusCode)
         {

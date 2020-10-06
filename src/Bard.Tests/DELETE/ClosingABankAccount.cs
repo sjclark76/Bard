@@ -34,5 +34,35 @@ namespace Bard.Tests.DELETE
 
             Then.Response.ShouldBe.NoContent();
         }
+        
+        [Fact]
+        public void If_the_request_is_successful_then_an_ok_no_content_response_should_be_returned1()
+        {
+            BankingStoryData? storyData = null;
+            
+            Given
+                .BankAccount_has_been_created()
+                .GetResult(result => storyData = result);
+
+            When
+                .Delete($"api/bankaccounts/{storyData?.BankAccountId}");
+
+            Then.Response.ShouldBe.NoContent();
+        }
+        
+        [Fact]
+        public void If_the_request_is_successful_then_an_ok_no_content_response_should_be_returned2()
+        {
+            var storyData = 
+            
+            Given
+                .BankAccount_has_been_created()
+                .GetResult();
+
+            When
+                .Delete($"api/bankaccounts/{storyData.BankAccountId}");
+
+            Then.Response.ShouldBe.NoContent();
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Bard
+﻿using System;
+
+namespace Bard
 {
     /// <summary>
     ///     Extension class for working with Chapters.
@@ -33,6 +35,27 @@
             storyData = (TStoryData) clone;
 
             return chapter;
+        }
+        
+        /// <summary>
+        ///     Get the latest result from the test pipeline and continue on with the test.
+        /// </summary>
+        public static void GetResult<TStoryData>(this ISimpleChapter<TStoryData> chapter, Action<TStoryData> useResult)
+            where TStoryData : class, new()
+        {
+            GetResult(chapter, out TStoryData storyData);
+
+            useResult(storyData);
+        }
+
+        /// <summary>
+        ///     Get the latest result from the test pipeline and continue on with the test.
+        /// </summary>
+        public static TStoryData GetResult<TStoryData>(this ISimpleChapter<TStoryData> chapter) where TStoryData : class, new()
+        {
+            GetResult(chapter, out TStoryData storyData);
+
+            return storyData;
         }
     }
 }

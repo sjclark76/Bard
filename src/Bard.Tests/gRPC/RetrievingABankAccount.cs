@@ -53,7 +53,7 @@ namespace Bard.Tests.gRPC
         {
         }
 
-        [Fact]
+        [Fact(Skip = "skipping for now")]
         public void Foo()
         {
             Scenario

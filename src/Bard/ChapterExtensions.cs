@@ -8,6 +8,15 @@ namespace Bard
     public static class ChapterExtensions
     {
         /// <summary>
+        ///    execute the pipeline
+        /// </summary>
+       public static void Execute<TStoryData>(this ISimpleChapter<TStoryData> chapter)
+            where TStoryData : class, new()
+        {
+            chapter.ExecutePipeline();
+        }
+        
+        /// <summary>
         ///     Get the latest result from the test pipeline and continue on with the test.
         /// </summary>
         /// <param name="chapter"></param>

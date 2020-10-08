@@ -1,6 +1,6 @@
 using System;
 using Bard.Infrastructure;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Bard
 {
@@ -20,11 +20,7 @@ namespace Bard
 
             try
             {
-                content = JsonConvert.DeserializeObject<TErrorMessage>(StringContent,
-                    new JsonSerializerSettings
-                    {
-                        ContractResolver = new ResolvePrivateSetters()
-                    });
+                content = JsonSerializer.Deserialize<TErrorMessage>(StringContent);
             }
             catch (Exception)
             {

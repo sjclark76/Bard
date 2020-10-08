@@ -1,5 +1,6 @@
-﻿using System.Linq;
-using Newtonsoft.Json.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using Snapshooter.Core;
 
 namespace Bard.Internal.Then
@@ -17,73 +18,85 @@ namespace Bard.Internal.Then
         /// <param name="actualSnapshot">The actual snapshot.</param>
         public void Assert(string expectedSnapshot, string actualSnapshot)
         {
-            var expectedSnapshotJToken = JToken.Parse(expectedSnapshot);
-            var actualSnapshotJToken = JToken.Parse(actualSnapshot);
+            var expectedSnapshotJsonElement = JsonDocument.Parse(expectedSnapshot).RootElement;
+            var actualSnapshotJsonElement = JsonDocument.Parse(actualSnapshot).RootElement;
 
-            if (JToken.DeepEquals(expectedSnapshotJToken, actualSnapshotJToken))
+            if (DeepEquals(expectedSnapshotJsonElement, actualSnapshotJsonElement))
                 return;
-            
-            var snapShotDiff = FindDiff(JToken.Parse(expectedSnapshot), JToken.Parse(actualSnapshot));
-            throw new BardSnapshotException(snapShotDiff);
+
+            var snapShotDiff = FindDiff(expectedSnapshotJsonElement, actualSnapshotJsonElement);
+            throw new BardSnapshotException(SerializeAndParse(snapShotDiff));
         }
 
-        private static JObject FindDiff(JToken expectedSnapshot, JToken actualSnapshot)
+        private static bool DeepEquals(JsonElement expected, JsonElement actual)
         {
-            var diff = new JObject();
-            if (JToken.DeepEquals(expectedSnapshot, actualSnapshot)) return diff;
-
-            switch (expectedSnapshot.Type)
+            return new JsonElementComparer().Equals(expected, actual);
+        }
+        
+        private static JsonDocument SerializeAndParse(object objct)
+        {
+            return JsonDocument.Parse(JsonSerializer.Serialize(objct, new JsonSerializerOptions
             {
-                case JTokenType.Object:
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            }));
+        }
+
+        private static Dictionary<string, object> FindDiff(JsonElement expectedSnapshot, JsonElement actualSnapshot)
+        {
+            var diff = new Dictionary<string, object>();
+            if (DeepEquals(expectedSnapshot, actualSnapshot)) 
+                return diff;
+
+            switch (expectedSnapshot.ValueKind)
+            {
+                case JsonValueKind.Object:
                 {
-                    var expected = (JObject) expectedSnapshot;
-                    var actual = (JObject) actualSnapshot;
-                    
-                    var addedKeys = expected.Properties().Select(c => c.Name)
-                        .Except(actual.Properties().Select(c => c.Name)).ToArray();
-                    
-                    var removedKeys = actual.Properties().Select(c => c.Name)
-                        .Except(expected.Properties().Select(c => c.Name));
-                    
-                    var unchangedKeys = expected.Properties().Where(c => JToken.DeepEquals(c.Value, actualSnapshot[c.Name]))
+                    var addedKeys = expectedSnapshot.EnumerateObject().Select(c => c.Name)
+                        .Except(actualSnapshot.EnumerateObject().Select(c => c.Name)).ToArray();
+
+                    var removedKeys = actualSnapshot.EnumerateObject().Select(c => c.Name)
+                        .Except(expectedSnapshot.EnumerateObject().Select(c => c.Name)).ToArray();
+
+                    var unchangedKeys = expectedSnapshot.EnumerateObject()
+                        .Where(c => DeepEquals(c.Value, actualSnapshot.GetProperty(c.Name)))
                         .Select(c => c.Name);
-                   
+
                     foreach (var key in addedKeys)
-                        diff[key] = new JObject
-                        {
-                            ["expected"] = expectedSnapshot[key]
-                        };
-                    
+                        diff[key] = new KeyValuePair<string, object>("expected", expectedSnapshot.GetProperty(key));
+
                     foreach (var key in removedKeys)
-                        diff[key] = new JObject
-                        {
-                            ["actual"] = actualSnapshot[key]
-                        };
-                    
+                        diff[key] = new KeyValuePair<string, object>("actual", actualSnapshot.GetProperty(key));
+
+
                     var potentiallyModifiedKeys =
-                        expected.Properties().Select(c => c.Name).Except(addedKeys).Except(unchangedKeys);
-                   
+                        expectedSnapshot.EnumerateObject().Select(c => c.Name).Except(addedKeys).Except(unchangedKeys);
+
                     foreach (var key in potentiallyModifiedKeys)
                     {
-                        var expectedKey = expected[key];
-                        var actualKey = actual[key];
+                        var expectedKey = expectedSnapshot.GetProperty(key);
+                        var actualKey = actualSnapshot.GetProperty(key);
 
-                        if (expectedKey != null && actualKey != null)
+                        if (expectedKey.Equals(null) && actualKey.Equals(null))
                         {
                             var foundDiff = FindDiff(expectedKey, actualKey);
-                            if (foundDiff.HasValues) diff[key] = foundDiff;    
+                            if (foundDiff.Count > 0)
+                                diff[key] = foundDiff;
                         }
                     }
                 }
                     break;
-                case JTokenType.Array:
+                case JsonValueKind.Array:
                 {
-                    var expected = (JArray) expectedSnapshot;
-                    var actual = (JArray) actualSnapshot;
-                    var plus = new JArray(expected.Except(actual, new JTokenEqualityComparer()));
-                    var minus = new JArray(actual.Except(expected, new JTokenEqualityComparer()));
-                    if (plus.HasValues) diff["expected"] = plus;
-                    if (minus.HasValues) diff["actual"] = minus;
+                    //NOTE: We could make this better by sorting these + count these maybe?
+                    var expected = expectedSnapshot;
+                    var actual = actualSnapshot;
+
+                    var plus = expected.EnumerateArray().Except(actual.EnumerateArray());
+                    var minus = actual.EnumerateArray().Select(x => x)
+                        .Except(expected.EnumerateArray().Select(x => x));
+                    
+                    if (plus.Any()) diff["expected"] = plus;
+                    if (minus.Any()) diff["actual"] = minus;
                 }
                     break;
                 default:

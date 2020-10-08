@@ -1,5 +1,5 @@
 ﻿using System;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
 
 namespace Bard
 {
@@ -12,7 +12,7 @@ namespace Bard
         /// BardSnapshotException constructor
         /// </summary>
         /// <param name="diff"></param>
-        public BardSnapshotException(JObject diff) : base($"Snapshot Mismatch: {Environment.NewLine} {diff}")
+        public BardSnapshotException(JsonDocument diff) : base($"Snapshot Mismatch: {Environment.NewLine} {diff}")
         {
         }
     }

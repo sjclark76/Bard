@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Bard.Infrastructure;
 using Bard.Internal.Then;
 using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Bard.Internal.When
 {
@@ -92,11 +91,10 @@ namespace Bard.Internal.When
         {
             var json = message == null
                 ? string.Empty
-                : JsonConvert.SerializeObject(message, new JsonSerializerSettings
+                : JsonSerializer.Serialize(message, new JsonSerializerOptions
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 });
-
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 

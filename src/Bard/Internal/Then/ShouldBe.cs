@@ -2,9 +2,9 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using Bard.Infrastructure;
 using Bard.Internal.When;
-using Newtonsoft.Json;
 
 namespace Bard.Internal.Then
 {
@@ -159,9 +159,9 @@ namespace Bard.Internal.Then
                 if (_grpcResponse != null)
                     content = (T) _grpcResponse;
                 else
-                    content = JsonConvert.DeserializeObject<T>(_httpResponseString, new JsonSerializerSettings
+                    content = JsonSerializer.Deserialize<T>(_httpResponseString, new JsonSerializerOptions
                     {
-                        ContractResolver = new ResolvePrivateSetters()
+                        PropertyNameCaseInsensitive = true
                     });
             }
             catch (System.Exception)

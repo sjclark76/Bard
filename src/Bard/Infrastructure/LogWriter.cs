@@ -4,9 +4,7 @@ using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 using Bard.Internal.When;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
+using System.Text.Json;
 
 namespace Bard.Infrastructure
 {
@@ -41,14 +39,13 @@ namespace Bard.Infrastructure
         /// <param name="obj">the object to log</param>
         public void LogObject(object? obj)
         {
-            LogMessage(JsonConvert.SerializeObject(
-                obj,
-                Formatting.Indented,
-                new JsonSerializerSettings
+            LogMessage(
+                JsonSerializer.Serialize(obj, new JsonSerializerOptions()
                 {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                    DateTimeZoneHandling = DateTimeZoneHandling.Local
-                }));
+                    WriteIndented = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                })
+            );
         }
 
         internal void WriteHttpResponseToConsole(ApiResult result)
@@ -87,8 +84,7 @@ namespace Bard.Infrastructure
                 if (mediaType == MediaTypeNames.Application.Json || mediaType == "application/problem+json")
                     try
                     {
-                        var jsonFormatted = JToken.Parse(content).ToString(Formatting.Indented);
-                        LogMessage(jsonFormatted);
+                        LogObject(JsonDocument.Parse(content).RootElement);
                     }
                     catch (Exception)
                     {
@@ -112,10 +108,9 @@ namespace Bard.Infrastructure
 
                 try
                 {
-                    var jsonFormatted = JToken.Parse(content).ToString(Formatting.Indented);
-                    LogMessage(jsonFormatted);
+                    LogObject(JsonDocument.Parse(content).RootElement);
                 }
-                catch (JsonReaderException)
+                catch (JsonException)
                 {
                     LogObject(request);
                     LogMessage(content);
@@ -147,7 +142,7 @@ namespace Bard.Infrastructure
             // 27 / 2 = 13.5 13 + 14
 
             LogLineBreak(totalLength);
-            
+
             messageBuilder.Append("*");
             messageBuilder.Append((char) 32, pre);
             messageBuilder.Append(message);

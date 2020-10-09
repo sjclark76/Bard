@@ -24,7 +24,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore src
     - name: Build
-      run: dotnet build src --configuration Release --no-restore  
+      run: dotnet build src --configuration Release --no-restore
     - name: Publish Bard
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:

@@ -10,7 +10,6 @@ using Grpc.Core;
 namespace Bard.gRPC
 {
     internal class Scenario : IScenario
-
     {
         private readonly Api _api;
         private readonly GrpcClientFactory _clientFactory;
@@ -26,7 +25,8 @@ namespace Bard.gRPC
 
             _eventAggregator = new EventAggregator();
 
-            _logWriter = new LogWriter(options.LogMessage, _eventAggregator);
+            var logBuffer = new LogBuffer(options.LogMessage);
+            _logWriter = new LogWriter(logBuffer, _eventAggregator);
 
             var originalClient = options.Client ?? throw new BardConfigurationException("client not set.");
 

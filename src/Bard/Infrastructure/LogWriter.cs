@@ -5,6 +5,7 @@ using System.Net.Mime;
 using System.Text;
 using Bard.Internal.When;
 using System.Text.Json;
+using Bard.Internal;
 
 namespace Bard.Infrastructure
 {
@@ -14,13 +15,14 @@ namespace Bard.Infrastructure
     public class LogWriter
     {
         private const int TotalLength = 100;
-        private readonly EventAggregator _eventAggregator;
-        private readonly Action<string> _logMessage;
+        private readonly LogBuffer _logBuffer;
 
-        internal LogWriter(Action<string> logMessage, EventAggregator eventAggregator)
+        private readonly EventAggregator _eventAggregator;
+
+        internal LogWriter(LogBuffer logBuffer, EventAggregator eventAggregator)
         {
+            _logBuffer = logBuffer;
             _eventAggregator = eventAggregator;
-            _logMessage = logMessage;
         }
 
         /// <summary>
@@ -29,7 +31,7 @@ namespace Bard.Infrastructure
         /// <param name="message">The message to log</param>
         public void LogMessage(string message)
         {
-            _logMessage(message);
+            _logBuffer.Push(message);
             _eventAggregator.PublishMessageLogged(new MessageLogged(message));
         }
 
@@ -61,8 +63,8 @@ namespace Bard.Infrastructure
             if (elapsedTime != null)
                 LogMessage($"Elapsed Time: {Math.Round(elapsedTime.Value.TotalMilliseconds)} (milliseconds)");
 
-            foreach (var header in httpResponse.Content.Headers)
-                LogMessage($"{header.Key}:{string.Join(' ', header.Value)}");
+            foreach (var (key, value) in httpResponse.Content.Headers)
+                LogMessage($"{key}:{string.Join(' ', value)}");
 
             if (httpResponse.Headers.Contains("Location"))
                 LogMessage($"Header::Location {httpResponse.Headers.Location.OriginalString}");
@@ -149,7 +151,7 @@ namespace Bard.Infrastructure
             messageBuilder.Append((char) 32, post);
             messageBuilder.Append("*");
 
-            _logMessage(messageBuilder.ToString());
+            _logBuffer.Push(messageBuilder.ToString());
             LogLineBreak(totalLength);
             BlankLine();
         }
@@ -157,12 +159,12 @@ namespace Bard.Infrastructure
         internal void LogLineBreak(int totalLength = TotalLength)
         {
             var astrixLine = new string('*', totalLength);
-            _logMessage(astrixLine);
+            _logBuffer.Push(astrixLine);
         }
 
         internal void BlankLine()
         {
-            _logMessage(string.Empty);
+            _logBuffer.Push(string.Empty);
         }
     }
 }

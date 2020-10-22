@@ -62,9 +62,12 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
-        <PackageReference Include="MinVer" Version="2.3.0" />
-        <PackageReference Include="Snapshooter" Version="0.5.6" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.9" />
+        <PackageReference Include="MinVer" Version="2.3.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Snapshooter" Version="0.5.7" />
         <PackageReference Include="System.Text.Json" Version="4.7.2" />
     </ItemGroup>
 

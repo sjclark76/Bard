@@ -29,7 +29,8 @@ namespace Bard.Internal
             _badRequestProvider = badRequestProvider;
             _eventAggregator = eventAggregator;
 
-            LogWriter = new LogWriter(logMessage, _eventAggregator);
+            var logBuffer = new LogBuffer(logMessage);
+            LogWriter = new LogWriter(logBuffer, _eventAggregator);
 
             var pipeline = new PipelineBuilder(LogWriter);
 

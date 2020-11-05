@@ -3,8 +3,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
-using Bard.Internal.When;
 using System.Text.Json;
+using Bard.Internal.When;
 
 namespace Bard.Infrastructure
 {
@@ -14,13 +14,21 @@ namespace Bard.Infrastructure
     public class LogWriter
     {
         private const int TotalLength = 100;
-        private readonly EventAggregator _eventAggregator;
+        private readonly EventAggregator? _eventAggregator;
         private readonly Action<string> _logMessage;
 
-        internal LogWriter(Action<string> logMessage, EventAggregator eventAggregator)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logMessage"></param>
+        public LogWriter(Action<string> logMessage)
+        {
+            _logMessage = logMessage;
+        }
+
+        internal LogWriter(Action<string> logMessage, EventAggregator eventAggregator) : this(logMessage)
         {
             _eventAggregator = eventAggregator;
-            _logMessage = logMessage;
         }
 
         /// <summary>
@@ -30,7 +38,7 @@ namespace Bard.Infrastructure
         public void LogMessage(string message)
         {
             _logMessage(message);
-            _eventAggregator.PublishMessageLogged(new MessageLogged(message));
+            _eventAggregator?.PublishMessageLogged(new MessageLogged(message));
         }
 
         /// <summary>
@@ -77,30 +85,29 @@ namespace Bard.Infrastructure
                 MediaTypeNames.Text.RichText
             };
 
-            if (!string.IsNullOrEmpty(content))
-            {
-                var mediaType = httpResponse.Content.Headers.ContentType.MediaType;
+            if (string.IsNullOrEmpty(content)) return;
 
-                if (mediaType == MediaTypeNames.Application.Json || mediaType == "application/problem+json")
-                    try
-                    {
-                        LogObject(JsonDocument.Parse(content).RootElement);
-                    }
-                    catch (Exception)
-                    {
-                        LogMessage(content);
-                    }
-                else if (plainText.Contains(mediaType)) LogMessage(content);
-            }
+            var mediaType = httpResponse.Content.Headers.ContentType.MediaType;
+
+            if (mediaType == MediaTypeNames.Application.Json || mediaType == "application/problem+json")
+                try
+                {
+                    LogObject(JsonDocument.Parse(content).RootElement);
+                }
+                catch (Exception)
+                {
+                    LogMessage(content);
+                }
+            else if (plainText.Contains(mediaType)) LogMessage(content);
         }
 
         internal void WriteHttpRequestToConsole(HttpRequestMessage request)
         {
             LogMessage($"REQUEST: {request.Method.Method} {request.RequestUri}");
 
-            foreach (var header in request.Headers)
-            foreach (var value in header.Value)
-                LogMessage($"Header::{header.Key} {value}");
+            foreach (var (key, enumerable) in request.Headers)
+            foreach (var value in enumerable)
+                LogMessage($"Header::{key} {value}");
 
             if (request.Content != null)
             {
@@ -120,7 +127,11 @@ namespace Bard.Infrastructure
             LogMessage(string.Empty);
         }
 
-        internal void LogHeaderMessage(string message)
+        /// <summary>
+        /// Logs a header message
+        /// </summary>
+        /// <param name="message"></param>
+        public void LogHeaderMessage(string message)
         {
             var totalLength = TotalLength;
             var messageLength = message.Length;
@@ -160,7 +171,10 @@ namespace Bard.Infrastructure
             _logMessage(astrixLine);
         }
 
-        internal void BlankLine()
+        /// <summary>
+        /// Creates a blank line
+        /// </summary>
+        public void BlankLine()
         {
             _logMessage(string.Empty);
         }

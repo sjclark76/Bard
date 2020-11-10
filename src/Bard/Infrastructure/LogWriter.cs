@@ -48,10 +48,11 @@ namespace Bard.Infrastructure
         public void LogObject(object? obj)
         {
             LogMessage(
-                JsonSerializer.Serialize(obj, new JsonSerializerOptions()
+                JsonSerializer.Serialize(obj, new JsonSerializerOptions
                 {
                     WriteIndented = true,
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    IgnoreNullValues = true
                 })
             );
         }

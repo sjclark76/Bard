@@ -99,12 +99,12 @@ namespace Bard.Internal.Then
         {
             StatusCodeShouldBe(HttpStatusCode.NotFound);
         }
-        
+
         public void Accepted()
         {
             StatusCodeShouldBe(HttpStatusCode.Accepted);
         }
-        
+
         public void AmATeapot()
         {
             StatusCodeShouldBe((HttpStatusCode) 418);
@@ -152,7 +152,7 @@ namespace Bard.Internal.Then
 
         private T DeserializeContent<T>()
         {
-            T content = default!;
+            T content;
 
             try
             {
@@ -164,12 +164,12 @@ namespace Bard.Internal.Then
                         PropertyNameCaseInsensitive = true
                     });
             }
-            catch (System.Exception)
+            catch (System.Exception exception)
             {
-                // ok..
+                throw new BardException($"Unable to serialize api response {_httpResponseString}", exception);
             }
 
-            return content ?? throw new BardException($"Unable to serialize api response {_httpResponseString}");
+            return content;
         }
 
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local

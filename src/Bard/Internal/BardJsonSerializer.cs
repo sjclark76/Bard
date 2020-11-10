@@ -32,7 +32,7 @@ namespace Bard.Internal
         }
 
         /// <summary>
-        /// 
+        /// Deserialize Json string to an object
         /// </summary>
         /// <param name="json"></param>
         /// <typeparam name="T"></typeparam>

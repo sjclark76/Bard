@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
+using Bard.Internal;
 using Bard.Internal.When;
 
 namespace Bard.Infrastructure
@@ -15,6 +16,7 @@ namespace Bard.Infrastructure
     {
         private const int TotalLength = 100;
         private readonly EventAggregator? _eventAggregator;
+
         private readonly Action<string> _logMessage;
 
         /// <summary>
@@ -23,13 +25,21 @@ namespace Bard.Infrastructure
         /// <param name="logMessage"></param>
         public LogWriter(Action<string> logMessage)
         {
+            Serializer = new BardJsonSerializer();
             _logMessage = logMessage;
         }
 
-        internal LogWriter(Action<string> logMessage, EventAggregator eventAggregator) : this(logMessage)
+        internal LogWriter(Action<string> logMessage, EventAggregator eventAggregator,
+            BardJsonSerializer bardJsonSerializer) : this(logMessage)
         {
             _eventAggregator = eventAggregator;
+            Serializer = bardJsonSerializer;
         }
+
+        /// <summary>
+        /// Serializer with custom settings.
+        /// </summary>
+        public BardJsonSerializer Serializer { get; }
 
         /// <summary>
         ///     Logs the message output.
@@ -47,12 +57,7 @@ namespace Bard.Infrastructure
         /// <param name="obj">the object to log</param>
         public void LogObject(object? obj)
         {
-            LogMessage(
-                JsonSerializer.Serialize(obj, new JsonSerializerOptions()
-                {
-                    WriteIndented = true,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                })
+            LogMessage(Serializer.Serialize(obj)
             );
         }
 

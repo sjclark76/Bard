@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text.Json;
 
 namespace Bard.Configuration
 {
@@ -15,6 +16,16 @@ namespace Bard.Configuration
             LogMessage = Console.WriteLine;
             BadRequestProvider = new DefaultBadRequestProvider();
         }
+
+        /// <summary>
+        /// Specify custom JsonDeserializeOptions for deserialization of messages and logging.
+        /// </summary>
+        public JsonSerializerOptions? JsonDeserializeOptions { get; set; }
+
+        /// <summary>
+        /// Specify custom JsonDeserializeOptions for deserialization of messages and logging.
+        /// </summary>
+        public JsonSerializerOptions? JsonSerializeOptions { get; set; }
 
         /// <summary>
         ///     The HttpClient that should be used to call the Test API

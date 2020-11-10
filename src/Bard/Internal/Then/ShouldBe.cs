@@ -2,7 +2,6 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using Bard.Infrastructure;
 using Bard.Internal.When;
 
@@ -12,16 +11,19 @@ namespace Bard.Internal.Then
     {
         private readonly ApiResult _apiResult;
         private readonly string _httpResponseString;
+        private readonly BardJsonSerializer _jsonSerializer;
         private readonly LogWriter _logWriter;
         private readonly PerformanceMonitor _performanceMonitor;
         private Func<IResponse>? _apiRequest;
         private object? _grpcResponse;
         private HttpResponseMessage _httpResponse;
 
-        internal ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider, LogWriter logWriter)
+        internal ShouldBe(ApiResult apiResult, IBadRequestProvider badRequestProvider, LogWriter logWriter,
+            BardJsonSerializer jsonSerializer)
         {
             _apiResult = apiResult;
             _logWriter = logWriter;
+            _jsonSerializer = jsonSerializer;
             badRequestProvider.StringContent = apiResult.ResponseString;
             BadRequest = new BadRequestProviderDecorator(this, badRequestProvider);
             _httpResponse = apiResult.ResponseMessage;
@@ -99,12 +101,12 @@ namespace Bard.Internal.Then
         {
             StatusCodeShouldBe(HttpStatusCode.NotFound);
         }
-        
+
         public void Accepted()
         {
             StatusCodeShouldBe(HttpStatusCode.Accepted);
         }
-        
+
         public void AmATeapot()
         {
             StatusCodeShouldBe((HttpStatusCode) 418);
@@ -152,24 +154,25 @@ namespace Bard.Internal.Then
 
         private T DeserializeContent<T>()
         {
-            T content = default!;
+            T content;
 
             try
             {
                 if (_grpcResponse != null)
                     content = (T) _grpcResponse;
                 else
-                    content = JsonSerializer.Deserialize<T>(_httpResponseString, new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
+                    content = _jsonSerializer.Deserialize<T>(_httpResponseString);
+                // content = JsonSerializer.Deserialize<T>(_httpResponseString, new JsonSerializerOptions
+                // {
+                //     PropertyNameCaseInsensitive = true
+                // });
             }
-            catch (System.Exception)
+            catch (System.Exception exception)
             {
-                // ok..
+                throw new BardException($"Unable to serialize api response {_httpResponseString}", exception);
             }
 
-            return content ?? throw new BardException($"Unable to serialize api response {_httpResponseString}");
+            return content;
         }
 
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local

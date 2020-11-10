@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Bard.Infrastructure;
 using Bard.Internal.Then;
@@ -46,8 +45,8 @@ namespace Bard.Internal.When
             var responseMessage = AsyncHelper.RunSync(() => _httpClient.PatchAsync(route, messageContent));
 
             AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
-            
-            var response = new Response(_eventAggregator,  _httpClient.Result, _badRequestProvider, _logWriter);
+
+            var response = new Response(_eventAggregator, _httpClient.Result, _badRequestProvider, _logWriter);
 
             return response;
         }
@@ -70,8 +69,8 @@ namespace Bard.Internal.When
         {
             var message = AsyncHelper.RunSync(() => _httpClient.GetAsync(route));
             AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
-            
-            var response = new Response(_eventAggregator,  _httpClient.Result, _badRequestProvider, _logWriter);
+
+            var response = new Response(_eventAggregator, _httpClient.Result, _badRequestProvider, _logWriter);
 
             return response;
         }
@@ -81,20 +80,18 @@ namespace Bard.Internal.When
             var message = AsyncHelper.RunSync(() => _httpClient.DeleteAsync(route));
 
             AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
-    
-            var response = new Response(_eventAggregator,  _httpClient.Result, _badRequestProvider, _logWriter);
+
+            var response = new Response(_eventAggregator, _httpClient.Result, _badRequestProvider, _logWriter);
 
             return response;
         }
 
-        private static StringContent CreateMessageContent(object? message)
+        private StringContent CreateMessageContent(object? message)
         {
             var json = message == null
                 ? string.Empty
-                : JsonSerializer.Serialize(message, new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                });
+                : _logWriter.Serializer.Serialize(message);
+
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
@@ -103,8 +100,8 @@ namespace Bard.Internal.When
             var messageContent = CreateMessageContent(null);
 
             AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
-           
-            var response = new Response(_eventAggregator,  _httpClient.Result, _badRequestProvider, _logWriter);
+
+            var response = new Response(_eventAggregator, _httpClient.Result, _badRequestProvider, _logWriter);
 
             return response;
         }
@@ -116,7 +113,7 @@ namespace Bard.Internal.When
             AsyncHelper.RunSync(() => callHttpClient(_httpClient, messageContent));
 
             var response = new Response(_eventAggregator, _httpClient.Result, _badRequestProvider, _logWriter);
-            
+
             return response;
         }
     }

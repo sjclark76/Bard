@@ -19,11 +19,9 @@ namespace Bard
 
             try
             {
-                content = JsonSerializer.Deserialize<TErrorMessage>(StringContent, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                    IgnoreNullValues = true
-                });
+                content = Serializer != null
+                    ? Serializer.Deserialize<TErrorMessage>(StringContent)
+                    : JsonSerializer.Deserialize<TErrorMessage>(StringContent);
             }
             catch (Exception)
             {

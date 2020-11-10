@@ -10,5 +10,9 @@ namespace Bard
         internal BardException(string? message) : base(message)
         {
         }
+
+        internal BardException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }

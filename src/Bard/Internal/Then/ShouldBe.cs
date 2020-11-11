@@ -162,10 +162,6 @@ namespace Bard.Internal.Then
                     content = (T) _grpcResponse;
                 else
                     content = _jsonSerializer.Deserialize<T>(_httpResponseString);
-                // content = JsonSerializer.Deserialize<T>(_httpResponseString, new JsonSerializerOptions
-                // {
-                //     PropertyNameCaseInsensitive = true
-                // });
             }
             catch (System.Exception exception)
             {

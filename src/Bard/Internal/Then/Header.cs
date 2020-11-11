@@ -9,11 +9,11 @@ namespace Bard.Internal.Then
 {
     internal class Headers : IHeaders, IHeadersShould, IInclude, IObserver<Func<IResponse>>
     {
-        private readonly LogWriter _logWriter;
-        private readonly HttpResponseMessage _responseMessage;
         private readonly ApiResult _apiResult;
-        private Func<IResponse>? _apiRequest;
+        private readonly LogWriter _logWriter;
         private readonly PerformanceMonitor _performanceMonitor;
+        private readonly HttpResponseMessage _responseMessage;
+        private Func<IResponse>? _apiRequest;
 
         public Headers(ApiResult apiResult, LogWriter logWriter)
         {
@@ -57,7 +57,7 @@ namespace Bard.Internal.Then
             }
 
             _performanceMonitor.AssertElapsedTime(_apiRequest, _apiResult, MaxElapsedTime);
-            
+
             return this;
         }
 
@@ -75,6 +75,13 @@ namespace Bard.Internal.Then
         public IHeaders ContentLength(string? headerValue = null)
         {
             ShouldInclude("Content-Length", headerValue);
+
+            return this;
+        }
+
+        public IHeaders Location(string? headerValue = null)
+        {
+            ShouldInclude("Location", headerValue);
 
             return this;
         }

@@ -39,12 +39,19 @@ namespace Bard
         /// <param name="headerValue">the value (optional)</param>
         /// <returns></returns>
         IHeaders ContentType(string? headerValue = null);
-        
+
         /// <summary>
         /// Assert the headers include a content length
         /// </summary>
         /// <param name="headerValue">the value (optional)</param>
         /// <returns></returns>
         IHeaders ContentLength(string? headerValue = null);
+
+        /// <summary>
+        /// Assert the headers include a location
+        /// </summary>
+        /// <param name="headerValue">the value (optional)</param>
+        /// <returns></returns>
+        IHeaders Location(string? headerValue = null);
     }
 }

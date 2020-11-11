@@ -169,7 +169,8 @@ namespace Bard.Internal.Then
             }
             catch (System.Exception exception)
             {
-                throw new BardException($"Unable to serialize api response {_httpResponseString}", exception);
+                throw new BardException(
+                    $"Unable to serialize api response to type:'{typeof(T).Name}': {_httpResponseString}", exception);
             }
 
             return content;

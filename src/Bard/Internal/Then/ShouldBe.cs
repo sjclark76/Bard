@@ -159,13 +159,17 @@ namespace Bard.Internal.Then
             try
             {
                 if (_grpcResponse != null)
+                {
                     content = (T) _grpcResponse;
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(_httpResponseString))
+                        throw new BardException(
+                            $"API response cannot be deserialized to '{typeof(T).Name}' because the response was empty.");
 
-                if (string.IsNullOrWhiteSpace(_httpResponseString))
-                    throw new BardException(
-                        $"API response cannot be deserialized to '{typeof(T).Name}' because the response was empty.");
-
-                content = _jsonSerializer.Deserialize<T>(_httpResponseString);
+                    content = _jsonSerializer.Deserialize<T>(_httpResponseString);
+                }
             }
             catch (System.Exception exception)
             {

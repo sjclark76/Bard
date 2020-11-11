@@ -1,12 +1,15 @@
 using System;
 using System.Linq.Expressions;
 using Bard.Infrastructure;
+using Bard.Internal;
 
 namespace Bard
 {
     /// <inheritdoc />
     public abstract class BadRequestProviderBase : IBadRequestProvider
     {
+        internal BardJsonSerializer? Serializer;
+
         /// <inheritdoc />
         public IBadRequestProvider ForProperty<TCommand>(Expression<Func<TCommand, object?>> expression)
         {
@@ -34,5 +37,10 @@ namespace Bard
 
         /// <inheritdoc />
         public string StringContent { get; set; } = string.Empty;
+
+        internal void SetSerializer(BardJsonSerializer bardJsonSerializer)
+        {
+            Serializer = bardJsonSerializer;
+        }
     }
 }

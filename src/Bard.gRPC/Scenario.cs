@@ -26,7 +26,8 @@ namespace Bard.gRPC
 
             _eventAggregator = new EventAggregator();
 
-            _logWriter = new LogWriter(options.LogMessage, _eventAggregator);
+            _logWriter = new LogWriter(options.LogMessage, _eventAggregator,
+                new BardJsonSerializer(options.JsonDeserializeOptions, options.JsonSerializeOptions));
 
             var originalClient = options.Client ?? throw new BardConfigurationException("client not set.");
 

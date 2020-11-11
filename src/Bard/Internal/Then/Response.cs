@@ -5,26 +5,41 @@ using Bard.Internal.When;
 
 namespace Bard.Internal.Then
 {
-    internal class Response : IResponse, ITime,  IObserver<Func<IResponse>>
+    internal class Response : IResponse, ITime, IObserver<Func<IResponse>>
     {
         private readonly ApiResult _apiResult;
         private readonly Headers _headers;
         private readonly LogWriter _logWriter;
         private readonly ShouldBe _shouldBe;
-        private int? _maxElapsedTime;
         private Func<IResponse>? _apiRequest;
+        private int? _maxElapsedTime;
 
         internal Response(EventAggregator eventAggregator, ApiResult? apiResult, IBadRequestProvider badRequestProvider,
             LogWriter logWriter)
         {
             _apiResult = apiResult ?? throw new BardException("apiResult cannot be null");
             _logWriter = logWriter;
-            _shouldBe = new ShouldBe(apiResult, badRequestProvider, logWriter);
+            _shouldBe = new ShouldBe(apiResult, badRequestProvider, logWriter, logWriter.Serializer);
             _headers = new Headers(apiResult, logWriter);
             eventAggregator.Subscribe(_shouldBe);
             eventAggregator.SubscribeToApiRequests(_shouldBe);
             eventAggregator.SubscribeToApiRequests(_headers);
             eventAggregator.SubscribeToApiRequests(this);
+        }
+
+        public void OnCompleted()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnError(System.Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNext(Func<IResponse> apiRequest)
+        {
+            _apiRequest = apiRequest;
         }
 
         public IShouldBe ShouldBe => _shouldBe;
@@ -77,22 +92,6 @@ namespace Bard.Internal.Then
             var performanceMonitor = new PerformanceMonitor(_logWriter);
 
             performanceMonitor.AssertElapsedTime(_apiRequest, _apiResult, milliseconds);
-        }
-
-
-        public void OnCompleted()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnError(System.Exception error)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnNext(Func<IResponse> apiRequest)
-        {
-            _apiRequest = apiRequest;
         }
     }
 }

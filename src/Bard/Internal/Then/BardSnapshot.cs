@@ -46,9 +46,29 @@ namespace Bard.Internal.Then
 
             var snapShooter = SnapShooter;
             var snapshotFullName = snapShooter.ResolveSnapshotFullName(snapshotNameExtension: snapshotExtension);
+            
             _logWriter.LogMessage("");
-            _logWriter.LogMessage($"MATCHING AGAINST SNAPSHOT: {snapshotFullName.FolderPath}\\__snapshots__\\{snapshotFullName.Filename}");
-            snapShooter.AssertSnapshot(content, snapshotFullName, matchOptions);
+            _logWriter.LogMessage($"SNAPSHOT: {GetFullSnapshotPath(snapshotFullName)}");
+
+            try
+            {
+                snapShooter.AssertSnapshot(content, snapshotFullName, matchOptions);
+            }
+            catch (BardSnapshotException)
+            {
+                _logWriter.LogMessage($"MISMATCH: {GetFullMismatchPath(snapshotFullName)}");
+                throw;
+            }
+        }
+
+        private static string GetFullSnapshotPath(SnapshotFullName snapshotFullName)
+        {
+            return $"{snapshotFullName.FolderPath}\\__snapshots__\\{snapshotFullName.Filename}";
+        }
+        
+        private static string GetFullMismatchPath(SnapshotFullName snapshotFullName)
+        {
+            return $"{snapshotFullName.FolderPath}\\__snapshots__\\__mismatch__\\{snapshotFullName.Filename}";
         }
     }
 }

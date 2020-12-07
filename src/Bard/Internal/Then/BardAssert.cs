@@ -25,6 +25,7 @@ namespace Bard.Internal.Then
                 return;
 
             var snapShotDiff = FindDiff(expectedSnapshotJsonElement, actualSnapshotJsonElement);
+            
             throw new BardSnapshotException(SerializeAndParse(snapShotDiff));
         }
 

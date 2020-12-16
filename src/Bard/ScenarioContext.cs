@@ -34,7 +34,7 @@ namespace Bard
         ///     Provides access to the instance of IServiceProvider to use Dependency Injection from within a story.
         /// </summary>
         /// <exception cref="BardConfigurationException">Throws if the Services has not been set during configuration.</exception>
-        public IServiceProvider? Services
+        public IServiceProvider Services
         {
             get
             {

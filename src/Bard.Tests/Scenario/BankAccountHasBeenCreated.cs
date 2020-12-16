@@ -21,8 +21,8 @@ namespace Bard.Tests.Scenario
 
                     var dbContext = context.Services.GetService<BankDbContext>();
 
-                    dbContext.BankAccounts.Add(bankAccount);
-                    dbContext.SaveChanges();
+                    dbContext?.BankAccounts.Add(bankAccount);
+                    dbContext?.SaveChanges();
 
                     context.StoryData.BankAccountId = bankAccount.Id;
                 })

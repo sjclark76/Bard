@@ -78,7 +78,7 @@ namespace Bard.Infrastructure
                 LogMessage($"{header.Key}:{string.Join(' ', header.Value)}");
 
             if (httpResponse.Headers.Contains("Location"))
-                LogMessage($"Header::Location {httpResponse.Headers.Location.OriginalString}");
+                LogMessage($"Header::Location {httpResponse.Headers.Location?.OriginalString}");
 
             var plainText = new[]
             {
@@ -92,7 +92,7 @@ namespace Bard.Infrastructure
 
             if (string.IsNullOrEmpty(content)) return;
 
-            var mediaType = httpResponse.Content.Headers.ContentType.MediaType;
+            var mediaType = httpResponse.Content.Headers.ContentType?.MediaType;
 
             if (mediaType == MediaTypeNames.Application.Json || mediaType == "application/problem+json")
                 try

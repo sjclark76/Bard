@@ -9,7 +9,7 @@ namespace Bard.Tests.Scenario
     {
         public EndChapter<BankingStoryData> Nothing_much_happens()
         {
-            return When(context => { })
+            return When(_ => { })
                 .End();
         }
 
@@ -45,8 +45,8 @@ namespace Bard.Tests.Scenario
 
                     var dbContext = context.Services.GetService<BankDbContext>();
 
-                    dbContext.BankAccounts.Add(bankAccount);
-                    dbContext.SaveChanges();
+                    dbContext?.BankAccounts.Add(bankAccount);
+                    dbContext?.SaveChanges();
 
                     context.Writer.LogObject(bankAccount);
                     context.StoryData.BankAccountId = bankAccount.Id;

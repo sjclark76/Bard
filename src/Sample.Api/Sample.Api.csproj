@@ -3,10 +3,10 @@
     <PropertyGroup>
         <AssemblyName>Bard.Sample.Api</AssemblyName>
         <RootNamespace>Bard.Sample.Api</RootNamespace>
-        <LangVersion>8</LangVersion>
+        <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <OutputType>Library</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>

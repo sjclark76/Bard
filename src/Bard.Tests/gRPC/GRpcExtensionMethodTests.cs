@@ -37,12 +37,12 @@ namespace Bard.Tests.gRPC
         [Fact]
         public void Call_grpc_with_story_book()
         {
-            GrpcChannelOptions channelOptions = new GrpcChannelOptions
+            GrpcChannelOptions channelOptions = new()
             {
                 HttpClient = _httpClient
             };
-
-            var channel = GrpcChannel.ForAddress(_httpClient.BaseAddress, channelOptions);
+            
+            var channel = GrpcChannel.ForAddress(_httpClient.BaseAddress ?? new Uri(string.Empty), channelOptions);
 
             var client = new CreditRatingCheck.CreditRatingCheckClient(channel);
             

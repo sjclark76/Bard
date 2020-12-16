@@ -7,7 +7,7 @@ namespace Bard.Internal
     /// </summary>
     public class BardJsonSerializer
     {
-        private readonly JsonSerializerOptions? _deSerializerOptions;
+        private readonly JsonSerializerOptions _deSerializerOptions;
         private readonly JsonSerializerOptions _serializationOptions;
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Bard.Internal
         /// <param name="json"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Deserialize<T>(string json)
+        public T? Deserialize<T>(string json)
         {
             return JsonSerializer.Deserialize<T>(json, _deSerializerOptions);
         }

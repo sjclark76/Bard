@@ -10,6 +10,9 @@ namespace Bard.Internal.Then
     /// </summary>
     public class BardAssert : IAssert
     {
+        private const string Expected = "expected";
+        private const string Actual = "actual";
+
         /// <summary>
         ///     Asserts the expected snapshot and the actual snapshot
         ///     with the XUnit assert utility.
@@ -25,6 +28,7 @@ namespace Bard.Internal.Then
                 return;
 
             var snapShotDiff = FindDiff(expectedSnapshotJsonElement, actualSnapshotJsonElement);
+
             throw new BardSnapshotException(SerializeAndParse(snapShotDiff));
         }
 
@@ -32,7 +36,7 @@ namespace Bard.Internal.Then
         {
             return new JsonElementComparer().Equals(expected, actual);
         }
-        
+
         private static JsonDocument SerializeAndParse(object objct)
         {
             return JsonDocument.Parse(JsonSerializer.Serialize(objct, new JsonSerializerOptions
@@ -41,31 +45,45 @@ namespace Bard.Internal.Then
             }));
         }
 
+        private static JsonElement GetProperty(JsonElement jsonElement, string propertyName)
+        {
+            var result = jsonElement.TryGetProperty(propertyName, out var newJsonElement);
+
+            if (result == false)
+                throw new BardException($"Could not find property name '{propertyName}' in snapshot.");
+
+            return newJsonElement;
+        }
+
         private static Dictionary<string, object> FindDiff(JsonElement expectedSnapshot, JsonElement actualSnapshot)
         {
             var diff = new Dictionary<string, object>();
-            if (DeepEquals(expectedSnapshot, actualSnapshot)) 
+            if (DeepEquals(expectedSnapshot, actualSnapshot))
                 return diff;
 
             switch (expectedSnapshot.ValueKind)
             {
                 case JsonValueKind.Object:
                 {
-                    var addedKeys = expectedSnapshot.EnumerateObject().Select(c => c.Name)
-                        .Except(actualSnapshot.EnumerateObject().Select(c => c.Name)).ToArray();
+                    var expectedKeys = expectedSnapshot.EnumerateObject().Select(c => c.Name).ToArray();
+                    var actualKeys = actualSnapshot.EnumerateObject().Select(c => c.Name).ToArray();
+                    
+                    var addedKeys = expectedKeys
+                        .Except(actualKeys).ToArray();
 
-                    var removedKeys = actualSnapshot.EnumerateObject().Select(c => c.Name)
-                        .Except(expectedSnapshot.EnumerateObject().Select(c => c.Name)).ToArray();
+                    var removedKeys = actualKeys
+                        .Except(expectedKeys).ToArray();
 
                     var unchangedKeys = expectedSnapshot.EnumerateObject()
-                        .Where(c => DeepEquals(c.Value, actualSnapshot.GetProperty(c.Name)))
+                        .Where(expectedProperty => actualSnapshot.TryGetProperty(expectedProperty.Name, out _))
+                        .Where(c => DeepEquals(c.Value, GetProperty(actualSnapshot, c.Name)))
                         .Select(c => c.Name);
 
                     foreach (var key in addedKeys)
-                        diff[key] = new KeyValuePair<string, object>("expected", expectedSnapshot.GetProperty(key));
+                        diff[key] = new KeyValuePair<string, object>(Expected, GetProperty(expectedSnapshot, key));
 
                     foreach (var key in removedKeys)
-                        diff[key] = new KeyValuePair<string, object>("actual", actualSnapshot.GetProperty(key));
+                        diff[key] = new KeyValuePair<string, object>(Actual, GetProperty(actualSnapshot, key));
 
 
                     var potentiallyModifiedKeys =
@@ -94,14 +112,14 @@ namespace Bard.Internal.Then
                     var plus = expected.EnumerateArray().Except(actual.EnumerateArray());
                     var minus = actual.EnumerateArray().Select(x => x)
                         .Except(expected.EnumerateArray().Select(x => x));
-                    
-                    if (plus.Any()) diff["expected"] = plus;
-                    if (minus.Any()) diff["actual"] = minus;
+
+                    if (plus.Any()) diff[Expected] = plus;
+                    if (minus.Any()) diff[Actual] = minus;
                 }
                     break;
                 default:
-                    diff["expected"] = expectedSnapshot;
-                    diff["actual"] = actualSnapshot;
+                    diff[Expected] = expectedSnapshot;
+                    diff[Actual] = actualSnapshot;
                     break;
             }
 

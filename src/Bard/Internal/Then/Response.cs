@@ -57,7 +57,7 @@ namespace Bard.Internal.Then
             ShouldBe.StatusCodeShouldBe(statusCode);
         }
 
-        public T Content<T>()
+        public T? Content<T>()
         {
             return _shouldBe.Content<T>();
         }

@@ -65,7 +65,7 @@ namespace Bard.Internal.Then
             StatusCodeShouldBe(HttpStatusCode.NoContent);
         }
 
-        public T Ok<T>()
+        public T? Ok<T>()
         {
             Ok();
 
@@ -81,7 +81,7 @@ namespace Bard.Internal.Then
             StatusCodeShouldBe(HttpStatusCode.Created);
         }
 
-        public T Created<T>()
+        public T? Created<T>()
         {
             Created();
 
@@ -139,20 +139,19 @@ namespace Bard.Internal.Then
             _performanceMonitor.AssertElapsedTime(_apiRequest, _apiResult, MaxElapsedTime);
         }
 
-        public T Content<T>()
+        public T? Content<T>()
         {
             var content = DeserializeContent<T>();
 
-            if (Log)
-            {
-                _logWriter.LogHeaderMessage($"THEN THE RESPONSE SHOULD BE {typeof(T)}");
-                LogResponse();
-            }
+            if (!Log) return content;
+            
+            _logWriter.LogHeaderMessage($"THEN THE RESPONSE SHOULD BE {typeof(T)}");
+            LogResponse();
 
             return content;
         }
 
-        private T DeserializeContent<T>()
+        private T? DeserializeContent<T>()
         {
             T content;
 

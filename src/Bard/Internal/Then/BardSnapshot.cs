@@ -2,6 +2,7 @@
 using Bard.Infrastructure;
 using Snapshooter;
 using Snapshooter.Core;
+using Snapshooter.Core.Serialization;
 
 namespace Bard.Internal.Then
 {
@@ -24,13 +25,13 @@ namespace Bard.Internal.Then
             {
                 var snapShooter = new Snapshooter.Snapshooter(
                     new SnapshotAssert(
-                        new SnapshotSerializer(),
+                        new SnapshotSerializer(new GlobalSnapshotSettingsResolver()),
                         new SnapshotFileHandler(),
                         new SnapshotEnvironmentCleaner(
                             new SnapshotFileHandler()),
                         new JsonSnapshotComparer(
                             new BardAssert(),
-                            new SnapshotSerializer())),
+                            new SnapshotSerializer(new GlobalSnapshotSettingsResolver()))),
                     new SnapshotFullNameResolver(
                         new BardSnapshotFullNameReader()));
 

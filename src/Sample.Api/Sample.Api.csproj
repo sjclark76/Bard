@@ -6,7 +6,7 @@
         <LangVersion>8</LangVersion>
         <Nullable>enable</Nullable>
         <OutputType>Library</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>

@@ -25,7 +25,7 @@ namespace Bard
         /// <param name="route">the route to call</param>
         /// <param name="requestSetup">configure outgoing http request (optional)</param>
         /// <returns>IResponse</returns>
-        IResponse Post(string route, Action<HttpRequestMessage>? requestSetup);
+        IResponse Post(string route, Action<HttpRequestMessage>? requestSetup = null);
         
         /// <summary>
         ///     Send a POST request to the specified route

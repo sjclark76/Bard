@@ -27,7 +27,7 @@ namespace Bard.Tests
             _host = hostBuilder.Start();
 
             _httpClient = _host.GetTestClient();
-
+            
             var scenario = ScenarioConfiguration
                 .WithStoryBook<BankingStory, BankingStoryData>()
                 .Configure(options =>

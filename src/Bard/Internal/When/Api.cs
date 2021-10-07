@@ -24,25 +24,58 @@ namespace Bard.Internal.When
             _logWriter = httpClient.Writer;
         }
 
-        public IResponse Put<TModel>(string route, TModel model)
+        public IResponse Put<TModel>(string route, TModel model, Action<HttpRequestMessage>? requestSetup = null)
         {
-            return PostOrPut(model, (client, messageContent) => client.PutAsync(route, messageContent));
+            return PostOrPut(model, (client, messageContent) =>
+            {
+                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, route);
+                httpRequestMessage.Content = messageContent;
+
+                requestSetup?.Invoke(httpRequestMessage);
+
+                return client.SendAsync(httpRequestMessage);
+            });
+
         }
 
-        public IResponse Post(string route)
+        public IResponse Post(string route, Action<HttpRequestMessage>? requestSetup = null)
         {
-            return PostOrPut((client, messageContent) => client.PostAsync(route, messageContent));
+            return PostOrPut((client, messageContent) =>
+            {
+                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, route);
+                httpRequestMessage.Content = messageContent;
+                
+                requestSetup?.Invoke(httpRequestMessage);
+                
+                return client.SendAsync(httpRequestMessage);
+            });
         }
 
-        public IResponse Post<TModel>(string route, TModel model)
+        public IResponse Post<TModel>(string route, TModel model, Action<HttpRequestMessage>? requestSetup = null)
         {
-            return PostOrPut(model, (client, messageContent) => client.PostAsync(route, messageContent));
+            return PostOrPut(model, (client, messageContent) =>
+            {
+                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, route);
+                httpRequestMessage.Content = messageContent;
+                
+                requestSetup?.Invoke(httpRequestMessage);
+                
+                return client.SendAsync(httpRequestMessage);
+            });
         }
 
-        public IResponse Patch<TModel>(string route, TModel model)
+        public IResponse Patch<TModel>(string route, TModel model, Action<HttpRequestMessage>? requestSetup = null)
         {
             var messageContent = CreateMessageContent(model);
-            var responseMessage = AsyncHelper.RunSync(() => _httpClient.PatchAsync(route, messageContent));
+            var responseMessage = AsyncHelper.RunSync(() =>
+            {
+                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Patch, route);
+                httpRequestMessage.Content = messageContent;
+                
+                requestSetup?.Invoke(httpRequestMessage);
+                
+                return _httpClient.SendAsync(httpRequestMessage);
+            });
 
             AsyncHelper.RunSync(() => responseMessage.Content.ReadAsStringAsync());
 
@@ -51,23 +84,31 @@ namespace Bard.Internal.When
             return response;
         }
 
-        public IResponse Get(string uri, string name, string value)
+        public IResponse Get(string uri, string name, string value, Action<HttpRequestMessage>? requestSetup = null)
         {
             var url = QueryHelpers.AddQueryString(uri, name, value);
 
-            return Get(url);
+            return Get(url, requestSetup);
         }
 
-        public IResponse Get(string uri, IDictionary<string, string> queryParameters)
+        public IResponse Get(string uri, IDictionary<string, string> queryParameters, Action<HttpRequestMessage>? requestSetup = null)
         {
             var url = QueryHelpers.AddQueryString(uri, queryParameters);
 
-            return Get(url);
+            return Get(url, requestSetup);
         }
 
-        public IResponse Get(string route)
+        public IResponse Get(string route, Action<HttpRequestMessage>? requestSetup = null)
         {
-            var message = AsyncHelper.RunSync(() => _httpClient.GetAsync(route));
+            var message = AsyncHelper.RunSync(() =>
+            {
+                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, route);
+                
+                requestSetup?.Invoke(httpRequestMessage);
+                
+                return _httpClient.SendAsync(httpRequestMessage);
+            });
+            
             AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
 
             var response = new Response(_eventAggregator, _httpClient.Result, _badRequestProvider, _logWriter);
@@ -75,9 +116,17 @@ namespace Bard.Internal.When
             return response;
         }
 
-        public IResponse Delete(string route)
+        public IResponse Delete(string route, Action<HttpRequestMessage>? requestSetup = null)
         {
-            var message = AsyncHelper.RunSync(() => _httpClient.DeleteAsync(route));
+            var message = AsyncHelper.RunSync(() =>
+            {
+                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Delete, route);
+                
+                if (requestSetup != null)
+                    requestSetup(httpRequestMessage);
+                
+                return _httpClient.SendAsync(httpRequestMessage);
+            });
 
             AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
 

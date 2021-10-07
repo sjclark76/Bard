@@ -20,7 +20,6 @@ namespace Bard.Infrastructure
         private readonly Action<string> _logMessage;
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="logMessage"></param>
         public LogWriter(Action<string> logMessage)
@@ -37,7 +36,7 @@ namespace Bard.Infrastructure
         }
 
         /// <summary>
-        /// Serializer with custom settings.
+        ///     Serializer with custom settings.
         /// </summary>
         public BardJsonSerializer Serializer { get; }
 
@@ -69,7 +68,7 @@ namespace Bard.Infrastructure
         internal void WriteHttpResponseToConsole(HttpResponseMessage httpResponse, TimeSpan? elapsedTime = null)
         {
             var content = AsyncHelper.RunSync(() => httpResponse.Content.ReadAsStringAsync());
-            LogMessage($"Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int) httpResponse.StatusCode})");
+            LogMessage($"Http Status Code:  {httpResponse.StatusCode.ToString()} ({(int)httpResponse.StatusCode})");
 
             if (elapsedTime != null)
                 LogMessage($"Elapsed Time: {Math.Round(elapsedTime.Value.TotalMilliseconds)} (milliseconds)");
@@ -78,7 +77,7 @@ namespace Bard.Infrastructure
                 LogMessage($"{header.Key}:{string.Join(' ', header.Value)}");
 
             if (httpResponse.Headers.Contains("Location"))
-                LogMessage($"Header::Location {httpResponse.Headers.Location.OriginalString}");
+                LogMessage($"Header::Location {httpResponse.Headers.Location?.OriginalString}");
 
             var plainText = new[]
             {
@@ -92,7 +91,7 @@ namespace Bard.Infrastructure
 
             if (string.IsNullOrEmpty(content)) return;
 
-            var mediaType = httpResponse.Content.Headers.ContentType.MediaType;
+            var mediaType = httpResponse.Content.Headers.ContentType?.MediaType;
 
             if (mediaType == MediaTypeNames.Application.Json || mediaType == "application/problem+json")
                 try
@@ -109,6 +108,10 @@ namespace Bard.Infrastructure
         internal void WriteHttpRequestToConsole(HttpRequestMessage request)
         {
             LogMessage($"REQUEST: {request.Method.Method} {request.RequestUri}");
+
+            if (request.Content != null)
+                foreach (var (key, value) in request.Content.Headers)
+                    LogMessage($"{key}:{string.Join(' ', value)}");
 
             foreach (var (key, enumerable) in request.Headers)
             foreach (var value in enumerable)
@@ -133,7 +136,7 @@ namespace Bard.Infrastructure
         }
 
         /// <summary>
-        /// Logs a header message
+        ///     Logs a header message
         /// </summary>
         /// <param name="message"></param>
         public void LogHeaderMessage(string message)
@@ -160,9 +163,9 @@ namespace Bard.Infrastructure
             LogLineBreak(totalLength);
 
             messageBuilder.Append("*");
-            messageBuilder.Append((char) 32, pre);
+            messageBuilder.Append((char)32, pre);
             messageBuilder.Append(message);
-            messageBuilder.Append((char) 32, post);
+            messageBuilder.Append((char)32, post);
             messageBuilder.Append("*");
 
             _logMessage(messageBuilder.ToString());
@@ -177,7 +180,7 @@ namespace Bard.Infrastructure
         }
 
         /// <summary>
-        /// Creates a blank line
+        ///     Creates a blank line
         /// </summary>
         public void BlankLine()
         {

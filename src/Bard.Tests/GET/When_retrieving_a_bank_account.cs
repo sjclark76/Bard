@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using Bard.Sample.Api.Model;
 using Bard.Tests.Scenario;
 using Shouldly;
@@ -112,7 +113,10 @@ namespace Bard.Tests.GET
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Get($"{ApiBankaccounts}/{bankAccount.BankAccountId}");
+                .Get($"{ApiBankaccounts}/{bankAccount.BankAccountId}", message =>
+                {
+                    message.Headers.Authorization = new AuthenticationHeaderValue("Bearer", "blah blah");
+                });
 
             Then.Response
                 .ShouldBe

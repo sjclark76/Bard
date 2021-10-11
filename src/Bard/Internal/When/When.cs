@@ -72,6 +72,11 @@ namespace Bard.Internal.When
             return CallApi(() => _api.Get(route, requestSetup));
         }
 
+        public IResponse Send(Action<HttpRequestMessage> requestSetup)
+        {
+            return CallApi(() => _api.Send(requestSetup));
+        }
+
         private IResponse CallApi(Func<IResponse> callApi)
         {
             PreApiCall?.Invoke();

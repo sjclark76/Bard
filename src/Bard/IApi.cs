@@ -80,5 +80,12 @@ namespace Bard
         /// <param name="requestSetup">configure outgoing http request (optional)</param>
         /// <returns>IResponse</returns>
         IResponse Patch<TModel>(string route, TModel model, Action<HttpRequestMessage>? requestSetup = null);
+
+        /// <summary>
+        ///     Send a request
+        /// </summary>
+        /// <param name="requestSetup">configure outgoing http request</param>
+        /// <returns>IResponse</returns>
+        IResponse Send(Action<HttpRequestMessage> requestSetup);
     }
 }

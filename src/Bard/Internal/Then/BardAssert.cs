@@ -67,7 +67,7 @@ namespace Bard.Internal.Then
                 {
                     var expectedKeys = expectedSnapshot.EnumerateObject().Select(c => c.Name).ToArray();
                     var actualKeys = actualSnapshot.EnumerateObject().Select(c => c.Name).ToArray();
-                    
+
                     var addedKeys = expectedKeys
                         .Except(actualKeys).ToArray();
 
@@ -84,7 +84,6 @@ namespace Bard.Internal.Then
 
                     foreach (var key in removedKeys)
                         diff[key] = new KeyValuePair<string, object>(Actual, GetProperty(actualSnapshot, key));
-
 
                     var potentiallyModifiedKeys =
                         expectedSnapshot.EnumerateObject().Select(c => c.Name).Except(addedKeys).Except(unchangedKeys);
@@ -106,12 +105,10 @@ namespace Bard.Internal.Then
                 case JsonValueKind.Array:
                 {
                     //NOTE: We could make this better by sorting these + count these maybe?
-                    var expected = expectedSnapshot;
-                    var actual = actualSnapshot;
 
-                    var plus = expected.EnumerateArray().Except(actual.EnumerateArray());
-                    var minus = actual.EnumerateArray().Select(x => x)
-                        .Except(expected.EnumerateArray().Select(x => x));
+                    var plus = expectedSnapshot.EnumerateArray().Except(actualSnapshot.EnumerateArray());
+                    var minus = actualSnapshot.EnumerateArray()
+                        .Except(expectedSnapshot.EnumerateArray());
 
                     if (plus.Any()) diff[Expected] = plus;
                     if (minus.Any()) diff[Actual] = minus;

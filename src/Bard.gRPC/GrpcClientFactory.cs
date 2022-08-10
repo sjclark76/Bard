@@ -36,6 +36,8 @@ namespace Bard.gRPC
             var grpcClient =
                 Activator.CreateInstance(gRpcClientType, channel.Intercept(new BardClientInterceptor(_logWriter)));
 
+            if (grpcClient == null)
+                throw new BardException("unable to create grpClient instance");
             return grpcClient;
         }
 

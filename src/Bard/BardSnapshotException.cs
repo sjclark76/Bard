@@ -15,5 +15,11 @@ namespace Bard
         public BardSnapshotException(JsonDocument diff) : base($"Snapshot Mismatch: {Environment.NewLine} {diff}")
         {
         }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return Message;
+        }
     }
 }

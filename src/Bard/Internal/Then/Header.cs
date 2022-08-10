@@ -37,8 +37,8 @@ namespace Bard.Internal.Then
 
             _logWriter.WriteHttpResponseToConsole(_apiResult);
 
-            var contentHeaders = _responseMessage.Content.Headers.Select(pair => pair);
-            var headers = _responseMessage.Headers.Select(pair => pair);
+            var contentHeaders = _responseMessage.Content.Headers;
+            var headers = _responseMessage.Headers;
 
             var allHeaders = contentHeaders.Concat(headers).ToList();
 

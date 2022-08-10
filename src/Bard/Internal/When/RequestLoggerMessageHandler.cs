@@ -16,7 +16,7 @@ namespace Bard.Internal.When
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (request.Content?.Headers.ContentType.MediaType != "application/grpc")
+            if (request.Content?.Headers.ContentType?.MediaType != "application/grpc")
                 _logWriter.WriteHttpRequestToConsole(request);
          
             return base.SendAsync(request, cancellationToken);

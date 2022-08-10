@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 
 namespace Bard.Internal
 {
@@ -39,7 +40,7 @@ namespace Bard.Internal
         /// <returns></returns>
         public T Deserialize<T>(string json)
         {
-            return JsonSerializer.Deserialize<T>(json, _deSerializerOptions);
+            return JsonSerializer.Deserialize<T>(json, _deSerializerOptions) ?? throw new InvalidOperationException($"unable to deserialize string {json}");
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace Bard.Internal.When
         {
             return PostOrPut(model, (client, messageContent) =>
             {
-                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, route);
+                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, route);
                 httpRequestMessage.Content = messageContent;
 
                 requestSetup?.Invoke(httpRequestMessage);
@@ -42,7 +42,7 @@ namespace Bard.Internal.When
         {
             return PostOrPut((client, messageContent) =>
             {
-                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, route);
+                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, route);
                 httpRequestMessage.Content = messageContent;
                 
                 requestSetup?.Invoke(httpRequestMessage);
@@ -55,7 +55,7 @@ namespace Bard.Internal.When
         {
             return PostOrPut(model, (client, messageContent) =>
             {
-                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, route);
+                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, route);
                 httpRequestMessage.Content = messageContent;
                 
                 requestSetup?.Invoke(httpRequestMessage);
@@ -69,7 +69,7 @@ namespace Bard.Internal.When
             var messageContent = CreateMessageContent(model);
             var responseMessage = AsyncHelper.RunSync(() =>
             {
-                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Patch, route);
+                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Patch, route);
                 httpRequestMessage.Content = messageContent;
                 
                 requestSetup?.Invoke(httpRequestMessage);
@@ -102,7 +102,7 @@ namespace Bard.Internal.When
         {
             var message = AsyncHelper.RunSync(() =>
             {
-                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, route);
+                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, route);
                 
                 requestSetup?.Invoke(httpRequestMessage);
                 
@@ -120,11 +120,10 @@ namespace Bard.Internal.When
         {
             var message = AsyncHelper.RunSync(() =>
             {
-                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Delete, route);
-                
-                if (requestSetup != null)
-                    requestSetup(httpRequestMessage);
-                
+                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Delete, route);
+
+                requestSetup?.Invoke(httpRequestMessage);
+
                 return _httpClient.SendAsync(httpRequestMessage);
             });
 

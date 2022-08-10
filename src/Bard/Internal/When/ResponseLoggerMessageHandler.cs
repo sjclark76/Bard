@@ -18,7 +18,7 @@ namespace Bard.Internal.When
         {
             var response = await base.SendAsync(request, cancellationToken);
 
-            if (request.Content?.Headers.ContentType.MediaType != "application/grpc")
+            if (request.Content?.Headers.ContentType?.MediaType != "application/grpc")
             {
                 _logWriter.WriteHttpResponseToConsole(response);
             }

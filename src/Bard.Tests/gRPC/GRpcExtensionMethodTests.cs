@@ -42,6 +42,9 @@ namespace Bard.Tests.gRPC
                 HttpClient = _httpClient
             };
 
+            if (_httpClient.BaseAddress == null)
+                throw new Exception("Base Address should not be null");
+
             var channel = GrpcChannel.ForAddress(_httpClient.BaseAddress, channelOptions);
 
             var client = new CreditRatingCheck.CreditRatingCheckClient(channel);

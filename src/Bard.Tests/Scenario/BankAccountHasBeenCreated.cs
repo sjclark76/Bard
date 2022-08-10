@@ -19,8 +19,11 @@ namespace Bard.Tests.Scenario
 
                     configureBankAccount?.Invoke(bankAccount);
 
-                    var dbContext = context.Services.GetService<BankDbContext>();
+                    var dbContext = context.Services?.GetService<BankDbContext>();
 
+                    if (dbContext == null)
+                        throw new Exception("unable to locate service BankDbContext");
+                    
                     dbContext.BankAccounts.Add(bankAccount);
                     dbContext.SaveChanges();
 

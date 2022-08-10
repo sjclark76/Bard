@@ -20,24 +20,20 @@ namespace Bard.Internal.Then
         /// <returns>The full name of the snapshot.</returns>
         public SnapshotFullName ReadSnapshotFullName()
         {
-            SnapshotFullName? snapshotFullName = null;
             var stackFrames = new StackTrace(true).GetFrames();
 
-            if (stackFrames != null)
-            {
-                var response = stackFrames.Select((frame, index) =>
-                        new {frame.GetMethod().DeclaringType, Index = index})
-                    .First(arg => arg.DeclaringType == typeof(BardSnapshot));
+            var response = stackFrames.Select((frame, index) =>
+                    new { frame.GetMethod()?.DeclaringType, Index = index })
+                .First(arg => arg.DeclaringType == typeof(BardSnapshot));
 
-                var testMethodFrame = stackFrames[response.Index + 1];
-                var testMethod = testMethodFrame.GetMethod();
+            var testMethodFrame = stackFrames[response.Index + 1];
+            var testMethod = testMethodFrame.GetMethod();
 
-                var fileName = testMethod.ToName();
+            var fileName = testMethod.ToName();
 
-                snapshotFullName = new SnapshotFullName(
-                    fileName,
-                    Path.GetDirectoryName(testMethodFrame.GetFileName()));
-            }
+            var snapshotFullName = new SnapshotFullName(
+                fileName,
+                Path.GetDirectoryName(testMethodFrame.GetFileName()));
 
             if (snapshotFullName == null)
                 throw new SnapshotTestException(

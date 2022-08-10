@@ -72,7 +72,7 @@ namespace Bard.Tests.GET
         {
             Given
                 .BankAccount_has_been_created(account => account.CustomerName = "Fred")
-                .Deposit_has_been_made(storyData => new Deposit {Amount = 50})
+                .Deposit_has_been_made(_ => new Deposit {Amount = 50})
                 .Deposit_has_been_made(50)
                 .Withdrawal_has_been_made(25)
                 .GetResult(out BankingStoryData bankAccount);

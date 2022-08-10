@@ -15,7 +15,7 @@ namespace Bard.Tests.POST
         public void If_a_withdrawal_is_made_for_bank_account_that_does_not_exist_then_a_404_should_be_returned()
         {
             When
-                .Post("api/bankaccounts/1234/withdrawals", new Deposit {Amount = 100});
+                .Post("api/bankaccounts/1234/withdrawals", new Deposit { Amount = 100 });
 
             Then
                 .Response
@@ -29,11 +29,11 @@ namespace Bard.Tests.POST
         {
             Given
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made((storyData) => new Deposit {Amount = 100})
+                .Deposit_has_been_made(_ => new Deposit { Amount = 100 })
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Post($"api/bankaccounts/{bankAccount.BankAccountId}/withdrawals", new Withdrawal {Amount = 1000});
+                .Post($"api/bankaccounts/{bankAccount.BankAccountId}/withdrawals", new Withdrawal { Amount = 1000 });
 
             Then
                 .Response
@@ -47,11 +47,11 @@ namespace Bard.Tests.POST
         {
             Given
                 .BankAccount_has_been_created()
-                .Deposit_has_been_made((storyData) => new Deposit {Amount = 100})
+                .Deposit_has_been_made(_ => new Deposit { Amount = 100 })
                 .GetResult(out BankingStoryData bankAccount);
 
             When
-                .Post($"api/bankaccounts/{bankAccount.BankAccountId}/withdrawals", new Withdrawal {Amount = 100});
+                .Post($"api/bankaccounts/{bankAccount.BankAccountId}/withdrawals", new Withdrawal { Amount = 100 });
 
             Then.Response.ShouldBe.Ok();
         }

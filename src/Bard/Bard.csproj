@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <Nullable>enable</Nullable>
-        <LangVersion>8</LangVersion>
-        <TargetFramework>net5.0</TargetFramework>
+        <LangVersion>10</LangVersion>
+        <TargetFramework>net6.0</TargetFramework>
         <PackageId>Bard</PackageId>
         <Version>0.0.3</Version>
         <Authors>Stuart Clark</Authors>
@@ -62,13 +62,13 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
-        <PackageReference Include="MinVer" Version="2.5.0">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+        <PackageReference Include="MinVer" Version="4.1.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Snapshooter" Version="0.7.1" />
-        <PackageReference Include="System.Text.Json" Version="5.0.2" />
+        <PackageReference Include="System.Text.Json" Version="6.0.5" />
     </ItemGroup>
 
 </Project>

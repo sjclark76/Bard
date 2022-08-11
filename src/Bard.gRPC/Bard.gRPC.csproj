@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <PackageId>Bard.gRPC</PackageId>
         <Authors>Stuart Clark</Authors>
@@ -19,6 +19,7 @@
 
             Full release notes can be viewed here https://docs.bard.net.nz/miscellaneous/change-log
         </PackageReleaseNotes>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -34,9 +35,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.Core.Api" Version="2.38.1" />
-        <PackageReference Include="Grpc.Net.Client" Version="2.38.0" />
-        <PackageReference Include="MinVer" Version="2.5.0">
+        <PackageReference Include="Grpc.Core.Api" Version="2.47.0" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
+        <PackageReference Include="MinVer" Version="4.1.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

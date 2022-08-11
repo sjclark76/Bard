@@ -19,9 +19,22 @@ namespace Bard
 
             try
             {
-                content = Serializer != null
-                    ? Serializer.Deserialize<TErrorMessage>(StringContent)
-                    : JsonSerializer.Deserialize<TErrorMessage>(StringContent);
+                if (Serializer != null)
+                {
+                    content = Serializer.Deserialize<TErrorMessage>(StringContent);
+                    
+                    
+                }
+                else
+                {
+                    var deserializeResult = JsonSerializer.Deserialize<TErrorMessage>(StringContent);
+
+                    if (deserializeResult == null)
+                        throw new Exception($"Unable to serialize to {typeof(TErrorMessage).FullName}");
+                    
+                    content = deserializeResult;
+                }
+               
             }
             catch (Exception)
             {

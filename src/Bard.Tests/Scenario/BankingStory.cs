@@ -9,7 +9,7 @@ namespace Bard.Tests.Scenario
     {
         public EndChapter<BankingStoryData> Nothing_much_happens()
         {
-            return When(context => { })
+            return When(_ => { })
                 .End();
         }
 

@@ -4,31 +4,31 @@
 
         <IsPackable>false</IsPackable>
 
-        <LangVersion>8</LangVersion>
+        <LangVersion>10</LangVersion>
 
         <Nullable>enable</Nullable>
 
         <OutputType>Library</OutputType>
 
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Google.Protobuf" Version="3.17.3" />
-        <PackageReference Include="Grpc.Net.Client" Version="2.38.0" />
-        <PackageReference Include="Grpc.Tools" Version="2.38.1">
+        <PackageReference Include="Google.Protobuf" Version="3.21.5" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.47.0">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="5.0.9" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
+        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.8" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.0" />
         <PackageReference Include="Shouldly" Version="4.0.3" />
-        <PackageReference Include="xunit" Version="2.4.1" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+        <PackageReference Include="xunit" Version="2.4.2" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="coverlet.collector" Version="3.1.0">
+        <PackageReference Include="coverlet.collector" Version="3.1.2">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

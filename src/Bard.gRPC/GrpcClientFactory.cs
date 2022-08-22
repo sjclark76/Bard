@@ -26,7 +26,7 @@ namespace Bard.gRPC
             if (_grpcClients.ContainsKey(gRpcClientType) == false)
                 throw new BardException($"gRPC client :{gRpcClientType.Name} base url not registered.");
 
-            GrpcChannelOptions channelOptions = new GrpcChannelOptions
+            var channelOptions = new GrpcChannelOptions
             {
                 HttpClient = _bardHttpClient
             };
@@ -43,7 +43,7 @@ namespace Bard.gRPC
 
         internal TGrpcClient Create<TGrpcClient>()
         {
-            return (TGrpcClient) Create(typeof(TGrpcClient));
+            return (TGrpcClient)Create(typeof(TGrpcClient));
         }
     }
 }

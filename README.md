@@ -1,6 +1,5 @@
 [![Join the chat at https://gitter.im/Bard-NET/Bard](https://badges.gitter.im/Bard-NET/Bard.svg)](https://gitter.im/Bard-NET/Bard?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)  ![.NET Core](https://github.com/sjclark76/bard/workflows/.NET%20Core/badge.svg?branch=master)    [![NuGet Badge](https://buildstats.info/nuget/Bard)](https://www.nuget.org/packages/Bard/)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/sjclark76/Bard.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/sjclark76/Bard/alerts/)
-
+[![CodeQL](https://github.com/sjclark76/bard/workflows/CodeQL/badge.svg)](https://github.com/sjclark76/bard/actions?query=workflow%3ACodeQL)
 # Introduction
 
 Bard is a .NET library for API testing.

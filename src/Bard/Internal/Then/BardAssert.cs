@@ -37,9 +37,9 @@ namespace Bard.Internal.Then
             return new JsonElementComparer().Equals(expected, actual);
         }
 
-        private static JsonDocument SerializeAndParse(object objct)
+        private static JsonDocument SerializeAndParse(object obj)
         {
-            return JsonDocument.Parse(JsonSerializer.Serialize(objct, new JsonSerializerOptions
+            return JsonDocument.Parse(JsonSerializer.Serialize(obj, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             }));
@@ -90,15 +90,14 @@ namespace Bard.Internal.Then
 
                     foreach (var key in potentiallyModifiedKeys)
                     {
-                        var expectedKey = expectedSnapshot.GetProperty(key);
-                        var actualKey = actualSnapshot.GetProperty(key);
+                        var keyExists = expectedSnapshot.TryGetProperty(key, out var expectedKey);
+                        var actualKeyExists = actualSnapshot.TryGetProperty(key, out var actualKey);
 
-                        if (expectedKey.Equals(null) && actualKey.Equals(null))
-                        {
-                            var foundDiff = FindDiff(expectedKey, actualKey);
-                            if (foundDiff.Count > 0)
-                                diff[key] = foundDiff;
-                        }
+                        if (keyExists || actualKeyExists) continue;
+
+                        var foundDiff = FindDiff(expectedKey, actualKey);
+                        if (foundDiff.Count > 0)
+                            diff[key] = foundDiff;
                     }
                 }
                     break;
@@ -114,6 +113,12 @@ namespace Bard.Internal.Then
                     if (minus.Any()) diff[Actual] = minus;
                 }
                     break;
+                case JsonValueKind.Undefined:
+                case JsonValueKind.String:
+                case JsonValueKind.Number:
+                case JsonValueKind.True:
+                case JsonValueKind.False:
+                case JsonValueKind.Null:
                 default:
                     diff[Expected] = expectedSnapshot;
                     diff[Actual] = actualSnapshot;

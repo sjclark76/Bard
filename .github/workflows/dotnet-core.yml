@@ -26,12 +26,12 @@ jobs:
     - name: Build
       run: dotnet build src --configuration Release --no-restore
     - name: Publish Bard
-      uses: brandedoutcast/publish-nuget@v2.5.2
+      uses: brandedoutcast/publish-nuget@v2.5.5
       with:
           PROJECT_FILE_PATH: src/Bard/Bard.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
     - name: Publish Bard.gRpc
-      uses: brandedoutcast/publish-nuget@v2.5.2
+      uses: brandedoutcast/publish-nuget@v2.5.5
       with:
           PROJECT_FILE_PATH: src/Bard.gRPC/Bard.gRPC.csproj
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}  

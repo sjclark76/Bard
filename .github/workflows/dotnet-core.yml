@@ -25,13 +25,12 @@ jobs:
       run: dotnet restore src
     - name: Build
       run: dotnet build src --configuration Release --no-restore
+    - name: Package Bard
+      run: dotnet pack -c Release -o . src/Bard/Bard.csproj
     - name: Publish Bard
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
-          PROJECT_FILE_PATH: src/Bard/Bard.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+      run:  dotnet nuget push *.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+    - name: Package Bard.gRpc
+      run: dotnet pack -c Release -o . src/Bard.gRPC/Bard.gRPC.csproj
     - name: Publish Bard.gRpc
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
-          PROJECT_FILE_PATH: src/Bard.gRPC/Bard.gRPC.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}  
+      run:  dotnet nuget push *.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
+    

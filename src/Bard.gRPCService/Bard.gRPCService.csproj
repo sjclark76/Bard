@@ -17,7 +17,7 @@
     <Protobuf Include="Protos\credit-rating-service.proto" GrpcServices="Both" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.48.0" />
   </ItemGroup>
 
 </Project>

@@ -28,9 +28,9 @@ jobs:
     - name: Package Bard
       run: dotnet pack -c Release -o . src/Bard/Bard.csproj
     - name: Publish Bard
-      run:  dotnet nuget push *.nupkg -k ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+      run:  dotnet nuget push *.nupkg -k ${{ secrets.NUGET_KEY }} --source "https://api.nuget.org/v3/index.json" --skip-duplicate
     - name: Package Bard.gRpc
       run: dotnet pack -c Release -o . src/Bard.gRPC/Bard.gRPC.csproj
     - name: Publish Bard.gRpc
-      run:  dotnet nuget push *.nupkg -k ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+      run:  dotnet nuget push *.nupkg -k ${{ secrets.NUGET_KEY }} --source "https://api.nuget.org/v3/index.json" --skip-duplicate
     

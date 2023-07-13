@@ -69,7 +69,7 @@
         </PackageReference>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
         <PackageReference Include="Snapshooter" Version="0.7.1" />
-        <PackageReference Include="System.Text.Json" Version="6.0.7" />
+        <PackageReference Include="System.Text.Json" Version="6.0.8" />
     </ItemGroup>
 
 </Project>

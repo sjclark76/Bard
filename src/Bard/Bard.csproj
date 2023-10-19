@@ -68,7 +68,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Snapshooter" Version="0.7.1" />
+        <PackageReference Include="Snapshooter" Version="0.13.0" />
         <PackageReference Include="System.Text.Json" Version="6.0.8" />
     </ItemGroup>
 

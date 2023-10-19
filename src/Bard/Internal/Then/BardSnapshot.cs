@@ -31,7 +31,8 @@ namespace Bard.Internal.Then
                             new SnapshotFileHandler()),
                         new JsonSnapshotComparer(
                             new BardAssert(),
-                            new SnapshotSerializer(new GlobalSnapshotSettingsResolver()))),
+                            new SnapshotSerializer(new GlobalSnapshotSettingsResolver()))
+                        , new JsonSnapshotFormatter(new SnapshotSerializer(new GlobalSnapshotSettingsResolver()))),
                     new SnapshotFullNameResolver(
                         new BardSnapshotFullNameReader()));
 

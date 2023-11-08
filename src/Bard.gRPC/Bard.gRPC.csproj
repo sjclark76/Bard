@@ -35,7 +35,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.Core.Api" Version="2.57.0" />
+        <PackageReference Include="Grpc.Core.Api" Version="2.59.0" />
         <PackageReference Include="Grpc.Net.Client" Version="2.57.0" />
         <PackageReference Include="MinVer" Version="4.3.0">
           <PrivateAssets>all</PrivateAssets>

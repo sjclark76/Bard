@@ -134,6 +134,24 @@ namespace Bard.Internal.When
             return response;
         }
 
+        
+        public IResponse Send(Action<HttpRequestMessage> requestSetup)
+        {
+            var message = AsyncHelper.RunSync(() =>
+            {
+                var httpRequestMessage = new HttpRequestMessage();
+                requestSetup(httpRequestMessage);
+
+                return _httpClient.SendAsync(httpRequestMessage);
+            });
+
+            AsyncHelper.RunSync(() => message.Content.ReadAsStringAsync());
+
+            var response = new Response(_eventAggregator, _httpClient.Result, _badRequestProvider, _logWriter);
+
+            return response;
+        }
+
         private StringContent CreateMessageContent(object? message)
         {
             var json = message == null

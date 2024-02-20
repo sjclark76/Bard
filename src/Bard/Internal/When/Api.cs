@@ -26,9 +26,9 @@ namespace Bard.Internal.When
 
         public IResponse Put<TModel>(string route, TModel model, Action<HttpRequestMessage>? requestSetup = null)
         {
+            using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, route);
             return PostOrPut(model, (client, messageContent) =>
             {
-                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, route);
                 httpRequestMessage.Content = messageContent;
 
                 requestSetup?.Invoke(httpRequestMessage);
@@ -40,9 +40,9 @@ namespace Bard.Internal.When
 
         public IResponse Post(string route, Action<HttpRequestMessage>? requestSetup = null)
         {
+            using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, route);
             return PostOrPut((client, messageContent) =>
             {
-                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, route);
                 httpRequestMessage.Content = messageContent;
                 
                 requestSetup?.Invoke(httpRequestMessage);
@@ -53,9 +53,9 @@ namespace Bard.Internal.When
 
         public IResponse Post<TModel>(string route, TModel model, Action<HttpRequestMessage>? requestSetup = null)
         {
+            using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, route);
             return PostOrPut(model, (client, messageContent) =>
             {
-                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, route);
                 httpRequestMessage.Content = messageContent;
                 
                 requestSetup?.Invoke(httpRequestMessage);
@@ -67,9 +67,9 @@ namespace Bard.Internal.When
         public IResponse Patch<TModel>(string route, TModel model, Action<HttpRequestMessage>? requestSetup = null)
         {
             var messageContent = CreateMessageContent(model);
+            using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Patch, route);
             var responseMessage = AsyncHelper.RunSync(() =>
             {
-                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Patch, route);
                 httpRequestMessage.Content = messageContent;
                 
                 requestSetup?.Invoke(httpRequestMessage);
@@ -100,10 +100,9 @@ namespace Bard.Internal.When
 
         public IResponse Get(string route, Action<HttpRequestMessage>? requestSetup = null)
         {
+            using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, route);
             var message = AsyncHelper.RunSync(() =>
             {
-                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, route);
-                
                 requestSetup?.Invoke(httpRequestMessage);
                 
                 return _httpClient.SendAsync(httpRequestMessage);
@@ -118,10 +117,9 @@ namespace Bard.Internal.When
 
         public IResponse Delete(string route, Action<HttpRequestMessage>? requestSetup = null)
         {
+            using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Delete, route);
             var message = AsyncHelper.RunSync(() =>
             {
-                using var httpRequestMessage = new HttpRequestMessage(HttpMethod.Delete, route);
-
                 requestSetup?.Invoke(httpRequestMessage);
 
                 return _httpClient.SendAsync(httpRequestMessage);

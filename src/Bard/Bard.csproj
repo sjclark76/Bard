@@ -61,8 +61,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.3.10" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.2" />
         <PackageReference Include="MinVer" Version="4.3.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
